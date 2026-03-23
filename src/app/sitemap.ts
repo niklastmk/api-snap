@@ -10,5 +10,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/playground`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
     { url: `${baseUrl}/signup`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
     { url: `${baseUrl}/login`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.3 },
+    { url: `${baseUrl}/tools/qr-code-api`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${baseUrl}/tools/screenshot-api`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${baseUrl}/tools/image-resize-api`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${baseUrl}/tools/uuid-generator-api`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${baseUrl}/tools/hash-api`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${baseUrl}/tools/base64-api`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${baseUrl}/tools/color-converter-api`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${baseUrl}/tools/jwt-decode-api`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${baseUrl}/tools/lorem-ipsum-api`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${baseUrl}/tools/markdown-to-html-api`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${baseUrl}/tools/url-metadata-api`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${baseUrl}/tools/html-to-pdf-api`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
+    { url: `${baseUrl}/tools/placeholder-image-api`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.85 },
   ];
 }
