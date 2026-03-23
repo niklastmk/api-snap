@@ -54,15 +54,27 @@ ${html}
 });
 
 function convertMarkdown(md: string): string {
-  let html = md;
-
-  // Code blocks (fenced)
-  html = html.replace(/```(\w*)\n([\s\S]*?)```/g, (_m, lang, code) => {
-    return `<pre><code${lang ? ` class="language-${lang}"` : ""}>${escapeHtml(code.trim())}</code></pre>`;
+  // Extract code blocks first to protect them
+  const codeBlocks: string[] = [];
+  let html = md.replace(/```(\w*)\n([\s\S]*?)```/g, (_m, lang, code) => {
+    const idx = codeBlocks.length;
+    codeBlocks.push(`<pre><code${lang ? ` class="language-${lang}"` : ""}>${escapeHtml(code.trim())}</code></pre>`);
+    return `%%CODEBLOCK_${idx}%%`;
   });
 
-  // Inline code
-  html = html.replace(/`([^`]+)`/g, "<code>$1</code>");
+  const inlineCodes: string[] = [];
+  html = html.replace(/`([^`]+)`/g, (_m, code) => {
+    const idx = inlineCodes.length;
+    inlineCodes.push(`<code>${escapeHtml(code)}</code>`);
+    return `%%INLINECODE_${idx}%%`;
+  });
+
+  // Escape HTML in remaining content to prevent XSS
+  html = escapeHtml(html);
+
+  // Restore code blocks
+  html = html.replace(/%%CODEBLOCK_(\d+)%%/g, (_m, idx) => codeBlocks[Number(idx)]);
+  html = html.replace(/%%INLINECODE_(\d+)%%/g, (_m, idx) => inlineCodes[Number(idx)]);
 
   // Headings
   html = html.replace(/^######\s+(.+)$/gm, "<h6>$1</h6>");
@@ -80,7 +92,7 @@ function convertMarkdown(md: string): string {
   html = html.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
   html = html.replace(/\*(.+?)\*/g, "<em>$1</em>");
 
-  // Links and images
+  // Links and images (URLs are already HTML-escaped from earlier, safe for attributes)
   html = html.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, '<img src="$2" alt="$1">');
   html = html.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
 
