@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     description: "One GET request. PNG or SVG. Custom colors and sizes. Start free with 100 calls/month.",
   },
   alternates: {
-    canonical: "https://snapapi.dev/tools/qr-code-api",
+    canonical: "/tools/qr-code-api",
   },
 };
 

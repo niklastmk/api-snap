@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Placeholder Image API — SVG Placeholders via REST",
     description: "Generate placeholder images with custom size, color, and text. Start free.",
   },
-  alternates: { canonical: "https://snapapi.dev/tools/placeholder-image-api" },
+  alternates: { canonical: "/tools/placeholder-image-api" },
 };
 
 const codeExamples = [

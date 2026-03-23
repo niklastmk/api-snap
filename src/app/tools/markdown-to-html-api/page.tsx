@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Markdown to HTML API — Convert via REST",
     description: "Convert Markdown to styled HTML with one API call. Start free.",
   },
-  alternates: { canonical: "https://snapapi.dev/tools/markdown-to-html-api" },
+  alternates: { canonical: "/tools/markdown-to-html-api" },
 };
 
 const codeExamples = [

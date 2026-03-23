@@ -1,5 +1,60 @@
 import Link from "next/link";
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Do I need a credit card to start?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. The free tier gives you 100 API calls per month with no credit card required. Just sign up and get your API key instantly.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What are the rate limits?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Free: 100/mo, Hobby ($9): 5,000/mo, Pro ($29): 50,000/mo, Business ($99): 500,000/mo. All plans include access to every endpoint.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I use this in production?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Absolutely. Our Pro and Business plans are designed for production workloads with higher rate limits and priority support.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How does authentication work?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Sign up, create an API key, and include it as a Bearer token in the Authorization header. That's it — one key for all endpoints.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What happens if I exceed my limit?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "You'll get a 429 response with your current usage. Upgrade anytime — changes take effect immediately with no downtime.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Do you support CORS?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. All API endpoints return proper CORS headers, so you can call them from browser-side JavaScript in any web app.",
+      },
+    },
+  ],
+};
+
 const endpoints = [
   {
     name: "QR Code Generation",
@@ -115,6 +170,10 @@ const faqs = [
 export default function Home() {
   return (
     <div className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       {/* Nav */}
       <nav className="border-b border-gray-800 px-6 py-4">
         <div className="mx-auto flex max-w-6xl items-center justify-between">
@@ -144,32 +203,35 @@ export default function Home() {
 
       {/* Hero */}
       <section className="mx-auto max-w-4xl px-6 py-24 text-center">
-        <div className="inline-block rounded-full bg-indigo-600/10 border border-indigo-500/20 px-4 py-1.5 text-sm text-indigo-400 mb-6">
-          13+ utility APIs. One key. Zero infrastructure.
+        <div className="inline-block rounded-full bg-green-600/10 border border-green-500/20 px-4 py-1.5 text-sm text-green-400 mb-6">
+          No credit card required — start in 30 seconds
         </div>
         <h1 className="text-5xl font-bold tracking-tight text-white sm:text-6xl">
-          Ship Faster with
+          Stop Rebuilding
           <br />
-          <span className="text-indigo-400">Ready-Made APIs</span>
+          <span className="text-indigo-400">Commodity APIs</span>
         </h1>
         <p className="mt-6 text-lg text-gray-400 max-w-2xl mx-auto">
-          Stop building QR generators, image resizers, and hash functions from scratch.
-          Integrate in 30 seconds. Focus on what makes your product unique.
+          QR codes, image resizing, hashing, screenshots, PDFs — you&apos;ve built these before.
+          Get them all with one API key and one line of code, so you can ship what actually matters.
         </p>
         <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
           <Link
             href="/signup"
-            className="rounded-lg bg-indigo-600 px-6 py-3 text-lg font-medium text-white hover:bg-indigo-500 transition"
+            className="rounded-lg bg-indigo-600 px-6 py-3.5 text-lg font-semibold text-white hover:bg-indigo-500 transition shadow-lg shadow-indigo-600/25"
           >
-            Start Free — 100 calls/month
+            Get Your Free API Key
           </Link>
           <Link
             href="/playground"
-            className="rounded-lg border border-gray-700 px-6 py-3 text-lg font-medium text-gray-300 hover:border-gray-500 transition"
+            className="rounded-lg border border-gray-700 px-6 py-3.5 text-lg font-medium text-gray-300 hover:border-gray-500 hover:text-white transition"
           >
-            Try the Playground
+            Try It Live — No Signup
           </Link>
         </div>
+        <p className="mt-4 text-sm text-gray-500">
+          100 API calls/month free forever. Upgrade from $9/mo.
+        </p>
 
         {/* Code example */}
         <div className="mt-16 rounded-xl border border-gray-800 bg-gray-900 p-6 text-left">
@@ -328,16 +390,23 @@ curl "https://snapapi.dev/api/uuid?format=nanoid&count=10&prefix=usr_" \\
 
       {/* Final CTA */}
       <section className="mx-auto max-w-3xl px-6 py-20 text-center">
-        <h2 className="text-3xl font-bold mb-4">Ready to Ship Faster?</h2>
+        <h2 className="text-3xl font-bold mb-4">Your Next Feature is One API Call Away</h2>
         <p className="text-gray-400 mb-8">
-          Get your API key in 30 seconds. 100 free calls every month, forever.
+          Sign up, grab your key, and make your first API call — all in under a minute.
+          No credit card. No setup. No meetings.
         </p>
         <Link
           href="/signup"
-          className="rounded-lg bg-indigo-600 px-8 py-4 text-lg font-medium text-white hover:bg-indigo-500 transition"
+          className="rounded-lg bg-indigo-600 px-8 py-4 text-lg font-semibold text-white hover:bg-indigo-500 transition shadow-lg shadow-indigo-600/25"
         >
-          Get Your Free API Key
+          Create Free Account
         </Link>
+        <p className="mt-4 text-sm text-gray-500">
+          Already have an account?{" "}
+          <Link href="/login" className="text-indigo-400 hover:text-indigo-300">
+            Log in
+          </Link>
+        </p>
       </section>
 
       {/* Footer */}

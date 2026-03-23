@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Image Resize API — Process Images on the Fly",
     description: "Resize, crop, convert images via REST. PNG, JPEG, WebP, AVIF. Start free.",
   },
-  alternates: { canonical: "https://snapapi.dev/tools/image-resize-api" },
+  alternates: { canonical: "/tools/image-resize-api" },
 };
 
 const codeExamples = [

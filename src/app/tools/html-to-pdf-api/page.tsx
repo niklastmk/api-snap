@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "HTML to PDF API — Generate PDFs via REST",
     description: "Convert HTML to PDF documents with one API call. Start free.",
   },
-  alternates: { canonical: "https://snapapi.dev/tools/html-to-pdf-api" },
+  alternates: { canonical: "/tools/html-to-pdf-api" },
 };
 
 const codeExamples = [

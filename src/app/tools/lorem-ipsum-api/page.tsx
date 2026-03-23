@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Lorem Ipsum API — Placeholder Text via REST",
     description: "Generate placeholder text with one GET request. Start free.",
   },
-  alternates: { canonical: "https://snapapi.dev/tools/lorem-ipsum-api" },
+  alternates: { canonical: "/tools/lorem-ipsum-api" },
 };
 
 const codeExamples = [

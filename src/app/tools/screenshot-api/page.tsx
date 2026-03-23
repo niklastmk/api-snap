@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Screenshot API — Capture Any Website Instantly",
     description: "One GET request to capture any webpage. Custom viewport sizes. Start free.",
   },
-  alternates: { canonical: "https://snapapi.dev/tools/screenshot-api" },
+  alternates: { canonical: "/tools/screenshot-api" },
 };
 
 const codeExamples = [

@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Base64 API — Encode & Decode via REST",
     description: "Base64 and Base64URL encoding/decoding. One API call. Start free.",
   },
-  alternates: { canonical: "https://snapapi.dev/tools/base64-api" },
+  alternates: { canonical: "/tools/base64-api" },
 };
 
 const codeExamples = [

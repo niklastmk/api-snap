@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Color Converter API — Hex, RGB & HSL via REST",
     description: "Convert colors between formats with one API call. Start free.",
   },
-  alternates: { canonical: "https://snapapi.dev/tools/color-converter-api" },
+  alternates: { canonical: "/tools/color-converter-api" },
 };
 
 const codeExamples = [

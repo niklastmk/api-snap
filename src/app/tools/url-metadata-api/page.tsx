@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "URL Metadata API — Extract OG Tags via REST",
     description: "Extract Open Graph data, titles, and favicons from any URL. Start free.",
   },
-  alternates: { canonical: "https://snapapi.dev/tools/url-metadata-api" },
+  alternates: { canonical: "/tools/url-metadata-api" },
 };
 
 const codeExamples = [

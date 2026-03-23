@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "JWT Decode API — Inspect Tokens via REST",
     description: "Decode JWTs and inspect header, payload, claims. One API call. Start free.",
   },
-  alternates: { canonical: "https://snapapi.dev/tools/jwt-decode-api" },
+  alternates: { canonical: "/tools/jwt-decode-api" },
 };
 
 const codeExamples = [

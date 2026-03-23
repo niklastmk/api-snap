@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "UUID Generator API — UUIDs, Nanoids & More",
     description: "Generate unique IDs via REST API. UUIDs, nanoids, hex tokens, custom prefixes. Start free.",
   },
-  alternates: { canonical: "https://snapapi.dev/tools/uuid-generator-api" },
+  alternates: { canonical: "/tools/uuid-generator-api" },
 };
 
 const codeExamples = [

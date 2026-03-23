@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     title: "Hash API — Cryptographic Hashing via REST",
     description: "SHA-256, SHA-512, MD5, SHA-3 and more. One API call. Start free.",
   },
-  alternates: { canonical: "https://snapapi.dev/tools/hash-api" },
+  alternates: { canonical: "/tools/hash-api" },
 };
 
 const codeExamples = [
