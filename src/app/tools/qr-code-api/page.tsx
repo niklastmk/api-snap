@@ -18,14 +18,16 @@ export const metadata: Metadata = {
   },
 };
 
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://snapapi.dev";
+
 const jsonLd = {
   "@context": "https://schema.org",
   "@type": "WebAPI",
   name: "SnapAPI QR Code Generator",
   description: "Generate QR codes via REST API — PNG & SVG, custom colors and sizes",
-  url: "https://snapapi.dev/tools/qr-code-api",
+  url: `${baseUrl}/tools/qr-code-api`,
   provider: { "@type": "Organization", name: "SnapAPI" },
-  documentation: "https://snapapi.dev/docs#qr",
+  documentation: `${baseUrl}/docs#qr`,
 };
 
 const codeExamples = [
