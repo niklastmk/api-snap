@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import Nav from "@/components/nav";
+import Footer from "@/components/footer";
 
 export const metadata: Metadata = {
   title: "Image Resize API — Resize & Convert Images via REST API",
@@ -60,19 +62,7 @@ with open("thumb.avif", "wb") as f:
 export default function ImageResizeApiPage() {
   return (
     <div className="min-h-screen">
-      <nav className="border-b border-gray-800 px-6 py-4">
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <Link href="/" className="text-xl font-bold text-white">API Snap</Link>
-          <div className="flex gap-4 items-center">
-            <Link href="/docs" className="text-gray-400 hover:text-white transition">Docs</Link>
-            <Link href="/pricing" className="text-gray-400 hover:text-white transition">Pricing</Link>
-            <Link href="/blog" className="text-gray-400 hover:text-white transition">Blog</Link>
-            <Link href="/signup" className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition">
-              Get API Key
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Nav />
 
       <section className="mx-auto max-w-4xl px-6 py-20">
         <div className="inline-block rounded-full bg-indigo-600/10 border border-indigo-500/20 px-4 py-1.5 text-sm text-indigo-400 mb-6">
@@ -167,16 +157,7 @@ export default function ImageResizeApiPage() {
         </Link>
       </section>
 
-      <footer className="border-t border-gray-800 px-6 py-8">
-        <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
-          <span>&copy; {new Date().getFullYear()} API Snap</span>
-          <div className="flex gap-6">
-            <Link href="/docs" className="hover:text-gray-300 transition">Docs</Link>
-            <Link href="/tools/qr-code-api" className="hover:text-gray-300 transition">QR Code API</Link>
-            <Link href="/tools/screenshot-api" className="hover:text-gray-300 transition">Screenshot API</Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

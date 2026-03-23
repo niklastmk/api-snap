@@ -36,6 +36,9 @@ export default function LoginPage() {
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
       <div className="w-full max-w-md">
+        <Link href="/" className="block text-center text-xl font-bold text-white mb-8 hover:text-indigo-400 transition">
+          API Snap
+        </Link>
         <h1 className="text-3xl font-bold text-center mb-2">Welcome Back</h1>
         <p className="text-gray-400 text-center mb-8">
           Log in to manage your API keys

@@ -3,6 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import Nav from "@/components/nav";
+import Footer from "@/components/footer";
 
 const plans = [
   {
@@ -101,27 +103,7 @@ export default function PricingClient() {
 
   return (
     <div className="min-h-screen">
-      <nav className="border-b border-gray-800 px-6 py-4">
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <Link href="/" className="text-xl font-bold text-white">
-            API Snap
-          </Link>
-          <div className="flex gap-4">
-            <Link href="/blog" className="text-gray-400 hover:text-white transition">
-              Blog
-            </Link>
-            <Link href="/login" className="text-gray-400 hover:text-white transition">
-              Login
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition"
-            >
-              Get API Key
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Nav current="/pricing" />
 
       <section className="mx-auto max-w-6xl px-6 py-20">
         <h1 className="text-4xl font-bold text-center mb-4">
@@ -190,6 +172,7 @@ export default function PricingClient() {
           ))}
         </div>
       </section>
+      <Footer />
     </div>
   );
 }

@@ -43,19 +43,28 @@ Developer utility API platform. 13+ endpoints (QR codes, screenshots, PDFs, imag
 
 ## What's Done
 - Full app with all API endpoints working
-- Stripe billing (checkout, webhooks, subscriptions)
-- Auth (signup, login, API key management)
+- Stripe billing (checkout, webhooks, subscriptions) — verified end-to-end
+- Auth (signup, login, API key management) — verified working
 - Dashboard with usage tracking
-- 5 SEO blog posts
-- Landing pages per endpoint
-- Deployed and running on Railway
+- 5 SEO blog posts (deployed at /blog)
+- Interactive try pages (deployed at /try)
+- Landing pages per endpoint (all 13 tools)
+- Deployed and running on Railway (last deploy: 2026-03-23, 53 files)
+- OpenAPI spec live at /openapi.json
+- Submitted to public-apis/public-apis (PR #5578 open)
+- Submitted to APIs-guru/openapi-directory (PR #2112 open)
+- Submitted to Apilist.fun (201 accepted, under review)
+- GA4 analytics code installed (awaiting NEXT_PUBLIC_GA_MEASUREMENT_ID env var)
 
 ## What's NOT Done
-- Custom domain
-- No customers
+- RapidAPI listing (requires human login at rapidapi.com/studio — HIGHEST PRIORITY)
+- Postman API Network listing (requires human login)
+- No customers yet
 - No social media presence
-- Not listed on any API marketplaces
-- No analytics/monitoring
+- Analytics blind until NEXT_PUBLIC_GA_MEASUREMENT_ID set in Railway
+
+## Kill Date
+April 15, 2026 — if no paying customers by then, abandon and pivot
 
 ## Deploy Process
 1. Make changes in this directory

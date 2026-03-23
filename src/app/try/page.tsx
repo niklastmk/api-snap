@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Nav from "@/components/nav";
+import Footer from "@/components/footer";
 
 type DemoMode = "qr" | "meta";
 
@@ -76,28 +78,7 @@ export default function TryPage() {
 
   return (
     <div className="min-h-screen bg-gray-950 text-gray-100">
-      {/* Nav */}
-      <nav className="border-b border-gray-800 px-6 py-4">
-        <div className="mx-auto flex max-w-4xl items-center justify-between">
-          <Link href="/" className="text-lg font-bold text-white">
-            API Snap
-          </Link>
-          <div className="flex items-center gap-4">
-            <Link
-              href="/playground"
-              className="text-sm text-gray-400 hover:text-white transition"
-            >
-              Full Playground
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition"
-            >
-              Sign Up Free
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Nav />
 
       <main className="mx-auto max-w-4xl px-6 py-16">
         {/* Hero */}
@@ -287,6 +268,7 @@ export default function TryPage() {
           </div>
         </div>
       </main>
+      <Footer />
     </div>
   );
 }

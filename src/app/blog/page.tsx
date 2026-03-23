@@ -1,6 +1,8 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { posts } from "@/lib/blog";
+import Nav from "@/components/nav";
+import Footer from "@/components/footer";
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://api-snap.com";
 
@@ -20,37 +22,7 @@ export const metadata: Metadata = {
 export default function BlogIndex() {
   return (
     <div className="min-h-screen">
-      {/* Nav */}
-      <nav className="border-b border-gray-800 px-6 py-4">
-        <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <Link href="/" className="text-xl font-bold text-white">
-            API Snap
-          </Link>
-          <div className="flex gap-4 items-center">
-            <Link href="/blog" className="text-white font-medium transition">
-              Blog
-            </Link>
-            <Link href="/playground" className="text-gray-400 hover:text-white transition">
-              Playground
-            </Link>
-            <Link href="/docs" className="text-gray-400 hover:text-white transition">
-              Docs
-            </Link>
-            <Link href="/pricing" className="text-gray-400 hover:text-white transition">
-              Pricing
-            </Link>
-            <Link href="/login" className="text-gray-400 hover:text-white transition">
-              Login
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition"
-            >
-              Get API Key
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Nav current="/blog" />
 
       {/* Header */}
       <section className="mx-auto max-w-3xl px-6 pt-20 pb-12 text-center">
@@ -90,18 +62,7 @@ export default function BlogIndex() {
         )}
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-800 px-6 py-8">
-        <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-start justify-between gap-8 text-sm text-gray-500">
-          <span>&copy; {new Date().getFullYear()} API Snap. All rights reserved.</span>
-          <div className="flex gap-6">
-            <Link href="/docs" className="hover:text-gray-300 transition">Docs</Link>
-            <Link href="/playground" className="hover:text-gray-300 transition">Playground</Link>
-            <Link href="/pricing" className="hover:text-gray-300 transition">Pricing</Link>
-            <Link href="/blog" className="hover:text-gray-300 transition">Blog</Link>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

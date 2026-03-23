@@ -1,5 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
+import Nav from "@/components/nav";
+import Footer from "@/components/footer";
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://api-snap.com";
 
@@ -214,33 +216,7 @@ const endpoints = [
 export default function DocsPage() {
   return (
     <div className="min-h-screen">
-      <nav className="border-b border-gray-800 px-6 py-4">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
-          <Link href="/" className="text-xl font-bold text-white">
-            API Snap
-          </Link>
-          <div className="flex gap-4">
-            <Link href="/playground" className="text-gray-400 hover:text-white transition">
-              Playground
-            </Link>
-            <Link href="/pricing" className="text-gray-400 hover:text-white transition">
-              Pricing
-            </Link>
-            <Link href="/blog" className="text-gray-400 hover:text-white transition">
-              Blog
-            </Link>
-            <Link href="/dashboard" className="text-gray-400 hover:text-white transition">
-              Dashboard
-            </Link>
-            <Link
-              href="/signup"
-              className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition"
-            >
-              Get API Key
-            </Link>
-          </div>
-        </div>
-      </nav>
+      <Nav current="/docs" />
 
       <div className="mx-auto max-w-5xl px-6 py-16">
         <h1 className="text-4xl font-bold mb-4">API Documentation</h1>
@@ -379,9 +355,7 @@ curl "https://api-snap.com/api/qr?data=test&api_key=snp_your_api_key"`}
         </div>
       </div>
 
-      <footer className="border-t border-gray-800 px-6 py-8 text-center text-sm text-gray-500">
-        &copy; {new Date().getFullYear()} API Snap. All rights reserved.
-      </footer>
+      <Footer />
     </div>
   );
 }

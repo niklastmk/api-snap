@@ -110,6 +110,8 @@ function DashboardContent() {
             API Snap
           </Link>
           <div className="flex items-center gap-4">
+            <Link href="/docs" className="text-sm text-gray-400 hover:text-white transition">Docs</Link>
+            <Link href="/playground" className="text-sm text-gray-400 hover:text-white transition">Playground</Link>
             <span className="rounded-full bg-indigo-600/20 px-3 py-1 text-xs font-medium text-indigo-400 uppercase">
               {usage?.plan || "free"}
             </span>
