@@ -9,7 +9,9 @@
     "lint": "next lint",
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
-    "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe"
+    "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe",
+    "setup": "node scripts/setup.mjs",
+    "setup:stripe": "node scripts/setup-stripe.mjs"
   },
   "dependencies": {
     "@libsql/client": "^0.17.2",
