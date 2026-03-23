@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const user = db.select().from(users).where(eq(users.email, email)).get();
+  const user = await db.select().from(users).where(eq(users.email, email)).get();
 
   if (!user) {
     return NextResponse.json(

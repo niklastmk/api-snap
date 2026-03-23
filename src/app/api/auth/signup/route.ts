@@ -16,7 +16,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const existing = db.select().from(users).where(eq(users.email, email)).get();
+  const existing = await db.select().from(users).where(eq(users.email, email)).get();
 
   if (existing) {
     return NextResponse.json(
@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
   const id = nanoid();
   const passwordHash = await bcrypt.hash(password, 12);
 
-  db.insert(users).values({ id, email, passwordHash }).run();
+  await db.insert(users).values({ id, email, passwordHash }).run();
 
   const token = await createToken(id);
 

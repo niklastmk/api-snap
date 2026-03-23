@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       const customerId = session.customer as string;
       const plan = (session.metadata?.plan || "hobby") as "hobby" | "pro" | "business";
 
-      db.update(users)
+      await db.update(users)
         .set({ stripeCustomerId: customerId, plan })
         .where(eq(users.id, session.metadata?.userId || ""))
         .run();
@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
       const sub = event.data.object as Stripe.Subscription;
       const customerId = sub.customer as string;
 
-      const user = db
+      const user = await db
         .select()
         .from(users)
         .where(eq(users.stripeCustomerId, customerId))
@@ -49,10 +49,8 @@ export async function POST(req: NextRequest) {
 
       if (user) {
         const status = sub.status;
-        if (status === "active") {
-          // Plan is set via checkout metadata
-        } else if (status === "canceled" || status === "unpaid") {
-          db.update(users)
+        if (status === "canceled" || status === "unpaid") {
+          await db.update(users)
             .set({ plan: "free" })
             .where(eq(users.id, user.id))
             .run();
@@ -65,7 +63,7 @@ export async function POST(req: NextRequest) {
       const sub = event.data.object as Stripe.Subscription;
       const customerId = sub.customer as string;
 
-      db.update(users)
+      await db.update(users)
         .set({ plan: "free" })
         .where(eq(users.stripeCustomerId, customerId))
         .run();

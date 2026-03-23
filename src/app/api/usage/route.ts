@@ -14,7 +14,7 @@ export async function GET() {
   const now = new Date();
   const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
 
-  const keys = db
+  const keys = await db
     .select()
     .from(apiKeys)
     .where(eq(apiKeys.userId, user.id))
@@ -22,7 +22,7 @@ export async function GET() {
 
   let totalUsage = 0;
   for (const key of keys) {
-    const result = db
+    const result = await db
       .select({ count: sql<number>`count(*)` })
       .from(usageLogs)
       .where(

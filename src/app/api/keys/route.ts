@@ -11,7 +11,7 @@ export async function GET() {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const keys = db
+  const keys = await db
     .select()
     .from(apiKeys)
     .where(eq(apiKeys.userId, user.id))
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
   const id = nanoid();
   const key = `snp_${nanoid(32)}`;
 
-  db.insert(apiKeys).values({ id, userId: user.id, key, name }).run();
+  await db.insert(apiKeys).values({ id, userId: user.id, key, name }).run();
 
   // Return full key only on creation
   return NextResponse.json({ id, key, name });
@@ -55,12 +55,12 @@ export async function DELETE(req: NextRequest) {
   }
 
   const { id } = await req.json();
-  const existing = db.select().from(apiKeys).where(eq(apiKeys.id, id)).get();
+  const existing = await db.select().from(apiKeys).where(eq(apiKeys.id, id)).get();
 
   if (!existing || existing.userId !== user.id) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
 
-  db.delete(apiKeys).where(eq(apiKeys.id, id)).run();
+  await db.delete(apiKeys).where(eq(apiKeys.id, id)).run();
   return NextResponse.json({ ok: true });
 }

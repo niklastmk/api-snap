@@ -33,7 +33,7 @@ export function createApiHandler(
       );
     }
 
-    const { allowed, usage, limit } = checkRateLimit(
+    const { allowed, usage, limit } = await checkRateLimit(
       auth.apiKey.id,
       auth.user.plan,
       endpoint

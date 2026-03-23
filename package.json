@@ -12,33 +12,32 @@
     "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe"
   },
   "dependencies": {
+    "@libsql/client": "^0.17.2",
+    "bcryptjs": "^3.0.2",
+    "chromium": "^3.0.3",
+    "drizzle-orm": "^0.45.1",
+    "jose": "^6.0.11",
+    "nanoid": "^5.1.0",
     "next": "^15.3.0",
+    "puppeteer-core": "^24.4.0",
+    "qrcode": "^1.5.4",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "stripe": "^17.7.0",
-    "better-sqlite3": "^11.8.0",
-    "drizzle-orm": "^0.39.0",
-    "nanoid": "^5.1.0",
-    "bcryptjs": "^3.0.2",
-    "jose": "^6.0.11",
-    "qrcode": "^1.5.4",
-    "puppeteer-core": "^24.4.0",
-    "chromium": "^3.0.3",
-    "sharp": "^0.33.0"
+    "sharp": "^0.33.0",
+    "stripe": "^17.7.0"
   },
   "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.0",
+    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^22.14.0",
+    "@types/qrcode": "^1.5.5",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
-    "@types/better-sqlite3": "^7.6.13",
-    "@types/bcryptjs": "^2.4.6",
-    "@types/qrcode": "^1.5.5",
-    "typescript": "^5.8.0",
-    "tailwindcss": "^4.1.0",
-    "@tailwindcss/postcss": "^4.1.0",
-    "postcss": "^8.5.0",
     "drizzle-kit": "^0.31.0",
     "eslint": "^9.0.0",
-    "eslint-config-next": "^15.3.0"
+    "eslint-config-next": "^15.3.0",
+    "postcss": "^8.5.0",
+    "tailwindcss": "^4.1.0",
+    "typescript": "^5.8.0"
   }
 }

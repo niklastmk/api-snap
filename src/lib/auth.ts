@@ -34,19 +34,19 @@ export async function getCurrentUser() {
   if (!token) return null;
   const result = await verifyToken(token);
   if (!result) return null;
-  const user = db.select().from(users).where(eq(users.id, result.userId)).get();
+  const user = await db.select().from(users).where(eq(users.id, result.userId)).get();
   return user || null;
 }
 
 export async function authenticateApiKey(key: string) {
-  const apiKey = db
+  const apiKey = await db
     .select()
     .from(apiKeys)
     .where(eq(apiKeys.key, key))
     .get();
   if (!apiKey) return null;
 
-  const user = db
+  const user = await db
     .select()
     .from(users)
     .where(eq(users.id, apiKey.userId))
@@ -54,7 +54,7 @@ export async function authenticateApiKey(key: string) {
   if (!user) return null;
 
   // Update last used
-  db.update(apiKeys)
+  await db.update(apiKeys)
     .set({ lastUsedAt: new Date() })
     .where(eq(apiKeys.id, apiKey.id))
     .run();
