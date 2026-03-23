@@ -1,10 +1,18 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://snapapi.dev";
+
 export const metadata: Metadata = {
   title: "API Documentation",
   description:
     "Complete API reference for SnapAPI — 13+ developer utility endpoints for QR codes, hashing, image resize, UUID generation, and more.",
+  openGraph: {
+    title: "API Documentation — SnapAPI",
+    description: "Complete API reference for 13+ developer utility endpoints. QR codes, hashing, image resize, UUID generation, and more.",
+    url: `${baseUrl}/docs`,
+  },
+  alternates: { canonical: `${baseUrl}/docs` },
 };
 
 const endpoints = [
