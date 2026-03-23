@@ -1,4 +1,4 @@
-# SnapAPI — Developer APIs Made Simple
+# API Snap — Developer APIs Made Simple
 
 A micro-SaaS that sells API access for 13+ developer utilities: QR codes, hashing, image resizing, UUID generation, Base64, JWT decoding, color conversion, and more.
 

@@ -19,14 +19,14 @@ export const metadata: Metadata = {
 const codeExamples = [
   {
     lang: "cURL",
-    code: `curl -X POST "https://snapapi.dev/api/markdown" \\
+    code: `curl -X POST "https://api-snap.com/api/markdown" \\
   -H "Authorization: Bearer snp_your_key" \\
   -H "Content-Type: application/json" \\
   -d '{"markdown": "# Hello\\n\\nThis is **bold** and *italic*."}'`,
   },
   {
     lang: "JavaScript",
-    code: `const res = await fetch("https://snapapi.dev/api/markdown", {
+    code: `const res = await fetch("https://api-snap.com/api/markdown", {
   method: "POST",
   headers: {
     Authorization: "Bearer snp_your_key",
@@ -41,7 +41,7 @@ const { html } = await res.json();`,
     code: `import requests
 
 r = requests.post(
-    "https://snapapi.dev/api/markdown",
+    "https://api-snap.com/api/markdown",
     json={"markdown": "# Report\\n\\n| Col | Val |\\n|-----|-----|\\n| A | 1 |"},
     headers={"Authorization": "Bearer snp_your_key"},
 )
@@ -54,10 +54,11 @@ export default function MarkdownToHtmlApiPage() {
     <div className="min-h-screen">
       <nav className="border-b border-gray-800 px-6 py-4">
         <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <Link href="/" className="text-xl font-bold text-white">SnapAPI</Link>
+          <Link href="/" className="text-xl font-bold text-white">API Snap</Link>
           <div className="flex gap-4 items-center">
             <Link href="/docs" className="text-gray-400 hover:text-white transition">Docs</Link>
             <Link href="/pricing" className="text-gray-400 hover:text-white transition">Pricing</Link>
+            <Link href="/blog" className="text-gray-400 hover:text-white transition">Blog</Link>
             <Link href="/signup" className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition">
               Get API Key
             </Link>
@@ -127,7 +128,7 @@ export default function MarkdownToHtmlApiPage() {
 
       <footer className="border-t border-gray-800 px-6 py-8">
         <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
-          <span>&copy; {new Date().getFullYear()} SnapAPI</span>
+          <span>&copy; {new Date().getFullYear()} API Snap</span>
           <div className="flex gap-6">
             <Link href="/docs" className="hover:text-gray-300 transition">Docs</Link>
             <Link href="/tools/html-to-pdf-api" className="hover:text-gray-300 transition">HTML to PDF API</Link>

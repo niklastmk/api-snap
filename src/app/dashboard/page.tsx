@@ -107,7 +107,7 @@ function DashboardContent() {
       <nav className="border-b border-gray-800 px-6 py-4">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <Link href="/" className="text-xl font-bold text-white">
-            SnapAPI
+            API Snap
           </Link>
           <div className="flex items-center gap-4">
             <span className="rounded-full bg-indigo-600/20 px-3 py-1 text-xs font-medium text-indigo-400 uppercase">

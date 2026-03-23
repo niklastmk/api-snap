@@ -2,7 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { createApiHandler } from "@/lib/api-handler";
 
 export const POST = createApiHandler("markdown", async (req) => {
-  const { markdown, styled } = await req.json();
+  let markdown: string | undefined, styled: boolean | undefined;
+  try {
+    ({ markdown, styled } = await req.json());
+  } catch {
+    return NextResponse.json(
+      { error: "Missing 'markdown' in request body" },
+      { status: 400 }
+    );
+  }
 
   if (!markdown) {
     return NextResponse.json(

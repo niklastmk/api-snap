@@ -1,13 +1,13 @@
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://snapapi.dev";
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://api-snap.com";
 
 const pricingJsonLd = {
   "@context": "https://schema.org",
   "@type": "Product",
-  name: "SnapAPI",
+  name: "API Snap",
   description:
     "Developer utility APIs — QR codes, image resizing, hashing, UUID generation, screenshots, PDF generation, and more.",
   url: `${baseUrl}/pricing`,
-  brand: { "@type": "Brand", name: "SnapAPI" },
+  brand: { "@type": "Brand", name: "API Snap" },
   offers: [
     {
       "@type": "Offer",

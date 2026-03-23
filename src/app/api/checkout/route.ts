@@ -9,10 +9,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { plan } = await req.json();
+    let plan: string;
+    try {
+      ({ plan } = await req.json());
+    } catch {
+      return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
+    }
     const planConfig = PLANS[plan as keyof typeof PLANS];
 
-    if (!planConfig || !planConfig.priceId) {
+    if (!plan || !planConfig || !planConfig.priceId) {
       return NextResponse.json({ error: "Invalid plan" }, { status: 400 });
     }
 

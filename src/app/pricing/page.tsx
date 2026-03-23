@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import PricingClient from "./pricing-client";
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://snapapi.dev";
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://api-snap.com";
 
 export const metadata: Metadata = {
   title: "Pricing — Simple API Pricing from Free to Business",
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
     "free API tier",
   ],
   openGraph: {
-    title: "SnapAPI Pricing — Start Free, Scale as You Grow",
+    title: "API Snap Pricing — Start Free, Scale as You Grow",
     description:
       "100 free API calls/month. Paid plans from $9/mo. All 13+ endpoints included in every plan.",
     url: `${baseUrl}/pricing`,

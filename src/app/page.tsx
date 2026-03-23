@@ -177,7 +177,7 @@ export default function Home() {
       {/* Nav */}
       <nav className="border-b border-gray-800 px-6 py-4">
         <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <span className="text-xl font-bold text-white">SnapAPI</span>
+          <span className="text-xl font-bold text-white">API Snap</span>
           <div className="flex gap-4 items-center">
             <Link href="/playground" className="text-gray-400 hover:text-white transition">
               Playground
@@ -187,6 +187,9 @@ export default function Home() {
             </Link>
             <Link href="/pricing" className="text-gray-400 hover:text-white transition">
               Pricing
+            </Link>
+            <Link href="/blog" className="text-gray-400 hover:text-white transition">
+              Blog
             </Link>
             <Link href="/login" className="text-gray-400 hover:text-white transition">
               Login
@@ -243,16 +246,16 @@ export default function Home() {
           </div>
           <pre className="text-sm text-gray-300 overflow-x-auto">
             <code>{`# Generate a QR code
-curl "https://snapapi.dev/api/qr?data=Hello+World&size=400" \\
+curl "https://api-snap.com/api/qr?data=Hello+World&size=400" \\
   -H "Authorization: Bearer snp_your_api_key" \\
   -o qr.png
 
 # Hash a string
-curl "https://snapapi.dev/api/hash?text=my-secret&algorithm=sha256" \\
+curl "https://api-snap.com/api/hash?text=my-secret&algorithm=sha256" \\
   -H "Authorization: Bearer snp_your_api_key"
 
 # Generate unique IDs
-curl "https://snapapi.dev/api/uuid?format=nanoid&count=10&prefix=usr_" \\
+curl "https://api-snap.com/api/uuid?format=nanoid&count=10&prefix=usr_" \\
   -H "Authorization: Bearer snp_your_api_key"`}</code>
           </pre>
         </div>
@@ -265,7 +268,7 @@ curl "https://snapapi.dev/api/uuid?format=nanoid&count=10&prefix=usr_" \\
           {[
             { step: "1", title: "Get Your Key", desc: "Sign up in 30 seconds. Free tier, no credit card. Your API key is ready instantly." },
             { step: "2", title: "Call Any Endpoint", desc: "One HTTP request. Bearer token auth. Works from any language, framework, or curl." },
-            { step: "3", title: "Ship Your Product", desc: "Focus on your core features. Let SnapAPI handle the utility functions." },
+            { step: "3", title: "Ship Your Product", desc: "Focus on your core features. Let API Snap handle the utility functions." },
           ].map((s) => (
             <div key={s.step} className="text-center">
               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-600/20 text-xl font-bold text-indigo-400">
@@ -325,7 +328,7 @@ curl "https://snapapi.dev/api/uuid?format=nanoid&count=10&prefix=usr_" \\
       {/* Social proof */}
       <section className="mx-auto max-w-4xl px-6 py-16 text-center">
         <h2 className="text-3xl font-bold mb-4">Built for Developers Who Ship</h2>
-        <p className="text-gray-400 mb-10">Works with every language and framework. If it can make HTTP requests, it works with SnapAPI.</p>
+        <p className="text-gray-400 mb-10">Works with every language and framework. If it can make HTTP requests, it works with API Snap.</p>
         <div className="flex flex-wrap justify-center gap-6 text-gray-500 text-sm font-medium">
           {["Node.js", "Python", "Go", "Ruby", "PHP", "Rust", "Java", "Swift", "cURL", "Any HTTP Client"].map((lang) => (
             <span key={lang} className="rounded-lg border border-gray-800 bg-gray-900 px-4 py-2">
@@ -412,11 +415,12 @@ curl "https://snapapi.dev/api/uuid?format=nanoid&count=10&prefix=usr_" \\
       {/* Footer */}
       <footer className="border-t border-gray-800 px-6 py-8">
         <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-start justify-between gap-8 text-sm text-gray-500">
-          <span>&copy; {new Date().getFullYear()} SnapAPI. All rights reserved.</span>
+          <span>&copy; {new Date().getFullYear()} API Snap. All rights reserved.</span>
           <div className="flex gap-6">
             <Link href="/docs" className="hover:text-gray-300 transition">Docs</Link>
             <Link href="/playground" className="hover:text-gray-300 transition">Playground</Link>
             <Link href="/pricing" className="hover:text-gray-300 transition">Pricing</Link>
+            <Link href="/blog" className="hover:text-gray-300 transition">Blog</Link>
           </div>
           <div className="flex flex-wrap gap-x-6 gap-y-2">
             <Link href="/tools/qr-code-api" className="hover:text-gray-300 transition">QR Code API</Link>

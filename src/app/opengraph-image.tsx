@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "SnapAPI — Developer Utility APIs";
+export const alt = "API Snap — Developer Utility APIs";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -36,7 +36,7 @@ export default function Image() {
               letterSpacing: "-2px",
             }}
           >
-            SnapAPI
+            API Snap
           </span>
         </div>
         <div

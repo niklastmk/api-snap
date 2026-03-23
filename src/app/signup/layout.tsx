@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://snapapi.dev";
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://api-snap.com";
 
 export const metadata: Metadata = {
   title: "Sign Up — Get Your Free API Key",
   description:
-    "Create a free SnapAPI account in 30 seconds. Get instant access to 13+ developer utility APIs — QR codes, image resize, hashing, and more. No credit card required.",
+    "Create a free API Snap account in 30 seconds. Get instant access to 13+ developer utility APIs — QR codes, image resize, hashing, and more. No credit card required.",
   keywords: [
     "free API key",
     "developer API signup",
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "utility API registration",
   ],
   openGraph: {
-    title: "Get Your Free SnapAPI Key",
+    title: "Get Your Free API Snap Key",
     description:
       "Sign up in 30 seconds. 100 free API calls/month. No credit card required.",
     url: `${baseUrl}/signup`,

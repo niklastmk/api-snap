@@ -34,7 +34,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { name } = await req.json();
+  let name: string | undefined;
+  try {
+    ({ name } = await req.json());
+  } catch {
+    return NextResponse.json({ error: "Name required" }, { status: 400 });
+  }
   if (!name) {
     return NextResponse.json({ error: "Name required" }, { status: 400 });
   }
@@ -54,7 +59,15 @@ export async function DELETE(req: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
-  const { id } = await req.json();
+  let id: string | undefined;
+  try {
+    ({ id } = await req.json());
+  } catch {
+    return NextResponse.json({ error: "Key ID required" }, { status: 400 });
+  }
+  if (!id) {
+    return NextResponse.json({ error: "Key ID required" }, { status: 400 });
+  }
   const existing = await db.select().from(apiKeys).where(eq(apiKeys.id, id)).get();
 
   if (!existing || existing.userId !== user.id) {

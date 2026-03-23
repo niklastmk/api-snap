@@ -3,7 +3,15 @@ import { createApiHandler } from "@/lib/api-handler";
 
 // Simple HTML-to-PDF text endpoint
 export const POST = createApiHandler("pdf", async (req) => {
-  const { html, title } = await req.json();
+  let html: string | undefined, title: string | undefined;
+  try {
+    ({ html, title } = await req.json());
+  } catch {
+    return NextResponse.json(
+      { error: "Missing 'html' in request body" },
+      { status: 400 }
+    );
+  }
 
   if (!html) {
     return NextResponse.json(

@@ -83,7 +83,7 @@ const endpoints = [
       { name: "h", type: "number", default: "300", placeholder: "Height" },
       { name: "bg", type: "text", default: "4f46e5", placeholder: "Background hex" },
       { name: "fg", type: "text", default: "ffffff", placeholder: "Text color hex" },
-      { name: "text", type: "text", default: "SnapAPI", placeholder: "Custom text" },
+      { name: "text", type: "text", default: "API Snap", placeholder: "Custom text" },
     ],
   },
   {
@@ -92,7 +92,7 @@ const endpoints = [
     method: "GET",
     path: "/api/qr",
     fields: [
-      { name: "data", type: "text", default: "https://snapapi.dev", placeholder: "URL or text to encode", required: true },
+      { name: "data", type: "text", default: "https://api-snap.com", placeholder: "URL or text to encode", required: true },
       { name: "size", type: "number", default: "300", placeholder: "Size in pixels" },
       { name: "format", type: "select", options: ["png", "svg"], default: "png" },
     ],
@@ -150,19 +150,20 @@ export default function PlaygroundPage() {
     }
     if (selected.method === "GET") {
       const qs = new URLSearchParams(params).toString();
-      return `curl "https://snapapi.dev${selected.path}?${qs}" \\\n  -H "Authorization: Bearer snp_your_api_key"`;
+      return `curl "https://api-snap.com${selected.path}?${qs}" \\\n  -H "Authorization: Bearer snp_your_api_key"`;
     }
-    return `curl -X POST "https://snapapi.dev${selected.path}" \\\n  -H "Authorization: Bearer snp_your_api_key" \\\n  -H "Content-Type: application/json" \\\n  -d '${JSON.stringify(params)}'`;
+    return `curl -X POST "https://api-snap.com${selected.path}" \\\n  -H "Authorization: Bearer snp_your_api_key" \\\n  -H "Content-Type: application/json" \\\n  -d '${JSON.stringify(params)}'`;
   }
 
   return (
     <div className="min-h-screen">
       <nav className="border-b border-gray-800 px-6 py-4">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <Link href="/" className="text-xl font-bold text-white">SnapAPI</Link>
+          <Link href="/" className="text-xl font-bold text-white">API Snap</Link>
           <div className="flex gap-4 items-center">
             <Link href="/docs" className="text-gray-400 hover:text-white transition">Docs</Link>
             <Link href="/pricing" className="text-gray-400 hover:text-white transition">Pricing</Link>
+            <Link href="/blog" className="text-gray-400 hover:text-white transition">Blog</Link>
             <Link href="/signup" className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition">
               Get API Key
             </Link>

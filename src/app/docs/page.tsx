@@ -1,14 +1,14 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
-const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://snapapi.dev";
+const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://api-snap.com";
 
 export const metadata: Metadata = {
   title: "API Documentation",
   description:
-    "Complete API reference for SnapAPI — 13+ developer utility endpoints for QR codes, hashing, image resize, UUID generation, and more.",
+    "Complete API reference for API Snap — 13+ developer utility endpoints for QR codes, hashing, image resize, UUID generation, and more.",
   openGraph: {
-    title: "API Documentation — SnapAPI",
+    title: "API Documentation — API Snap",
     description: "Complete API reference for 13+ developer utility endpoints. QR codes, hashing, image resize, UUID generation, and more.",
     url: `${baseUrl}/docs`,
   },
@@ -28,7 +28,7 @@ const endpoints = [
       { name: "dark", required: false, desc: "Dark color hex (default #000000)" },
       { name: "light", required: false, desc: "Light color hex (default #ffffff)" },
     ],
-    example: `curl "https://snapapi.dev/api/qr?data=https://example.com&size=400&format=svg" \\
+    example: `curl "https://api-snap.com/api/qr?data=https://example.com&size=400&format=svg" \\
   -H "Authorization: Bearer snp_your_api_key"`,
     response: "Returns image/png or image/svg+xml",
   },
@@ -42,7 +42,7 @@ const endpoints = [
       { name: "algorithm", required: false, desc: "Algorithm: md5, sha1, sha256, sha512, sha384, sha3-256, sha3-512 (default sha256)" },
       { name: "encoding", required: false, desc: "Output encoding: hex, base64, base64url (default hex)" },
     ],
-    example: `curl "https://snapapi.dev/api/hash?text=Hello+World&algorithm=sha256" \\
+    example: `curl "https://api-snap.com/api/hash?text=Hello+World&algorithm=sha256" \\
   -H "Authorization: Bearer snp_your_api_key"`,
     response: 'Returns JSON: {"hash": "...", "algorithm": "sha256", "encoding": "hex"}',
   },
@@ -56,7 +56,7 @@ const endpoints = [
       { name: "count", required: false, desc: "Number of IDs to generate, 1-100 (default 1)" },
       { name: "prefix", required: false, desc: "Prefix to prepend to each ID (e.g., 'usr_', 'txn_')" },
     ],
-    example: `curl "https://snapapi.dev/api/uuid?format=nanoid&count=5&prefix=usr_" \\
+    example: `curl "https://api-snap.com/api/uuid?format=nanoid&count=5&prefix=usr_" \\
   -H "Authorization: Bearer snp_your_api_key"`,
     response: 'Returns JSON: {"id": "..."} for count=1, {"ids": [...]} for count>1',
   },
@@ -70,7 +70,7 @@ const endpoints = [
       { name: "action", required: false, desc: '"encode" or "decode" (default "encode")' },
       { name: "urlSafe", required: false, desc: "Use base64url variant (default false)" },
     ],
-    example: `curl -X POST "https://snapapi.dev/api/base64" \\
+    example: `curl -X POST "https://api-snap.com/api/base64" \\
   -H "Authorization: Bearer snp_your_api_key" \\
   -H "Content-Type: application/json" \\
   -d '{"input": "Hello, World!", "action": "encode"}'`,
@@ -84,7 +84,7 @@ const endpoints = [
     params: [
       { name: "token", required: true, desc: "The JWT token to decode" },
     ],
-    example: `curl -X POST "https://snapapi.dev/api/jwt-decode" \\
+    example: `curl -X POST "https://api-snap.com/api/jwt-decode" \\
   -H "Authorization: Bearer snp_your_api_key" \\
   -H "Content-Type: application/json" \\
   -d '{"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."}'`,
@@ -98,7 +98,7 @@ const endpoints = [
     params: [
       { name: "color", required: true, desc: "Color in hex (#ff0000 or ff0000), rgb(255,0,0), or hsl(0,100%,50%)" },
     ],
-    example: `curl "https://snapapi.dev/api/color?color=6366f1" \\
+    example: `curl "https://api-snap.com/api/color?color=6366f1" \\
   -H "Authorization: Bearer snp_your_api_key"`,
     response: 'Returns JSON with hex, rgb, hsl, brightness, isDark fields',
   },
@@ -112,7 +112,7 @@ const endpoints = [
       { name: "sentences", required: false, desc: "Sentences per paragraph, 1-20 (default 5)" },
       { name: "format", required: false, desc: '"text" (JSON response) or "html" (HTML paragraphs) (default "text")' },
     ],
-    example: `curl "https://snapapi.dev/api/lorem?paragraphs=3&sentences=4" \\
+    example: `curl "https://api-snap.com/api/lorem?paragraphs=3&sentences=4" \\
   -H "Authorization: Bearer snp_your_api_key"`,
     response: 'Returns JSON: {"text": "...", "paragraphs": [...]}',
   },
@@ -128,7 +128,7 @@ const endpoints = [
       { name: "fg", required: false, desc: "Text color hex without # (default 666666)" },
       { name: "text", required: false, desc: 'Custom text (default "WxH")' },
     ],
-    example: `curl "https://snapapi.dev/api/placeholder?w=600&h=400&bg=4f46e5&fg=ffffff&text=Hero+Image" \\
+    example: `curl "https://api-snap.com/api/placeholder?w=600&h=400&bg=4f46e5&fg=ffffff&text=Hero+Image" \\
   -H "Authorization: Bearer snp_your_api_key"`,
     response: "Returns image/svg+xml with immutable cache headers",
   },
@@ -140,7 +140,7 @@ const endpoints = [
     params: [
       { name: "url", required: true, desc: "The URL to extract metadata from" },
     ],
-    example: `curl "https://snapapi.dev/api/meta?url=https://github.com" \\
+    example: `curl "https://api-snap.com/api/meta?url=https://github.com" \\
   -H "Authorization: Bearer snp_your_api_key"`,
     response: "Returns JSON with title, description, image, siteName, favicon, author, etc.",
   },
@@ -158,7 +158,7 @@ const endpoints = [
       { name: "quality", required: false, desc: "Output quality 1-100 (default 80, for jpeg/webp/avif)" },
       { name: "fit", required: false, desc: "Resize fit: cover, contain, fill, inside, outside (default cover)" },
     ],
-    example: `curl -X POST "https://snapapi.dev/api/resize" \\
+    example: `curl -X POST "https://api-snap.com/api/resize" \\
   -H "Authorization: Bearer snp_your_api_key" \\
   -H "Content-Type: application/json" \\
   -d '{"url":"https://example.com/photo.jpg","width":400,"format":"webp"}'`,
@@ -173,7 +173,7 @@ const endpoints = [
       { name: "markdown", required: true, desc: "Markdown content to convert" },
       { name: "styled", required: false, desc: "Return full styled HTML page (default true). Set false for raw HTML fragment." },
     ],
-    example: `curl -X POST "https://snapapi.dev/api/markdown" \\
+    example: `curl -X POST "https://api-snap.com/api/markdown" \\
   -H "Authorization: Bearer snp_your_api_key" \\
   -H "Content-Type: application/json" \\
   -d '{"markdown": "# Hello World\\n\\nThis is **bold** text."}'`,
@@ -189,7 +189,7 @@ const endpoints = [
       { name: "width", required: false, desc: "Viewport width (default 1280)" },
       { name: "height", required: false, desc: "Viewport height (default 720)" },
     ],
-    example: `curl "https://snapapi.dev/api/screenshot?url=https://example.com&width=1280" \\
+    example: `curl "https://api-snap.com/api/screenshot?url=https://example.com&width=1280" \\
   -H "Authorization: Bearer snp_your_api_key"`,
     response: "Returns image/svg+xml",
   },
@@ -202,7 +202,7 @@ const endpoints = [
       { name: "html", required: true, desc: "HTML content to convert to PDF" },
       { name: "title", required: false, desc: 'Document title and filename (default "document")' },
     ],
-    example: `curl -X POST "https://snapapi.dev/api/pdf" \\
+    example: `curl -X POST "https://api-snap.com/api/pdf" \\
   -H "Authorization: Bearer snp_your_api_key" \\
   -H "Content-Type: application/json" \\
   -d '{"html": "<h1>Invoice #123</h1><p>Amount: $99.00</p>", "title": "Invoice"}' \\
@@ -217,7 +217,7 @@ export default function DocsPage() {
       <nav className="border-b border-gray-800 px-6 py-4">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <Link href="/" className="text-xl font-bold text-white">
-            SnapAPI
+            API Snap
           </Link>
           <div className="flex gap-4">
             <Link href="/playground" className="text-gray-400 hover:text-white transition">
@@ -225,6 +225,9 @@ export default function DocsPage() {
             </Link>
             <Link href="/pricing" className="text-gray-400 hover:text-white transition">
               Pricing
+            </Link>
+            <Link href="/blog" className="text-gray-400 hover:text-white transition">
+              Blog
             </Link>
             <Link href="/dashboard" className="text-gray-400 hover:text-white transition">
               Dashboard
@@ -263,7 +266,7 @@ export default function DocsPage() {
 curl -H "Authorization: Bearer snp_your_api_key" ...
 
 # Option 2: Query parameter
-curl "https://snapapi.dev/api/qr?data=test&api_key=snp_your_api_key"`}
+curl "https://api-snap.com/api/qr?data=test&api_key=snp_your_api_key"`}
           </pre>
           <h3 className="text-sm font-semibold text-gray-300 mb-2">Rate Limit Headers</h3>
           <p className="text-sm text-gray-400">
@@ -377,7 +380,7 @@ curl "https://snapapi.dev/api/qr?data=test&api_key=snp_your_api_key"`}
       </div>
 
       <footer className="border-t border-gray-800 px-6 py-8 text-center text-sm text-gray-500">
-        &copy; {new Date().getFullYear()} SnapAPI. All rights reserved.
+        &copy; {new Date().getFullYear()} API Snap. All rights reserved.
       </footer>
     </div>
   );

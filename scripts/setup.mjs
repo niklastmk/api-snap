@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * SnapAPI — Full setup guide
+ * API Snap — Full setup guide
  * Run: node scripts/setup.mjs
  *
  * Walks you through everything needed to go live.
@@ -22,7 +22,7 @@ function run(cmd) {
 }
 
 async function main() {
-  console.log("\n=== SnapAPI Setup ===\n");
+  console.log("\n=== API Snap Setup ===\n");
 
   // Step 1: .env file
   const envPath = ".env";

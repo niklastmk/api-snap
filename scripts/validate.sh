@@ -1,5 +1,5 @@
 #!/bin/bash
-# SnapAPI End-to-End Validation Script
+# API Snap End-to-End Validation Script
 # Run against a local or production instance to verify the full user journey.
 # Usage: ./scripts/validate.sh [BASE_URL]
 
@@ -33,7 +33,7 @@ check_status() {
   check "$desc" "$code" "$expected"
 }
 
-echo "=== SnapAPI Validation ($BASE) ==="
+echo "=== API Snap Validation ($BASE) ==="
 echo ""
 
 # --- Auth Flow ---

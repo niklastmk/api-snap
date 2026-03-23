@@ -24,7 +24,7 @@ export const GET = createApiHandler("meta", async (req) => {
     const res = await fetch(url, {
       headers: {
         "User-Agent":
-          "SnapAPI Meta Bot/1.0 (+https://snapapi.dev)",
+          "API Snap Meta Bot/1.0 (+https://api-snap.com)",
         Accept: "text/html",
       },
       signal: controller.signal,

@@ -19,17 +19,17 @@ export const metadata: Metadata = {
 const codeExamples = [
   {
     lang: "cURL",
-    code: `curl "https://snapapi.dev/api/placeholder?w=600&h=400&bg=4f46e5&color=fff&text=Hero+Image" \\
+    code: `curl "https://api-snap.com/api/placeholder?w=600&h=400&bg=4f46e5&color=fff&text=Hero+Image" \\
   -H "Authorization: Bearer snp_your_key" -o placeholder.svg`,
   },
   {
     lang: "JavaScript",
     code: `// Use directly in an img tag (server-side rendering)
-const url = "https://snapapi.dev/api/placeholder?w=300&h=200&text=Loading...";
+const url = "https://api-snap.com/api/placeholder?w=300&h=200&text=Loading...";
 
 // Or fetch the SVG content
 const res = await fetch(
-  "https://snapapi.dev/api/placeholder?w=800&h=600&bg=1e293b&color=94a3b8",
+  "https://api-snap.com/api/placeholder?w=800&h=600&bg=1e293b&color=94a3b8",
   { headers: { Authorization: "Bearer snp_your_key" } }
 );
 const svg = await res.text();`,
@@ -39,7 +39,7 @@ const svg = await res.text();`,
     code: `import requests
 
 r = requests.get(
-    "https://snapapi.dev/api/placeholder",
+    "https://api-snap.com/api/placeholder",
     params={"w": 400, "h": 300, "bg": "f59e0b", "text": "Thumbnail"},
     headers={"Authorization": "Bearer snp_your_key"},
 )
@@ -53,10 +53,11 @@ export default function PlaceholderImageApiPage() {
     <div className="min-h-screen">
       <nav className="border-b border-gray-800 px-6 py-4">
         <div className="mx-auto flex max-w-6xl items-center justify-between">
-          <Link href="/" className="text-xl font-bold text-white">SnapAPI</Link>
+          <Link href="/" className="text-xl font-bold text-white">API Snap</Link>
           <div className="flex gap-4 items-center">
             <Link href="/docs" className="text-gray-400 hover:text-white transition">Docs</Link>
             <Link href="/pricing" className="text-gray-400 hover:text-white transition">Pricing</Link>
+            <Link href="/blog" className="text-gray-400 hover:text-white transition">Blog</Link>
             <Link href="/signup" className="rounded-lg bg-indigo-600 px-4 py-2 text-sm font-medium text-white hover:bg-indigo-500 transition">
               Get API Key
             </Link>
@@ -156,7 +157,7 @@ export default function PlaceholderImageApiPage() {
 
       <footer className="border-t border-gray-800 px-6 py-8">
         <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500">
-          <span>&copy; {new Date().getFullYear()} SnapAPI</span>
+          <span>&copy; {new Date().getFullYear()} API Snap</span>
           <div className="flex gap-6">
             <Link href="/docs" className="hover:text-gray-300 transition">Docs</Link>
             <Link href="/tools/color-converter-api" className="hover:text-gray-300 transition">Color API</Link>

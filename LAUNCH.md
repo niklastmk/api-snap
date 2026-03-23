@@ -1,4 +1,4 @@
-# SnapAPI Launch Playbook
+# API Snap Launch Playbook
 
 Ready-to-post copy for Product Hunt, Hacker News, and Reddit. Copy, paste, publish.
 
@@ -6,13 +6,13 @@ Ready-to-post copy for Product Hunt, Hacker News, and Reddit. Copy, paste, publi
 
 ## Product Hunt
 
-**Name:** SnapAPI
+**Name:** API Snap
 
 **Tagline:** 13+ developer utility APIs with one key — QR codes, image resize, hashing, and more
 
 **Description:**
 
-SnapAPI gives you ready-made REST APIs for the utility functions every developer needs but nobody wants to build from scratch.
+API Snap gives you ready-made REST APIs for the utility functions every developer needs but nobody wants to build from scratch.
 
 **What it does:**
 - QR code generation (PNG/SVG, custom colors)
@@ -30,13 +30,13 @@ SnapAPI gives you ready-made REST APIs for the utility functions every developer
 
 **Pricing:** Free tier (100 calls/mo), Hobby $9/mo (5K), Pro $29/mo (50K), Business $99/mo (500K). All plans include every endpoint.
 
-**Link:** https://snapapi.dev
+**Link:** https://api-snap.com
 
 **First Comment (post immediately after launching):**
 
-Hey PH! I built SnapAPI because I kept rebuilding the same utility functions across projects — QR code generators, image resizers, hash functions, UUID generators. Every time I started a new project, I'd spend hours on these instead of the actual product.
+Hey PH! I built API Snap because I kept rebuilding the same utility functions across projects — QR code generators, image resizers, hash functions, UUID generators. Every time I started a new project, I'd spend hours on these instead of the actual product.
 
-SnapAPI wraps all of these into simple REST endpoints behind a single API key. No SDKs, no dependencies — just HTTP requests from any language.
+API Snap wraps all of these into simple REST endpoints behind a single API key. No SDKs, no dependencies — just HTTP requests from any language.
 
 The free tier gives you 100 calls/month to try everything. Happy to answer any questions!
 
@@ -44,7 +44,7 @@ The free tier gives you 100 calls/month to try everything. Happy to answer any q
 
 ## Hacker News (Show HN)
 
-**Title:** Show HN: SnapAPI – 13+ utility APIs (QR codes, image resize, hashing) behind one key
+**Title:** Show HN: API Snap – 13+ utility APIs (QR codes, image resize, hashing) behind one key
 
 **Text:**
 
@@ -56,9 +56,9 @@ Every endpoint works with a GET or POST request — no SDK required, works with 
 
 Free tier: 100 calls/month, no credit card. Paid plans start at $9/month for 5,000 calls.
 
-Live playground to try without signing up: https://snapapi.dev/playground
+Live playground to try without signing up: https://api-snap.com/playground
 
-Docs: https://snapapi.dev/docs
+Docs: https://api-snap.com/docs
 
 Would love feedback on which endpoints are most useful and what's missing.
 
@@ -72,7 +72,7 @@ Would love feedback on which endpoints are most useful and what's missing.
 
 **Body:**
 
-Got tired of adding `qrcode`, `sharp`, and crypto libraries to every project just for basic utility features. Built SnapAPI — one API key that gives you:
+Got tired of adding `qrcode`, `sharp`, and crypto libraries to every project just for basic utility features. Built API Snap — one API key that gives you:
 
 - QR code generation (PNG/SVG, custom colors/sizes)
 - Image resize & convert (PNG, JPEG, WebP, AVIF)
@@ -84,8 +84,8 @@ Got tired of adding `qrcode`, `sharp`, and crypto libraries to every project jus
 
 Just HTTP requests — works from any language or framework. Free tier with 100 calls/month.
 
-Playground (no signup needed): https://snapapi.dev/playground
-Docs: https://snapapi.dev/docs
+Playground (no signup needed): https://api-snap.com/playground
+Docs: https://api-snap.com/docs
 
 Curious which of these you'd actually use in your projects. What utility APIs are missing?
 
@@ -93,11 +93,11 @@ Curious which of these you'd actually use in your projects. What utility APIs ar
 
 ### r/SideProject
 
-**Title:** SnapAPI — developer utility APIs as a service (launched today)
+**Title:** API Snap — developer utility APIs as a service (launched today)
 
 **Body:**
 
-Launched SnapAPI — a collection of 13+ REST APIs for common developer utilities.
+Launched API Snap — a collection of 13+ REST APIs for common developer utilities.
 
 The idea: instead of installing and configuring libraries for QR codes, image processing, hashing, etc., just make an HTTP request.
 
@@ -111,13 +111,13 @@ Tech stack: Next.js, Turso (libSQL), Stripe for billing.
 
 Would love to hear if this solves a real pain point for anyone. What endpoints would make this more useful?
 
-https://snapapi.dev
+https://api-snap.com
 
 ---
 
 ### r/programming
 
-**Title:** Show r/programming: SnapAPI — 13 developer utility APIs behind one REST key
+**Title:** Show r/programming: API Snap — 13 developer utility APIs behind one REST key
 
 **Body:**
 
@@ -134,7 +134,7 @@ Bearer token auth, CORS-enabled, rate limit headers on every response.
 
 Free: 100 calls/month. Paid: $9-99/month.
 
-Docs: https://snapapi.dev/docs | Playground: https://snapapi.dev/playground
+Docs: https://api-snap.com/docs | Playground: https://api-snap.com/playground
 
 ---
 

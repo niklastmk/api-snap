@@ -7,7 +7,15 @@ import bcrypt from "bcryptjs";
 import { nanoid } from "nanoid";
 
 export async function POST(req: NextRequest) {
-  const { email, password } = await req.json();
+  let email: string | undefined, password: string | undefined;
+  try {
+    ({ email, password } = await req.json());
+  } catch {
+    return NextResponse.json(
+      { error: "Email and password (min 8 chars) required" },
+      { status: 400 }
+    );
+  }
 
   if (!email || !password || password.length < 8) {
     return NextResponse.json(

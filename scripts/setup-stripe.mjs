@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Automated Stripe setup for SnapAPI
+ * Automated Stripe setup for API Snap
  * Creates the product and all pricing tiers, then outputs the env vars you need.
  *
  * Usage:
@@ -27,11 +27,11 @@ if (!key || key.startsWith("sk_test_...")) {
 const stripe = new Stripe(key);
 
 async function main() {
-  console.log("Creating SnapAPI product and prices in Stripe...\n");
+  console.log("Creating API Snap product and prices in Stripe...\n");
 
   // Create the product
   const product = await stripe.products.create({
-    name: "SnapAPI",
+    name: "API Snap",
     description: "Developer utility APIs — QR codes, image processing, screenshots, and more.",
   });
   console.log(`Product created: ${product.id}`);

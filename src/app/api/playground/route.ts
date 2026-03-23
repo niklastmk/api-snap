@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { checkPlaygroundRateLimit } from "@/lib/playground-rate-limit";
 import crypto from "crypto";
 import { nanoid } from "nanoid";
+import QRCode from "qrcode";
 
 // Lightweight playground proxy that runs a subset of endpoints without auth
 // This lets visitors try the API before signing up
@@ -47,14 +48,16 @@ export async function POST(req: NextRequest) {
 async function executeEndpoint(endpoint: string, params: Record<string, unknown>): Promise<unknown> {
   switch (endpoint) {
     case "qr": {
-      // Return a demo response (actual QR generation requires the full endpoint)
-      const data = (params.data as string) || "https://snapapi.dev";
+      const data = (params.data as string) || "https://api-snap.com";
+      const size = Math.min(Math.max(Number(params.size || 300), 50), 500);
+      const dark = (params.dark as string) || "#000000";
+      const light = (params.light as string) || "#ffffff";
+      const buffer = await QRCode.toBuffer(data, { width: size, color: { dark, light } });
+      const base64 = Buffer.from(buffer).toString("base64");
       return {
-        message: "QR code generated successfully",
         data,
-        size: params.size || 300,
-        format: params.format || "png",
-        note: "In production, this returns the actual image binary. Sign up to get image responses.",
+        size,
+        imageDataUrl: `data:image/png;base64,${base64}`,
       };
     }
 
@@ -189,7 +192,34 @@ async function executeEndpoint(endpoint: string, params: Record<string, unknown>
       };
     }
 
+    case "meta": {
+      const url = params.url as string;
+      if (!url) throw new Error("Missing required parameter: url");
+      try { new URL(url); } catch { throw new Error("Invalid URL"); }
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), 8000);
+      const res = await fetch(url, {
+        headers: { "User-Agent": "API Snap Meta Bot/1.0 (+https://api-snap.com)", Accept: "text/html" },
+        signal: controller.signal,
+        redirect: "follow",
+      });
+      clearTimeout(timeout);
+      if (!res.ok) throw new Error(`Failed to fetch URL: ${res.status}`);
+      const html = await res.text();
+      const get = (pattern: RegExp): string | null => { const m = html.match(pattern); return m ? m[1].replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&quot;/g, '"') : null; };
+      const faviconMatch = html.match(/<link[^>]+rel="(?:icon|shortcut icon)"[^>]+href="([^"]*)"/);
+      const favicon = faviconMatch ? (() => { try { return new URL(faviconMatch[1], url).href; } catch { return faviconMatch[1]; } })() : null;
+      return {
+        url,
+        title: get(/<meta[^>]+property="og:title"[^>]+content="([^"]*)"/) ?? get(/<title[^>]*>([^<]*)<\/title>/) ?? null,
+        description: get(/<meta[^>]+property="og:description"[^>]+content="([^"]*)"/) ?? get(/<meta[^>]+name="description"[^>]+content="([^"]*)"/) ?? null,
+        image: get(/<meta[^>]+property="og:image"[^>]+content="([^"]*)"/) ?? null,
+        siteName: get(/<meta[^>]+property="og:site_name"[^>]+content="([^"]*)"/) ?? null,
+        favicon,
+      };
+    }
+
     default:
-      throw new Error(`Unknown endpoint: ${endpoint}. Available: qr, uuid, hash, base64, jwt-decode, color, lorem, markdown, placeholder`);
+      throw new Error(`Unknown endpoint: ${endpoint}. Available: qr, uuid, hash, base64, jwt-decode, color, lorem, markdown, placeholder, meta`);
   }
 }
