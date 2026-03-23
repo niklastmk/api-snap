@@ -58,7 +58,7 @@ export const GET = createApiHandler("screenshot", async (req) => {
 
       await page.close();
 
-      return new NextResponse(screenshot, {
+      return new NextResponse(Buffer.from(screenshot), {
         headers: {
           "Content-Type": format === "jpeg" ? "image/jpeg" : "image/png",
           "Cache-Control": "public, max-age=3600",
