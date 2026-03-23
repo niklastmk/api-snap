@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -63,6 +64,8 @@ const plans = [
 
 export default function PricingPage() {
   const router = useRouter();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState<string | null>(null);
 
   async function handleUpgrade(plan: string) {
     if (plan === "free") {
@@ -70,18 +73,29 @@ export default function PricingPage() {
       return;
     }
 
-    const res = await fetch("/api/checkout", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ plan }),
-    });
+    setError("");
+    setLoading(plan);
 
-    const data = await res.json();
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan }),
+      });
 
-    if (data.url) {
-      window.location.href = data.url;
-    } else if (res.status === 401) {
-      router.push("/signup");
+      const data = await res.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else if (res.status === 401) {
+        router.push("/login");
+      } else {
+        setError(data.error || "Something went wrong. Please try again.");
+      }
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(null);
     }
   }
 
@@ -110,10 +124,16 @@ export default function PricingPage() {
         <h1 className="text-4xl font-bold text-center mb-4">
           Simple, Predictable Pricing
         </h1>
-        <p className="text-gray-400 text-center mb-16 max-w-xl mx-auto">
+        <p className="text-gray-400 text-center mb-8 max-w-xl mx-auto">
           Start free, upgrade when you need more. All plans include access to
           every API endpoint. No hidden fees.
         </p>
+
+        {error && (
+          <div className="rounded-lg bg-red-500/10 border border-red-500/20 p-3 text-sm text-red-400 text-center mb-8 max-w-md mx-auto">
+            {error}
+          </div>
+        )}
 
         <div className="grid gap-6 md:grid-cols-4">
           {plans.map((plan) => (
@@ -150,13 +170,18 @@ export default function PricingPage() {
 
               <button
                 onClick={() => handleUpgrade(plan.key)}
-                className={`mt-6 w-full rounded-lg py-2.5 font-medium transition ${
+                disabled={loading === plan.key}
+                className={`mt-6 w-full rounded-lg py-2.5 font-medium transition disabled:opacity-50 ${
                   plan.popular
                     ? "bg-indigo-600 text-white hover:bg-indigo-500"
                     : "bg-gray-800 text-gray-300 hover:bg-gray-700"
                 }`}
               >
-                {plan.key === "free" ? "Get Started" : `Subscribe to ${plan.name}`}
+                {loading === plan.key
+                  ? "Redirecting..."
+                  : plan.key === "free"
+                  ? "Get Started"
+                  : `Subscribe to ${plan.name}`}
               </button>
             </div>
           ))}

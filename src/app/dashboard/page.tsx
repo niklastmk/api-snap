@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 interface ApiKeyInfo {
@@ -19,16 +19,29 @@ interface UsageInfo {
 }
 
 export default function DashboardPage() {
+  return (
+    <Suspense fallback={<div className="flex min-h-screen items-center justify-center"><div className="text-gray-400">Loading...</div></div>}>
+      <DashboardContent />
+    </Suspense>
+  );
+}
+
+function DashboardContent() {
   const [keys, setKeys] = useState<ApiKeyInfo[]>([]);
   const [usage, setUsage] = useState<UsageInfo | null>(null);
   const [newKeyName, setNewKeyName] = useState("");
   const [newKey, setNewKey] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [upgraded, setUpgraded] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   useEffect(() => {
     fetchData();
-  }, []);
+    if (searchParams.get("upgraded") === "true") {
+      setUpgraded(true);
+    }
+  }, [searchParams]);
 
   async function fetchData() {
     const [keysRes, usageRes] = await Promise.all([
@@ -112,6 +125,28 @@ export default function DashboardPage() {
 
       <div className="mx-auto max-w-5xl px-6 py-10">
         <h1 className="text-2xl font-bold mb-8">Dashboard</h1>
+
+        {/* Upgrade success banner */}
+        {upgraded && (
+          <div className="rounded-xl border border-green-500/30 bg-green-500/10 p-6 mb-8">
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <h3 className="font-semibold text-green-400">
+                  Welcome to {usage?.plan ? usage.plan.charAt(0).toUpperCase() + usage.plan.slice(1) : "your new plan"}!
+                </h3>
+                <p className="text-sm text-gray-400 mt-1">
+                  Your plan has been upgraded successfully. You now have {usage?.limit.toLocaleString()} API calls per month.
+                </p>
+              </div>
+              <button
+                onClick={() => setUpgraded(false)}
+                className="text-sm text-gray-400 hover:text-white"
+              >
+                Dismiss
+              </button>
+            </div>
+          </div>
+        )}
 
         {/* Upgrade nudge — shown when usage > 70% on free/hobby plans */}
         {usage && usagePercent >= 70 && (usage.plan === "free" || usage.plan === "hobby") && (
