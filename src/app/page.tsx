@@ -16,11 +16,46 @@ const endpoints = [
     example: "/api/placeholder?w=400&h=300&bg=4f46e5&fg=ffffff&text=Hero",
   },
   {
+    name: "URL Metadata / OG Tags",
+    method: "GET",
+    path: "/api/meta",
+    desc: "Extract Open Graph, title, description, favicon from any URL",
+    example: '/api/meta?url=https://github.com',
+  },
+  {
+    name: "Image Resize & Convert",
+    method: "POST",
+    path: "/api/resize",
+    desc: "Resize, crop, and convert images to PNG, WebP, JPEG, or AVIF",
+    example: 'POST /api/resize { "url": "...", "width": 400, "format": "webp" }',
+  },
+  {
+    name: "UUID / ID Generation",
+    method: "GET",
+    path: "/api/uuid",
+    desc: "Generate UUIDs, nanoids, hex tokens, and more",
+    example: "/api/uuid?format=nanoid&count=5&prefix=usr_",
+  },
+  {
+    name: "Markdown to HTML",
+    method: "POST",
+    path: "/api/markdown",
+    desc: "Convert Markdown to styled HTML — perfect for rendering content",
+    example: 'POST /api/markdown { "markdown": "# Hello\\n\\nWorld" }',
+  },
+  {
     name: "Screenshot Capture",
     method: "GET",
     path: "/api/screenshot",
     desc: "Capture full-page screenshots of any URL as SVG",
     example: "/api/screenshot?url=https://example.com&width=1280",
+  },
+  {
+    name: "HTML to PDF",
+    method: "POST",
+    path: "/api/pdf",
+    desc: "Convert HTML content to downloadable PDF documents",
+    example: 'POST /api/pdf { "html": "<h1>Invoice</h1>...", "title": "Invoice" }',
   },
 ];
 
@@ -70,7 +105,7 @@ export default function Home() {
           <span className="text-indigo-400">Made Simple</span>
         </h1>
         <p className="mt-6 text-lg text-gray-400 max-w-2xl mx-auto">
-          QR codes, placeholder images, screenshots, and more.
+          QR codes, OG metadata, image resizing, ID generation, Markdown rendering, and more.
           One API key. Simple pricing. Instant access. No complex setup.
         </p>
         <div className="mt-10 flex justify-center gap-4">
@@ -113,7 +148,7 @@ curl "https://snapapi.dev/api/placeholder?w=600&h=400&text=Hero" \\
       {/* Endpoints */}
       <section id="endpoints" className="mx-auto max-w-6xl px-6 py-16">
         <h2 className="text-3xl font-bold text-center mb-12">API Endpoints</h2>
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {endpoints.map((ep) => (
             <div
               key={ep.path}

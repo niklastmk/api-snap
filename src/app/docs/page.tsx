@@ -34,6 +34,67 @@ const endpoints = [
     response: "Returns image/svg+xml with immutable cache headers",
   },
   {
+    name: "URL Metadata / OG Tags",
+    method: "GET",
+    path: "/api/meta",
+    desc: "Extract Open Graph metadata, title, description, favicon, and more from any URL.",
+    params: [
+      { name: "url", required: true, desc: "The URL to extract metadata from" },
+    ],
+    example: `curl "https://snapapi.dev/api/meta?url=https://github.com" \\
+  -H "Authorization: Bearer snp_your_api_key"`,
+    response: "Returns JSON with title, description, image, siteName, favicon, author, etc.",
+  },
+  {
+    name: "Image Resize & Convert",
+    method: "POST",
+    path: "/api/resize",
+    desc: "Resize, crop, and convert images between formats. Supports multipart upload or JSON with base64/URL.",
+    params: [
+      { name: "image", required: true, desc: "Image file (multipart) or base64 string, or use 'url' field" },
+      { name: "url", required: false, desc: "URL of image to resize (alternative to image upload)" },
+      { name: "width", required: false, desc: "Target width in pixels (max 4096)" },
+      { name: "height", required: false, desc: "Target height in pixels (max 4096)" },
+      { name: "format", required: false, desc: "Output format: png, jpeg, webp, avif (default png)" },
+      { name: "quality", required: false, desc: "Output quality 1-100 (default 80, for jpeg/webp/avif)" },
+      { name: "fit", required: false, desc: "Resize fit: cover, contain, fill, inside, outside (default cover)" },
+    ],
+    example: `curl -X POST "https://snapapi.dev/api/resize" \\
+  -H "Authorization: Bearer snp_your_api_key" \\
+  -H "Content-Type: application/json" \\
+  -d '{"url":"https://example.com/photo.jpg","width":400,"format":"webp"}'`,
+    response: "Returns the resized image in the requested format",
+  },
+  {
+    name: "UUID / ID Generation",
+    method: "GET",
+    path: "/api/uuid",
+    desc: "Generate unique identifiers in various formats. Great for database IDs, tokens, and more.",
+    params: [
+      { name: "format", required: false, desc: "Format: uuid, v4, nanoid, nanoid-short, hex, base64, numeric, timestamp (default uuid)" },
+      { name: "count", required: false, desc: "Number of IDs to generate, 1-100 (default 1)" },
+      { name: "prefix", required: false, desc: "Prefix to prepend to each ID (e.g., 'usr_', 'txn_')" },
+    ],
+    example: `curl "https://snapapi.dev/api/uuid?format=nanoid&count=5&prefix=usr_" \\
+  -H "Authorization: Bearer snp_your_api_key"`,
+    response: 'Returns JSON: {"id": "..."} for count=1, {"ids": [...]} for count>1',
+  },
+  {
+    name: "Markdown to HTML",
+    method: "POST",
+    path: "/api/markdown",
+    desc: "Convert Markdown to HTML. Returns either styled full HTML page or raw HTML fragment.",
+    params: [
+      { name: "markdown", required: true, desc: "Markdown content to convert" },
+      { name: "styled", required: false, desc: "Return full styled HTML page (default true). Set false for raw HTML fragment." },
+    ],
+    example: `curl -X POST "https://snapapi.dev/api/markdown" \\
+  -H "Authorization: Bearer snp_your_api_key" \\
+  -H "Content-Type: application/json" \\
+  -d '{"markdown": "# Hello World\\n\\nThis is **bold** text."}'`,
+    response: "Returns text/html (styled) or JSON with html field (unstyled)",
+  },
+  {
     name: "Screenshot Capture",
     method: "GET",
     path: "/api/screenshot",
@@ -47,6 +108,22 @@ const endpoints = [
   -H "Authorization: Bearer snp_your_api_key"`,
     response: "Returns image/svg+xml",
   },
+  {
+    name: "HTML to PDF",
+    method: "POST",
+    path: "/api/pdf",
+    desc: "Convert HTML content to a downloadable PDF document.",
+    params: [
+      { name: "html", required: true, desc: "HTML content to convert to PDF" },
+      { name: "title", required: false, desc: 'Document title and filename (default "document")' },
+    ],
+    example: `curl -X POST "https://snapapi.dev/api/pdf" \\
+  -H "Authorization: Bearer snp_your_api_key" \\
+  -H "Content-Type: application/json" \\
+  -d '{"html": "<h1>Invoice #123</h1><p>Amount: $99.00</p>", "title": "Invoice"}' \\
+  -o invoice.pdf`,
+    response: "Returns application/pdf",
+  },
 ];
 
 export default function DocsPage() {
@@ -55,7 +132,7 @@ export default function DocsPage() {
       <nav className="border-b border-gray-800 px-6 py-4">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <Link href="/" className="text-xl font-bold text-white">
-            ⚡ SnapAPI
+            SnapAPI
           </Link>
           <div className="flex gap-4">
             <Link href="/pricing" className="text-gray-400 hover:text-white transition">
@@ -99,6 +176,26 @@ curl "https://snapapi.dev/api/qr?data=test&api_key=snp_your_api_key"`}
             Every response includes <code className="text-gray-300">X-RateLimit-Limit</code> and{" "}
             <code className="text-gray-300">X-RateLimit-Remaining</code> headers so you can track usage.
           </p>
+        </div>
+
+        {/* TOC */}
+        <div className="rounded-xl border border-gray-800 bg-gray-900 p-6 mb-12">
+          <h2 className="text-lg font-semibold mb-4">Endpoints</h2>
+          <div className="grid gap-2 sm:grid-cols-2">
+            {endpoints.map((ep) => (
+              <a
+                key={ep.path}
+                href={`#${ep.path.replace("/api/", "")}`}
+                className="flex items-center gap-2 text-sm text-gray-400 hover:text-white transition px-3 py-2 rounded-lg hover:bg-gray-800"
+              >
+                <span className="rounded bg-indigo-600/20 px-1.5 py-0.5 text-xs font-mono text-indigo-400">
+                  {ep.method}
+                </span>
+                <code className="text-gray-300">{ep.path}</code>
+                <span className="text-gray-500 ml-auto text-xs">{ep.name}</span>
+              </a>
+            ))}
+          </div>
         </div>
 
         {/* Endpoints */}
@@ -169,6 +266,7 @@ curl "https://snapapi.dev/api/qr?data=test&api_key=snp_your_api_key"`}
                   { code: "400", desc: "Bad request — missing or invalid parameters" },
                   { code: "401", desc: "Unauthorized — missing or invalid API key" },
                   { code: "429", desc: "Rate limit exceeded — upgrade your plan for more requests" },
+                  { code: "502", desc: "Bad gateway — upstream URL could not be fetched" },
                   { code: "500", desc: "Internal server error" },
                 ].map((e) => (
                   <tr key={e.code} className="border-b border-gray-800/50">
@@ -185,7 +283,7 @@ curl "https://snapapi.dev/api/qr?data=test&api_key=snp_your_api_key"`}
       </div>
 
       <footer className="border-t border-gray-800 px-6 py-8 text-center text-sm text-gray-500">
-        © {new Date().getFullYear()} SnapAPI. All rights reserved.
+        &copy; {new Date().getFullYear()} SnapAPI. All rights reserved.
       </footer>
     </div>
   );
