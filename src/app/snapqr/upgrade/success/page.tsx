@@ -24,7 +24,8 @@ export default function UpgradeSuccessPage() {
           You&apos;re upgraded!
         </h1>
         <p className="text-zinc-500 mb-8 text-base">
-          Your subscription is active and all features are now unlocked, including unlimited QR codes.
+          Welcome to SnapQR Pro. Your subscription is active and all Pro features
+          are now unlocked.
         </p>
 
         <Link
@@ -33,6 +34,16 @@ export default function UpgradeSuccessPage() {
         >
           Start creating QR codes
         </Link>
+
+        <p className="text-sm text-zinc-400 mt-6">
+          Questions?{" "}
+          <a
+            href="mailto:hello@api-snap.com"
+            className="text-blue-600 hover:underline"
+          >
+            hello@api-snap.com
+          </a>
+        </p>
       </div>
     </div>
   );

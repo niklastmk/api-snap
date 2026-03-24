@@ -10,7 +10,7 @@ interface GenerateResult {
   statsUrl: string;
 }
 
-export default function SnapQRPage() {
+export default function SnapQRHome() {
   const [url, setUrl] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<GenerateResult | null>(null);
@@ -35,7 +35,7 @@ export default function SnapQRPage() {
         body: JSON.stringify({ url: url.trim() }),
       });
 
-      const data = await res.json();
+      const data: GenerateResult & { error?: string; upgrade?: boolean } = await res.json();
 
       if (!res.ok || data.error) {
         if (data.upgrade) {
@@ -57,21 +57,11 @@ export default function SnapQRPage() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      {/* Nav */}
-      <nav className="border-b border-zinc-100 px-6 py-3 flex items-center justify-between">
-        <Link href="/" className="text-sm text-zinc-500 hover:text-black transition-colors">
-          &larr; API Snap
-        </Link>
-        <Link href="/pricing" className="text-sm text-blue-600 font-medium hover:underline">
-          View Plans
-        </Link>
-      </nav>
-
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-16">
         <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-black tracking-tight mb-2">QR Code Generator</h1>
+          <h1 className="text-4xl font-bold text-black tracking-tight mb-2">SnapQR</h1>
           <p className="text-zinc-500 text-base">
-            Free trackable QR codes with real-time scan analytics
+            Free QR codes with real-time scan analytics
           </p>
         </div>
 
@@ -85,12 +75,16 @@ export default function SnapQRPage() {
               className="w-full border border-zinc-300 rounded-xl px-4 py-3.5 text-base text-black placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
               disabled={loading}
             />
-            {error && <p className="text-red-500 text-sm px-1">{error}</p>}
+            {error && (
+              <p className="text-red-500 text-sm px-1">{error}</p>
+            )}
             {showUpgrade && (
               <div className="rounded-xl border-2 border-blue-600 bg-blue-50 p-4">
-                <p className="text-sm font-semibold text-black mb-1">Daily limit reached</p>
+                <p className="text-sm font-semibold text-black mb-1">
+                  Daily limit reached
+                </p>
                 <p className="text-sm text-zinc-600 mb-3">
-                  Free users can generate 5 QR codes per day. Sign up for a paid plan for unlimited.
+                  Free accounts can generate 5 QR codes per day. Upgrade for unlimited.
                 </p>
                 <Link
                   href="/pricing"
@@ -119,10 +113,11 @@ export default function SnapQRPage() {
                 height={200}
                 className="rounded-lg shadow-sm"
               />
+
               <div className="flex gap-3 w-full flex-wrap justify-center">
                 <a
                   href={`/api/snapqr/qr/${result.shortCode}`}
-                  download={`qr-${result.shortCode}.png`}
+                  download={`snapqr-${result.shortCode}.png`}
                   className="flex-1 min-w-[140px] inline-flex items-center justify-center bg-black text-white font-medium px-4 py-2.5 rounded-lg hover:bg-zinc-800 transition-colors text-sm"
                 >
                   Download PNG
@@ -134,6 +129,7 @@ export default function SnapQRPage() {
                   View analytics
                 </Link>
               </div>
+
               <div className="w-full text-center">
                 <p className="text-xs text-zinc-400">
                   Track scans at{" "}
@@ -152,12 +148,12 @@ export default function SnapQRPage() {
         {!result && (
           <div className="mt-10 grid grid-cols-3 gap-6 max-w-lg w-full text-center">
             {[
-              { icon: "QR", label: "Instant generation" },
-              { icon: "Chart", label: "Real-time scan tracking" },
-              { icon: "Free", label: "Always free to start" },
+              { icon: "\u26A1", label: "Instant generation" },
+              { icon: "\uD83D\uDCCA", label: "Real-time scan tracking" },
+              { icon: "\uD83C\uDD93", label: "Always free to use" },
             ].map(({ icon, label }) => (
               <div key={label} className="flex flex-col items-center gap-1.5">
-                <span className="text-sm font-bold text-blue-600 bg-blue-50 rounded-lg px-3 py-1.5">{icon}</span>
+                <span className="text-2xl">{icon}</span>
                 <span className="text-xs text-zinc-500 font-medium">{label}</span>
               </div>
             ))}
@@ -166,11 +162,10 @@ export default function SnapQRPage() {
       </main>
 
       <footer className="border-t border-zinc-100 py-4 text-center text-xs text-zinc-400">
-        Part of{" "}
-        <Link href="/" className="text-blue-600 hover:underline">
-          API Snap
-        </Link>{" "}
-        &mdash; Developer utility APIs
+        Powered by SnapQR &mdash;{" "}
+        <Link href="/pricing" className="text-blue-600 hover:underline">
+          upgrade to remove branding
+        </Link>
       </footer>
     </div>
   );

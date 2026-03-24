@@ -6,7 +6,7 @@ export default function SnapQRUpgradePage() {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link href="/snapqr" className="text-2xl font-bold text-black">
-            API Snap QR
+            SnapQR
           </Link>
         </div>
 
@@ -27,18 +27,18 @@ export default function SnapQRUpgradePage() {
                 />
               </svg>
             </div>
-            <h1 className="text-2xl font-bold text-black mb-2">Unlock Unlimited QR Codes</h1>
+            <h1 className="text-2xl font-bold text-black mb-2">SnapQR Pro</h1>
             <p className="text-sm text-zinc-500">
-              Sign up for any paid plan to unlock unlimited trackable QR codes with full analytics.
+              Upgrade your API Snap plan to unlock unlimited QR codes and full analytics.
             </p>
           </div>
 
           <ul className="space-y-3 mb-8">
             {[
-              "Remove branding from stats pages",
+              "Remove SnapQR branding from stats pages",
               "Unlimited QR codes",
               "Full scan analytics (device, browser, OS, country)",
-              "Access to all 13+ API Snap utility APIs",
+              "All API Snap developer tools included",
               "Priority support",
             ].map((feature) => (
               <li key={feature} className="flex items-center gap-3 text-sm text-zinc-700">
@@ -68,7 +68,7 @@ export default function SnapQRUpgradePage() {
           </Link>
 
           <p className="text-center text-xs text-zinc-400 mt-4">
-            Plans start at $9/mo. Secure payment via Stripe.
+            Secure payment via Stripe. Cancel anytime.
           </p>
         </div>
 

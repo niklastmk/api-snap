@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
-
-export const dynamic = "force-dynamic";
 import { db } from "@/lib/db";
 import { links, scanEvents, users } from "@/lib/schema";
 import { eq, desc } from "drizzle-orm";
 import Link from "next/link";
+
+export const dynamic = "force-dynamic";
 
 interface Props {
   params: Promise<{ code: string }>;
@@ -54,7 +54,7 @@ export default async function StatsPage({ params }: Props) {
         <div className="bg-blue-600 text-white text-center py-2 text-sm font-medium">
           Powered by{" "}
           <Link href="/snapqr" className="underline font-bold">
-            API Snap QR
+            SnapQR
           </Link>{" "}
           &mdash; Free QR codes with real-time scan analytics
         </div>
@@ -63,7 +63,7 @@ export default async function StatsPage({ params }: Props) {
       <main className="max-w-3xl mx-auto px-4 py-10">
         <div className="mb-8">
           <Link href="/snapqr" className="text-blue-600 text-sm font-medium hover:underline">
-            &larr; Back to QR Generator
+            &larr; Back to SnapQR
           </Link>
         </div>
 
@@ -117,7 +117,7 @@ export default async function StatsPage({ params }: Props) {
             </div>
             <a
               href={`/api/snapqr/qr/${code}`}
-              download={`qr-${code}.png`}
+              download={`snapqr-${code}.png`}
               className="inline-flex items-center gap-2 text-sm bg-black text-white px-4 py-2 rounded-lg hover:bg-zinc-800 transition-colors"
             >
               Download PNG
@@ -171,41 +171,39 @@ export default async function StatsPage({ params }: Props) {
         )}
 
         {/* Upgrade CTA */}
-        {!isPaid && (
-          <div className="mt-10 rounded-xl border-2 border-blue-600 p-6 bg-blue-50">
-            <div className="flex items-start justify-between gap-4 flex-wrap">
-              <div>
-                <h3 className="text-lg font-bold text-black mb-1">
-                  Want analytics for YOUR QR codes?
-                </h3>
-                <p className="text-sm text-zinc-600 mb-3">
-                  Create free QR codes at{" "}
-                  <Link href="/snapqr" className="text-blue-600 font-medium hover:underline">
-                    {appUrl.replace("https://", "")}/snapqr
-                  </Link>{" "}
-                  &mdash; no account required.
-                </p>
-                <p className="text-sm text-zinc-600">
-                  Upgrade to a <strong>paid plan</strong> to remove branding, get unlimited QR codes, and unlock full analytics.
-                </p>
-              </div>
-              <div className="flex flex-col gap-2 min-w-[160px]">
-                <Link
-                  href="/pricing"
-                  className="inline-flex items-center justify-center bg-blue-600 text-white font-semibold px-5 py-3 rounded-lg hover:bg-blue-700 transition-colors text-sm whitespace-nowrap"
-                >
-                  View Plans
-                </Link>
-                <Link
-                  href="/snapqr"
-                  className="inline-flex items-center justify-center border border-zinc-300 text-zinc-700 font-medium px-5 py-2.5 rounded-lg hover:bg-white transition-colors text-sm whitespace-nowrap"
-                >
-                  Create free QR code
-                </Link>
-              </div>
+        <div className="mt-10 rounded-xl border-2 border-blue-600 p-6 bg-blue-50">
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <h3 className="text-lg font-bold text-black mb-1">
+                Want analytics for YOUR QR codes?
+              </h3>
+              <p className="text-sm text-zinc-600 mb-3">
+                Create free QR codes at{" "}
+                <Link href="/snapqr" className="text-blue-600 font-medium hover:underline">
+                  SnapQR
+                </Link>{" "}
+                &mdash; no account required.
+              </p>
+              <p className="text-sm text-zinc-600">
+                Upgrade your plan to remove branding, get unlimited QR codes, and unlock full analytics.
+              </p>
+            </div>
+            <div className="flex flex-col gap-2 min-w-[160px]">
+              <Link
+                href="/pricing"
+                className="inline-flex items-center justify-center bg-blue-600 text-white font-semibold px-5 py-3 rounded-lg hover:bg-blue-700 transition-colors text-sm whitespace-nowrap"
+              >
+                View Plans
+              </Link>
+              <Link
+                href="/snapqr"
+                className="inline-flex items-center justify-center border border-zinc-300 text-zinc-700 font-medium px-5 py-2.5 rounded-lg hover:bg-white transition-colors text-sm whitespace-nowrap"
+              >
+                Create free QR code
+              </Link>
             </div>
           </div>
-        )}
+        </div>
       </main>
     </div>
   );
