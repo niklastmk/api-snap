@@ -17,13 +17,21 @@ export default function SnapQRHome() {
   const [error, setError] = useState("");
   const [showUpgrade, setShowUpgrade] = useState(false);
   const [demoScans, setDemoScans] = useState<number | null>(null);
+  const [isPro, setIsPro] = useState(false);
 
   useEffect(() => {
     fetch("/api/snapqr/stats?code=sPaleBlu1")
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => { if (d?.total != null) setDemoScans(d.total); })
       .catch(() => {});
+    const key = localStorage.getItem("snapqr_api_key");
+    setIsPro(!!key);
   }, []);
+
+  function handleSignOut() {
+    localStorage.removeItem("snapqr_api_key");
+    setIsPro(false);
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -73,7 +81,19 @@ export default function SnapQRHome() {
         <Link href="/snapqr" className="text-base font-bold text-black tracking-tight">SnapQR</Link>
         <div className="flex items-center gap-4 text-sm">
           <Link href="/snapqr/upgrade" className="text-zinc-500 hover:text-zinc-800 transition-colors">Pricing</Link>
-          <Link href="/snapqr/account" className="text-zinc-500 hover:text-zinc-800 transition-colors">My account</Link>
+          {isPro ? (
+            <>
+              <span className="text-xs font-medium text-green-700 bg-green-100 px-2 py-0.5 rounded-full">Pro</span>
+              <button
+                onClick={handleSignOut}
+                className="text-zinc-500 hover:text-zinc-800 transition-colors"
+              >
+                Sign out
+              </button>
+            </>
+          ) : (
+            <Link href="/snapqr/account" className="text-zinc-500 hover:text-zinc-800 transition-colors">My account</Link>
+          )}
         </div>
       </nav>
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-16">

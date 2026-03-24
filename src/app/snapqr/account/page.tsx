@@ -19,6 +19,14 @@ export default function SnapQRAccountPage() {
     }
   }, []);
 
+  function handleClearAccess() {
+    localStorage.removeItem("snapqr_api_key");
+    setIsPro(false);
+    setStatus("idle");
+    setStoredEmail("");
+    setEmail("");
+  }
+
   async function handleLookup() {
     if (!email || !email.includes("@")) {
       setError("Please enter your email address.");
@@ -67,6 +75,14 @@ export default function SnapQRAccountPage() {
               <Link href="/snapqr" className="inline-flex items-center justify-center bg-blue-600 text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-blue-700 transition-colors text-sm">
                 Create QR codes &rarr;
               </Link>
+              <div className="mt-4">
+                <button
+                  onClick={handleClearAccess}
+                  className="text-xs text-zinc-400 hover:text-red-600 underline underline-offset-2 transition-colors"
+                >
+                  Sign out of this browser
+                </button>
+              </div>
             </div>
           ) : status === "not_found" ? (
             <div className="text-center">
@@ -76,8 +92,14 @@ export default function SnapQRAccountPage() {
           ) : (
             <>
               {isPro && (
-                <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-3 mb-4 text-sm text-green-700">
-                  Pro access is active in this browser.
+                <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-3 mb-4 text-sm text-green-700 flex items-center justify-between gap-3">
+                  <span>Pro access is active in this browser.</span>
+                  <button
+                    onClick={handleClearAccess}
+                    className="text-xs text-zinc-500 hover:text-red-600 underline underline-offset-2 whitespace-nowrap transition-colors"
+                  >
+                    Sign out
+                  </button>
                 </div>
               )}
               {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
