@@ -31,5 +31,5 @@ function corsHeaders(): Record<string, string> {
 }
 
 export const config = {
-  matcher: "/api/:path*",
+  matcher: ["/api/:path*", "/r/:path*"],
 };

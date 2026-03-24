@@ -37,6 +37,38 @@ export const usageLogs = sqliteTable("usage_logs", {
     .$defaultFn(() => new Date()),
 });
 
+// SnapQR: trackable QR codes with scan analytics
+export const links = sqliteTable("links", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  shortCode: text("short_code").notNull().unique(),
+  targetUrl: text("target_url").notNull(),
+  creatorIp: text("creator_ip"),
+  creatorUserId: text("creator_user_id").references(() => users.id),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+});
+
+export const scanEvents = sqliteTable("scan_events", {
+  id: integer("id").primaryKey({ autoIncrement: true }),
+  linkId: integer("link_id")
+    .notNull()
+    .references(() => links.id),
+  scannedAt: integer("scanned_at", { mode: "timestamp" })
+    .notNull()
+    .$defaultFn(() => new Date()),
+  userAgent: text("user_agent"),
+  ip: text("ip"),
+  country: text("country"),
+  city: text("city"),
+  device: text("device"),
+  browser: text("browser"),
+  os: text("os"),
+  referer: text("referer"),
+});
+
 export type User = typeof users.$inferSelect;
 export type ApiKey = typeof apiKeys.$inferSelect;
 export type UsageLog = typeof usageLogs.$inferSelect;
+export type Link = typeof links.$inferSelect;
+export type ScanEvent = typeof scanEvents.$inferSelect;
