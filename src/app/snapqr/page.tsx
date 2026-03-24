@@ -19,7 +19,7 @@ export default function SnapQRHome() {
   const [demoScans, setDemoScans] = useState<number | null>(null);
 
   useEffect(() => {
-    fetch("/api/snapqr/stats?code=demo")
+    fetch("/api/snapqr/stats?code=sPaleBlu1")
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => { if (d?.total != null) setDemoScans(d.total); })
       .catch(() => {});
@@ -183,7 +183,7 @@ export default function SnapQRHome() {
               <div className="mt-12 w-full max-w-lg border border-zinc-200 rounded-2xl p-6 flex flex-col items-center gap-4">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
-                  src="/api/snapqr/qr/demo"
+                  src="/api/snapqr/qr/sPaleBlu1"
                   alt="Demo QR code"
                   width={160}
                   height={160}
@@ -197,7 +197,7 @@ export default function SnapQRHome() {
                   This QR was generated with SnapQR &mdash; scan it to see live analytics.
                 </p>
                 <Link
-                  href="/s/demo"
+                  href="/s/sPaleBlu1"
                   className="text-sm text-blue-600 hover:underline font-medium"
                 >
                   View live analytics &rarr;
@@ -210,7 +210,7 @@ export default function SnapQRHome() {
 
       <footer className="border-t border-zinc-100 py-4 text-center text-xs text-zinc-400">
         Powered by SnapQR &mdash;{" "}
-        <Link href="/s/demo" className="text-blue-600 hover:underline">
+        <Link href="/s/sPaleBlu1" className="text-blue-600 hover:underline">
           See what live analytics look like &rarr;
         </Link>
         {" "}&mdash;{" "}
