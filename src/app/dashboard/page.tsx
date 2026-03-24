@@ -150,44 +150,69 @@ function DashboardContent() {
           </div>
         )}
 
-        {/* Upgrade nudge — shown when usage > 70% on free/hobby plans */}
-        {usage && usagePercent >= 70 && (usage.plan === "free" || usage.plan === "hobby") && (
-          <div className={`rounded-xl border p-6 mb-8 ${
-            usagePercent >= 90
-              ? "border-red-500/30 bg-red-500/10"
+        {/* Upgrade nudge — shown when usage >= 80% on free/hobby plans */}
+        {usage && usagePercent >= 80 && (usage.plan === "free" || usage.plan === "hobby") && (
+          <div className={`rounded-xl border p-5 mb-8 ${
+            usagePercent >= 100
+              ? "border-red-500/40 bg-red-500/10"
+              : usagePercent >= 90
+              ? "border-orange-500/40 bg-orange-500/10"
               : "border-yellow-500/30 bg-yellow-500/10"
           }`}>
             <div className="flex items-start justify-between gap-4">
-              <div>
-                <h3 className={`font-semibold ${usagePercent >= 90 ? "text-red-400" : "text-yellow-400"}`}>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-1">
+                  {usagePercent >= 100 && (
+                    <span className="h-2 w-2 rounded-full bg-red-500 animate-pulse shrink-0" />
+                  )}
+                  <h3 className={`font-semibold ${
+                    usagePercent >= 100 ? "text-red-400"
+                    : usagePercent >= 90 ? "text-orange-400"
+                    : "text-yellow-400"
+                  }`}>
+                    {usagePercent >= 100
+                      ? "API limit reached — calls are being blocked"
+                      : usagePercent >= 90
+                      ? `Critical: only ${remaining.toLocaleString()} calls left this month`
+                      : `Heads up: ${usagePercent.toFixed(0)}% of your monthly quota used`}
+                  </h3>
+                </div>
+                <p className="text-sm text-gray-400">
                   {usagePercent >= 100
-                    ? "You've hit your monthly limit"
+                    ? `Your free tier limit of ${usage.limit} calls is exhausted. Every request is returning a 429 error right now.`
                     : usagePercent >= 90
-                    ? `Only ${remaining.toLocaleString()} calls remaining this month`
-                    : `You've used ${usagePercent.toFixed(0)}% of your monthly quota`}
-                </h3>
-                <p className="text-sm text-gray-400 mt-1">
-                  {usagePercent >= 100
-                    ? "API calls will return 429 errors until your quota resets. Upgrade now for uninterrupted service."
-                    : usagePercent >= 90
-                    ? "At your current rate, you'll hit the limit soon. Upgrade to avoid interruptions."
-                    : `You're approaching your ${usage.limit.toLocaleString()} call limit. Consider upgrading for more capacity.`}
+                    ? `You have ${remaining.toLocaleString()} calls left before your API goes dark. Upgrade takes 30 seconds.`
+                    : `You're close to your ${usage.limit.toLocaleString()}-call limit. Upgrade now to avoid downtime.`}
                 </p>
+                {usage.plan === "free" && (
+                  <p className="text-xs text-gray-500 mt-2">
+                    Pro plan ($29/mo) gives you 50,000 calls — 500× your current limit.
+                  </p>
+                )}
+                {usage.plan === "hobby" && (
+                  <p className="text-xs text-gray-500 mt-2">
+                    Pro plan ($29/mo) gives you 50,000 calls — 10× your current limit.
+                  </p>
+                )}
               </div>
-              <Link
-                href="/pricing"
-                className={`shrink-0 rounded-lg px-5 py-2.5 text-sm font-medium text-white transition ${
-                  usagePercent >= 90 ? "bg-red-600 hover:bg-red-500" : "bg-yellow-600 hover:bg-yellow-500"
-                }`}
-              >
-                Upgrade Now
-              </Link>
+              <div className="flex flex-col items-end gap-2 shrink-0">
+                <Link
+                  href="/dashboard/billing"
+                  className={`rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition whitespace-nowrap ${
+                    usagePercent >= 100
+                      ? "bg-red-600 hover:bg-red-500 shadow-lg shadow-red-500/20"
+                      : usagePercent >= 90
+                      ? "bg-orange-600 hover:bg-orange-500"
+                      : "bg-indigo-600 hover:bg-indigo-500"
+                  }`}
+                >
+                  {usagePercent >= 100 ? "Upgrade Now — Fix This" : "Upgrade to Pro"}
+                </Link>
+                <Link href="/pricing" className="text-xs text-gray-500 hover:text-gray-400">
+                  Compare plans
+                </Link>
+              </div>
             </div>
-            {usage.plan === "free" && (
-              <p className="text-xs text-gray-500 mt-3">
-                Hobby plan ($9/mo) gives you 5,000 calls. Pro ($29/mo) gives you 50,000.
-              </p>
-            )}
           </div>
         )}
 
@@ -197,7 +222,7 @@ function DashboardContent() {
             <h2 className="text-lg font-semibold">Monthly Usage</h2>
             {usage && (usage.plan === "free" || usage.plan === "hobby") && (
               <Link
-                href="/pricing"
+                href="/dashboard/billing"
                 className="text-sm text-indigo-400 hover:text-indigo-300"
               >
                 Upgrade plan →
@@ -225,7 +250,7 @@ function DashboardContent() {
               <p className="text-xs text-gray-500 mt-2">
                 {remaining > 0
                   ? `${remaining.toLocaleString()} calls remaining this billing period`
-                  : "No calls remaining — upgrade to continue using the API"}
+                  : <><span className="text-red-400 font-medium">Quota exhausted.</span>{" "}<Link href="/dashboard/billing" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-2">Upgrade now</Link> to continue using the API.</>}
               </p>
             </>
           )}

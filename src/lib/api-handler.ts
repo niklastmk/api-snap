@@ -40,12 +40,23 @@ export function createApiHandler(
     );
 
     if (!allowed) {
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://api-snap.com";
+      const now = new Date();
+      const resetAt = new Date(now.getFullYear(), now.getMonth() + 1, 1).toISOString();
+      const isPaidPlan = auth.user.plan !== "free";
+      const upgradeUrl = `${appUrl}/dashboard/billing`;
+
       return NextResponse.json(
         {
-          error: "Rate limit exceeded",
+          error: "rate_limit_exceeded",
+          message: isPaidPlan
+            ? `You've hit your ${auth.user.plan} plan limit of ${limit.toLocaleString()} requests this month. Upgrade to a higher tier for more capacity: ${upgradeUrl}`
+            : `You've hit your free tier limit of ${limit} requests/month. Upgrade to Pro for unlimited requests: ${upgradeUrl}`,
           usage,
           limit,
-          upgrade_url: `${process.env.NEXT_PUBLIC_APP_URL || ""}/pricing`,
+          reset_at: resetAt,
+          upgrade_url: upgradeUrl,
+          docs_url: `${appUrl}/docs`,
         },
         { status: 429 }
       );
