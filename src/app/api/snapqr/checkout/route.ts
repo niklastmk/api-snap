@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       mode: "subscription",
       payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
-      success_url: `${appUrl}/snapqr/upgrade/success`,
+      success_url: `${appUrl}/snapqr/upgrade/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/snapqr/upgrade`,
       customer_email: email,
       metadata: {

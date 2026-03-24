@@ -71,7 +71,7 @@ export default function SnapQRUpgradePage() {
 
           <ul className="space-y-3 mb-8">
             {[
-              "Remove SnapQR branding from stats pages",
+              "Clean unbranded QR code images (no watermark)",
               "Unlimited QR codes",
               "Full scan analytics (device, browser, OS, country)",
               "All API Snap developer tools included",
@@ -100,6 +100,9 @@ export default function SnapQRUpgradePage() {
             <p className="text-red-500 text-sm text-center mb-4">{error}</p>
           )}
 
+          <label className="block text-sm font-medium text-zinc-700 mb-1">
+            Email address
+          </label>
           <input
             type="email"
             value={email}

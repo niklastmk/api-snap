@@ -37,9 +37,13 @@ export default function SnapQRHome() {
 
     setLoading(true);
     try {
+      const storedApiKey = typeof window !== "undefined" ? localStorage.getItem("snapqr_api_key") : null;
       const res = await fetch("/api/snapqr/generate", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          ...(storedApiKey ? { "Authorization": `Bearer ${storedApiKey}` } : {}),
+        },
         body: JSON.stringify({ url: url.trim() }),
       });
 
@@ -199,8 +203,13 @@ export default function SnapQRHome() {
 
       <footer className="border-t border-zinc-100 py-4 text-center text-xs text-zinc-400">
         Powered by SnapQR &mdash;{" "}
-        <Link href="/snapqr" className="text-blue-600 hover:underline">
-          Track who scans your codes &mdash; free &rarr;
+        <Link href="/s/demo" className="text-blue-600 hover:underline">
+          See what live analytics look like &rarr;
+        </Link>
+        {" "}&mdash;{" "}
+        Already Pro?{" "}
+        <Link href="/snapqr/account" className="text-blue-600 hover:underline">
+          Restore access &rarr;
         </Link>
       </footer>
     </div>
