@@ -63,19 +63,37 @@ export async function POST(req: NextRequest) {
             .run();
           console.log(`Linked customer ${customerId} to user ${userId}`);
         } else if (metaEmail) {
-          // Email-only checkout — link customer to user by email if they exist
-          const result = await db.update(users)
-            .set({ stripeCustomerId: customerId })
-            .where(eq(users.email, metaEmail))
-            .run();
-          if (result.rowsAffected > 0) {
-            console.log(`checkout.session.completed: linked customer ${customerId} to email ${metaEmail}`);
+          // Email-only checkout — find the user by email, update plan + customer ID, ensure API key exists
+          const [existingUser] = await db.select().from(users).where(eq(users.email, metaEmail)).limit(1);
+
+          if (existingUser) {
+            // Update stripeCustomerId and set plan to qr_pro (in case subscription event hasn't fired yet or failed)
+            await db.update(users)
+              .set({ stripeCustomerId: customerId, plan: "qr_pro" })
+              .where(eq(users.email, metaEmail))
+              .run();
+            console.log(`checkout.session.completed: linked customer ${customerId} to existing user ${metaEmail}, plan set to qr_pro`);
+
+            // Ensure they have an API key
+            const [existingKey] = await db.select().from(apiKeys).where(eq(apiKeys.userId, existingUser.id)).limit(1);
+            if (!existingKey) {
+              const apiKeyId = nanoid();
+              const apiKeyValue = `snp_${nanoid(32)}`;
+              await db.insert(apiKeys).values({
+                id: apiKeyId,
+                userId: existingUser.id,
+                key: apiKeyValue,
+                name: "Default",
+                createdAt: new Date(),
+              }).run();
+              console.log(`checkout.session.completed: created API key for existing user ${metaEmail}`);
+            }
           } else {
             // No existing user — create one for this paying customer
-            const userId = nanoid();
+            const newUserId = nanoid();
             const passwordHash = "$2a$12$placeholder"; // email-only checkout, no password login
             await db.insert(users).values({
-              id: userId,
+              id: newUserId,
               email: metaEmail,
               passwordHash,
               stripeCustomerId: customerId,
@@ -88,7 +106,7 @@ export async function POST(req: NextRequest) {
             const apiKeyValue = `snp_${nanoid(32)}`;
             await db.insert(apiKeys).values({
               id: apiKeyId,
-              userId,
+              userId: newUserId,
               key: apiKeyValue,
               name: "Default",
               createdAt: new Date(),

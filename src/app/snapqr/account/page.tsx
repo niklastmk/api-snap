@@ -53,7 +53,7 @@ export default function SnapQRAccountPage() {
 
         <div className="border border-zinc-200 rounded-2xl p-8 shadow-sm">
           <h1 className="text-xl font-bold text-black mb-1">My Account</h1>
-          <p className="text-zinc-500 text-sm mb-6">Enter your email to restore Pro access in this browser.</p>
+          <p className="text-zinc-500 text-sm mb-6">Enter the email you used to purchase QR Pro. We&apos;ll look up your subscription and activate Pro access in this browser.</p>
 
           {status === "found" ? (
             <div className="text-center">
@@ -87,14 +87,14 @@ export default function SnapQRAccountPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="your@email.com"
-                className="w-full border border-zinc-200 rounded-lg px-4 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full border border-zinc-200 rounded-lg px-4 py-2 text-sm text-zinc-900 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
               <button
                 onClick={handleLookup}
                 disabled={loading}
                 className="w-full bg-blue-600 text-white font-semibold py-2.5 rounded-xl hover:bg-blue-700 transition-colors text-sm disabled:opacity-60"
               >
-                {loading ? "Looking up\u2026" : "Restore Pro access"}
+                {loading ? "Looking up\u2026" : "Find my account"}
               </button>
             </>
           )}

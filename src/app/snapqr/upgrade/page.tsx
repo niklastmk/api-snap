@@ -108,7 +108,7 @@ export default function SnapQRUpgradePage() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="your@email.com"
-            className="w-full border border-zinc-200 rounded-lg px-4 py-2 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full border border-zinc-200 rounded-lg px-4 py-2 text-sm text-zinc-900 mb-3 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
 
           <button

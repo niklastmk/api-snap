@@ -69,6 +69,13 @@ export default function SnapQRHome() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
+      <nav className="border-b border-zinc-100 px-4 py-3 flex items-center justify-between max-w-5xl mx-auto w-full">
+        <Link href="/snapqr" className="text-base font-bold text-black tracking-tight">SnapQR</Link>
+        <div className="flex items-center gap-4 text-sm">
+          <Link href="/snapqr/upgrade" className="text-zinc-500 hover:text-zinc-800 transition-colors">Pricing</Link>
+          <Link href="/snapqr/account" className="text-zinc-500 hover:text-zinc-800 transition-colors">My account</Link>
+        </div>
+      </nav>
       <main className="flex-1 flex flex-col items-center justify-center px-4 py-16">
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold text-black tracking-tight mb-2">SnapQR</h1>
@@ -84,7 +91,7 @@ export default function SnapQRHome() {
               value={url}
               onChange={(e) => setUrl(e.target.value)}
               placeholder="Paste any URL — https://example.com"
-              className="w-full border border-zinc-300 rounded-xl px-4 py-3.5 text-base text-black placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
+              className="w-full border border-zinc-300 rounded-xl px-4 py-3.5 text-base text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
               disabled={loading}
             />
             {error && (
@@ -207,9 +214,9 @@ export default function SnapQRHome() {
           See what live analytics look like &rarr;
         </Link>
         {" "}&mdash;{" "}
-        Already Pro?{" "}
+        Already subscribed?{" "}
         <Link href="/snapqr/account" className="text-blue-600 hover:underline">
-          Restore access &rarr;
+          Find my account &rarr;
         </Link>
       </footer>
     </div>
