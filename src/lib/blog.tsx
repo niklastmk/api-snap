@@ -2837,6 +2837,1225 @@ API versioning       ✗                ✓`}</code>
       </>
     ),
   },
+
+  // =========================================================================
+  // Post 16 — Free Screenshot API
+  // =========================================================================
+  {
+    slug: "free-screenshot-api",
+    title: "Free Screenshot API: Capture Any Webpage with a Single HTTP Request",
+    description:
+      "Stop managing headless browsers. Use a free screenshot API to capture full-page or viewport screenshots of any URL — from any language, with zero dependencies.",
+    publishedAt: "2026-03-24",
+    keywords: [
+      "free screenshot api",
+      "screenshot api free",
+      "website screenshot api",
+      "capture webpage screenshot api",
+      "screenshot url api free",
+    ],
+    readingTime: "6 min read",
+    content: (
+      <>
+        <p>
+          You need a screenshot of a webpage. Maybe it&#39;s for a link preview, a visual regression
+          test, a thumbnail for a dashboard, or proof of content at a specific point in time. The
+          &#34;standard&#34; approach is to spin up Puppeteer or Playwright, manage a headless Chromium
+          instance, and write the orchestration code yourself.
+        </p>
+        <p>
+          But if all you need is a PNG or JPEG of a URL, that&#39;s a lot of infrastructure for a
+          single image. A screenshot API reduces the entire workflow to one HTTP request.
+        </p>
+
+        <h2>Why a Screenshot API Beats Self-Hosted Headless Browsers</h2>
+        <p>
+          Running your own headless browser setup works — until it doesn&#39;t. Here are the
+          common pain points developers hit:
+        </p>
+        <ul>
+          <li>
+            <strong>Memory spikes</strong> — Chromium consumes 200–500 MB per instance, which adds up
+            fast in serverless or containerized environments
+          </li>
+          <li>
+            <strong>Cold start latency</strong> — launching a browser takes 2–5 seconds, which kills
+            response times when you&#39;re generating screenshots on demand
+          </li>
+          <li>
+            <strong>Font and rendering inconsistencies</strong> — headless browsers on Linux render
+            differently than on macOS, leading to visual differences between dev and production
+          </li>
+          <li>
+            <strong>Maintenance burden</strong> — Chromium updates, Puppeteer version mismatches,
+            and Docker image bloat are constant time sinks
+          </li>
+        </ul>
+        <p>
+          A managed screenshot API handles the browser, the rendering environment, font loading, and
+          infrastructure. You just pass a URL and get pixels back.
+        </p>
+
+        <h2>Taking a Screenshot in One Request</h2>
+        <p>
+          With the{" "}
+          <Link href="/tools/screenshot-api">API Snap Screenshot endpoint</Link>, capturing a
+          webpage is a single <code>GET</code> request:
+        </p>
+        <pre>
+          <code>{`curl "https://api-snap.com/api/screenshot?url=https://github.com&width=1280&height=800&format=png" \\
+  -H "Authorization: Bearer snp_your_api_key" \\
+  -o screenshot.png`}</code>
+        </pre>
+        <p>
+          That returns a full-viewport PNG of the target URL. No browser launch, no dependencies, no
+          cleanup.
+        </p>
+
+        <h3>Key Parameters</h3>
+        <ul>
+          <li>
+            <code>url</code> — the page to capture (any publicly accessible URL)
+          </li>
+          <li>
+            <code>width</code> / <code>height</code> — viewport dimensions in pixels
+          </li>
+          <li>
+            <code>format</code> — <code>png</code>, <code>jpeg</code>, or <code>webp</code>
+          </li>
+          <li>
+            <code>full_page</code> — set to <code>true</code> to capture the entire scrollable page
+          </li>
+        </ul>
+
+        <h2>Common Use Cases</h2>
+        <h3>1. Link Previews and Social Cards</h3>
+        <p>
+          Generate visual previews of shared links in chat apps, CMS platforms, or email builders.
+          Capture the target URL as a thumbnail and cache it — users see a real preview instead of a
+          generic placeholder.
+        </p>
+
+        <h3>2. Visual Regression Testing</h3>
+        <p>
+          Screenshot your staging environment after every deploy and compare against a baseline. This
+          catches CSS regressions, layout shifts, and broken components that unit tests miss entirely.
+        </p>
+
+        <h3>3. Archival and Compliance</h3>
+        <p>
+          Capture point-in-time snapshots of web content for legal, compliance, or audit purposes. A
+          timestamped screenshot is often the simplest proof that a page displayed specific content on
+          a specific date.
+        </p>
+
+        <h3>4. Dashboard Thumbnails</h3>
+        <p>
+          If your app lets users save or share dashboards, reports, or data views, generate thumbnails
+          automatically so they can visually browse their saved items.
+        </p>
+
+        <h2>Integration Example: Node.js</h2>
+        <p>
+          Here&#39;s how you&#39;d integrate the screenshot API into a Node.js backend:
+        </p>
+        <pre>
+          <code>{`const response = await fetch(
+  "https://api-snap.com/api/screenshot?url=https://example.com&width=1280&height=800&format=png",
+  { headers: { Authorization: "Bearer snp_your_api_key" } }
+);
+
+const buffer = Buffer.from(await response.arrayBuffer());
+fs.writeFileSync("screenshot.png", buffer);`}</code>
+        </pre>
+        <p>
+          No Puppeteer install, no Chromium binary, no Docker image with a 1 GB browser baked in.
+          Just an HTTP call and a file write.
+        </p>
+
+        <h2>Free Tier and Rate Limits</h2>
+        <p>
+          API Snap includes a free tier that gives you enough requests to test the API thoroughly and
+          handle moderate traffic. If your usage grows, paid plans scale with your volume. There are
+          no per-pixel charges or hidden fees — you pay per request.
+        </p>
+
+        <h2>When to Self-Host Instead</h2>
+        <p>
+          An API is the right choice for most teams, but self-hosting makes sense if you need to
+          capture internal URLs behind a VPN, require sub-100ms latency from the same data center, or
+          have compliance requirements that prohibit sending URLs to third-party services. For
+          everything else, the API approach is faster to ship and cheaper to maintain.
+        </p>
+
+        <p>
+          Ready to try it?{" "}
+          <Link href="/signup">Create a free API Snap account</Link>, grab your API key, and
+          capture your first screenshot in under a minute. Check the{" "}
+          <Link href="/tools/screenshot-api">screenshot API docs</Link> for the full parameter
+          reference.
+        </p>
+      </>
+    ),
+  },
+
+  // =========================================================================
+  // Post 17 — PDF Generation API
+  // =========================================================================
+  {
+    slug: "pdf-generation-api",
+    title: "PDF Generation API: Convert HTML to PDF with a Single API Call",
+    description:
+      "Generate pixel-perfect PDFs from HTML and CSS using a simple REST API. No wkhtmltopdf, no Puppeteer, no server-side rendering headaches.",
+    publishedAt: "2026-03-24",
+    keywords: [
+      "pdf generation api",
+      "html to pdf api",
+      "generate pdf api free",
+      "pdf api rest",
+      "convert html to pdf api",
+    ],
+    readingTime: "6 min read",
+    content: (
+      <>
+        <p>
+          Generating PDFs programmatically is one of those tasks that sounds simple until you actually
+          try it. You need to render HTML, handle CSS layout, deal with page breaks, embed fonts, and
+          produce a file that looks the same on every device. The library ecosystem is fragmented —
+          wkhtmltopdf is abandoned, Puppeteer is heavyweight, and most PDF libraries produce ugly
+          output from raw drawing commands.
+        </p>
+        <p>
+          A PDF generation API lets you skip all of that. Send HTML, get a PDF. The rendering engine
+          runs server-side, handles the edge cases, and returns a production-ready document.
+        </p>
+
+        <h2>The Problem with Local PDF Generation</h2>
+        <p>
+          Developers typically reach for one of these approaches — and each has real drawbacks:
+        </p>
+        <ul>
+          <li>
+            <strong>wkhtmltopdf</strong> — uses an old WebKit engine, struggles with modern CSS (flexbox,
+            grid), and the project is effectively unmaintained
+          </li>
+          <li>
+            <strong>Puppeteer / Playwright</strong> — excellent rendering quality, but you&#39;re
+            managing a full headless browser just to print a page
+          </li>
+          <li>
+            <strong>PDFKit / jsPDF</strong> — low-level libraries that require you to manually
+            position every element. No HTML/CSS support at all
+          </li>
+          <li>
+            <strong>WeasyPrint</strong> — Python-only, requires system-level dependencies (Cairo,
+            Pango), and breaks on some CSS properties
+          </li>
+        </ul>
+        <p>
+          An API sidesteps these trade-offs entirely. You write standard HTML and CSS. The API renders
+          it with a modern browser engine and returns a PDF.
+        </p>
+
+        <h2>Generating a PDF in One Request</h2>
+        <p>
+          The{" "}
+          <Link href="/tools/html-to-pdf-api">API Snap PDF endpoint</Link> accepts HTML content
+          and returns a PDF file:
+        </p>
+        <pre>
+          <code>{`curl -X POST "https://api-snap.com/api/pdf" \\
+  -H "Authorization: Bearer snp_your_api_key" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "html": "<h1>Invoice #1042</h1><p>Amount: $250.00</p><p>Due: 2026-04-01</p>",
+    "format": "A4",
+    "margin": "20mm"
+  }' \\
+  -o invoice.pdf`}</code>
+        </pre>
+        <p>
+          The output is a properly formatted A4 PDF with 20mm margins. You can use any HTML and CSS
+          you want — the rendering engine supports modern layout properties including flexbox and grid.
+        </p>
+
+        <h3>Parameters</h3>
+        <ul>
+          <li>
+            <code>html</code> — the HTML content to render (full documents or fragments)
+          </li>
+          <li>
+            <code>format</code> — page size: <code>A4</code>, <code>Letter</code>,{" "}
+            <code>Legal</code>, or custom dimensions
+          </li>
+          <li>
+            <code>margin</code> — page margins (e.g., <code>20mm</code>, <code>1in</code>)
+          </li>
+          <li>
+            <code>landscape</code> — set to <code>true</code> for landscape orientation
+          </li>
+        </ul>
+
+        <h2>Real-World Use Cases</h2>
+        <h3>Invoices and Receipts</h3>
+        <p>
+          Build your invoice template in HTML and CSS — the same tools your frontend team already
+          knows. Pass the rendered HTML to the API with dynamic data injected, and you get a
+          professional PDF ready to email or store. No LaTeX, no report builder, no XML templates.
+        </p>
+
+        <h3>Reports and Dashboards</h3>
+        <p>
+          Export data visualizations, tables, and charts as PDF reports. Render your report page
+          server-side, capture the HTML, and convert it. The API handles page breaks, headers,
+          footers, and multi-page layouts.
+        </p>
+
+        <h3>Contracts and Legal Documents</h3>
+        <p>
+          Generate pre-filled contracts from templates. Inject signer names, dates, and terms into
+          an HTML template, convert to PDF, and send for signature. The consistent rendering
+          ensures the document looks identical regardless of the recipient&#39;s device.
+        </p>
+
+        <h3>Shipping Labels and Tickets</h3>
+        <p>
+          Create custom-sized PDFs for labels, tickets, or badges. Set the page format to match
+          your physical media dimensions and the API outputs a print-ready file.
+        </p>
+
+        <h2>Integration Example: Python</h2>
+        <pre>
+          <code>{`import requests
+
+html_content = """
+<html>
+<head><style>body { font-family: Helvetica; } table { width: 100%; border-collapse: collapse; } td, th { border: 1px solid #ddd; padding: 8px; }</style></head>
+<body>
+  <h1>Monthly Report</h1>
+  <table>
+    <tr><th>Metric</th><th>Value</th></tr>
+    <tr><td>Revenue</td><td>$42,000</td></tr>
+    <tr><td>Users</td><td>1,250</td></tr>
+  </table>
+</body>
+</html>
+"""
+
+response = requests.post(
+    "https://api-snap.com/api/pdf",
+    headers={"Authorization": "Bearer snp_your_api_key"},
+    json={"html": html_content, "format": "A4", "margin": "15mm"}
+)
+
+with open("report.pdf", "wb") as f:
+    f.write(response.content)`}</code>
+        </pre>
+
+        <h2>Tips for Better PDFs</h2>
+        <ul>
+          <li>
+            Use <code>page-break-before</code> and <code>page-break-after</code> CSS properties to
+            control where pages split
+          </li>
+          <li>
+            Inline your CSS or include it in a <code>&lt;style&gt;</code> tag — external stylesheets
+            won&#39;t be fetched
+          </li>
+          <li>
+            Use absolute URLs for images so the rendering engine can fetch them
+          </li>
+          <li>
+            Test with <code>@media print</code> styles to fine-tune the printed output
+          </li>
+        </ul>
+
+        <p>
+          Start generating PDFs now —{" "}
+          <Link href="/signup">create a free API Snap account</Link> and try the{" "}
+          <Link href="/tools/html-to-pdf-api">PDF endpoint</Link> in the playground.
+        </p>
+      </>
+    ),
+  },
+
+  // =========================================================================
+  // Post 18 — Image Resize API Free
+  // =========================================================================
+  {
+    slug: "image-resize-api-free",
+    title: "Image Resize API (Free): Resize, Crop, and Convert Images via REST",
+    description:
+      "Resize, crop, and convert images with a simple API call. No ImageMagick, no Sharp, no native dependencies. Free tier included.",
+    publishedAt: "2026-03-24",
+    keywords: [
+      "image resize api free",
+      "image resize api",
+      "resize image api rest",
+      "image conversion api",
+      "crop image api free",
+    ],
+    readingTime: "6 min read",
+    content: (
+      <>
+        <p>
+          Image processing is a solved problem — in theory. In practice, every solution comes with
+          baggage. ImageMagick requires system-level installation and has a history of security
+          vulnerabilities. Sharp is fast but needs native bindings that break across Node.js versions
+          and operating systems. Pillow works great in Python until you deploy to a minimal Docker
+          image that&#39;s missing <code>libjpeg</code>.
+        </p>
+        <p>
+          If you need to resize, crop, or convert images and you don&#39;t want to manage any of
+          that, an image resize API is the pragmatic choice.
+        </p>
+
+        <h2>Common Image Processing Headaches</h2>
+        <ul>
+          <li>
+            <strong>Native dependency hell</strong> — Sharp, ImageMagick, and libvips all require
+            platform-specific binaries that complicate CI/CD pipelines and Docker builds
+          </li>
+          <li>
+            <strong>Memory consumption</strong> — processing large images in-process can spike memory
+            usage and crash serverless functions with tight limits
+          </li>
+          <li>
+            <strong>Format support gaps</strong> — not every library handles WebP, AVIF, or animated
+            GIFs correctly out of the box
+          </li>
+          <li>
+            <strong>Security surface</strong> — image parsing libraries have been a frequent source
+            of CVEs, and keeping them patched is ongoing work
+          </li>
+        </ul>
+
+        <h2>Resizing an Image in One Request</h2>
+        <p>
+          The{" "}
+          <Link href="/tools/image-resize-api">API Snap Image Resize endpoint</Link> handles
+          the processing server-side:
+        </p>
+        <pre>
+          <code>{`curl -X POST "https://api-snap.com/api/resize" \\
+  -H "Authorization: Bearer snp_your_api_key" \\
+  -F "image=@photo.jpg" \\
+  -F "width=800" \\
+  -F "height=600" \\
+  -F "fit=cover" \\
+  -F "format=webp" \\
+  -o resized.webp`}</code>
+        </pre>
+        <p>
+          Upload an image, specify the target dimensions and format, and get the processed image back.
+          The API handles format conversion, quality optimization, and proper aspect ratio handling.
+        </p>
+
+        <h3>Parameters</h3>
+        <ul>
+          <li>
+            <code>image</code> — the source image (upload via multipart form data)
+          </li>
+          <li>
+            <code>width</code> / <code>height</code> — target dimensions in pixels
+          </li>
+          <li>
+            <code>fit</code> — how to handle aspect ratio: <code>cover</code>, <code>contain</code>,{" "}
+            <code>fill</code>, or <code>inside</code>
+          </li>
+          <li>
+            <code>format</code> — output format: <code>jpeg</code>, <code>png</code>,{" "}
+            <code>webp</code>, or <code>avif</code>
+          </li>
+          <li>
+            <code>quality</code> — compression quality (1–100)
+          </li>
+        </ul>
+
+        <h2>Use Cases</h2>
+        <h3>User-Uploaded Avatars and Profile Images</h3>
+        <p>
+          When users upload a profile photo, you need to generate multiple sizes — a 32px icon, a
+          128px thumbnail, and a 512px full-size version. Instead of processing all three variants
+          in your backend, make three API calls in parallel and store the results.
+        </p>
+
+        <h3>E-Commerce Product Thumbnails</h3>
+        <p>
+          Product catalogs need consistent image dimensions. Vendors upload photos in wildly different
+          resolutions and aspect ratios. The API normalizes them: crop to a square, resize to your
+          standard dimensions, convert to WebP for faster page loads.
+        </p>
+
+        <h3>CMS and Blog Images</h3>
+        <p>
+          Content editors upload high-resolution images that are way too large for web delivery.
+          Automatically resize on upload to generate optimized versions for different breakpoints —
+          mobile, tablet, and desktop.
+        </p>
+
+        <h3>Social Media Image Generation</h3>
+        <p>
+          Generate correctly sized images for different platforms — 1200×630 for Open Graph,
+          1080×1080 for Instagram, 1500×500 for Twitter headers — from a single source image.
+        </p>
+
+        <h2>Integration Example: Serverless Function</h2>
+        <pre>
+          <code>{`// Resize user avatar on upload (Vercel/Netlify serverless function)
+export async function POST(request: Request) {
+  const formData = await request.formData();
+  const file = formData.get("avatar") as File;
+
+  const resizeForm = new FormData();
+  resizeForm.append("image", file);
+  resizeForm.append("width", "256");
+  resizeForm.append("height", "256");
+  resizeForm.append("fit", "cover");
+  resizeForm.append("format", "webp");
+
+  const resized = await fetch("https://api-snap.com/api/resize", {
+    method: "POST",
+    headers: { Authorization: "Bearer snp_your_api_key" },
+    body: resizeForm,
+  });
+
+  const buffer = await resized.arrayBuffer();
+  // Upload buffer to your storage (S3, R2, etc.)
+  return Response.json({ success: true });
+}`}</code>
+        </pre>
+
+        <h2>Free Tier</h2>
+        <p>
+          API Snap&#39;s free tier includes enough image resize requests to handle development,
+          testing, and moderate production traffic. No credit card required to start.
+        </p>
+
+        <p>
+          Get started now —{" "}
+          <Link href="/signup">create a free account</Link> and try the{" "}
+          <Link href="/tools/image-resize-api">image resize API</Link> with your own images.
+        </p>
+      </>
+    ),
+  },
+
+  // =========================================================================
+  // Post 19 — URL Metadata API
+  // =========================================================================
+  {
+    slug: "url-metadata-api",
+    title: "URL Metadata API: Extract Title, Description, and Open Graph Data from Any URL",
+    description:
+      "Fetch structured metadata from any webpage — title, description, Open Graph tags, favicons, and more — with a single API call. No scraping required.",
+    publishedAt: "2026-03-24",
+    keywords: [
+      "url metadata api",
+      "extract metadata from url",
+      "open graph api",
+      "link preview api",
+      "url meta tags api",
+    ],
+    readingTime: "6 min read",
+    content: (
+      <>
+        <p>
+          You&#39;re building a feature that shows link previews — the card with a title, description,
+          and image that appears when someone pastes a URL into Slack, Twitter, or iMessage. To
+          generate that card, you need to fetch the page, parse the HTML, extract Open Graph tags,
+          fall back to meta tags, find the favicon, and handle edge cases like JavaScript-rendered
+          pages, redirects, and encoding issues.
+        </p>
+        <p>
+          Or you could make one API call and get all of that as structured JSON.
+        </p>
+
+        <h2>Why Scraping Metadata Yourself Is Painful</h2>
+        <ul>
+          <li>
+            <strong>JavaScript-rendered pages</strong> — many modern sites don&#39;t include
+            Open Graph tags in the initial HTML; they&#39;re injected by client-side JavaScript,
+            so a simple <code>fetch</code> returns empty meta tags
+          </li>
+          <li>
+            <strong>Redirect chains</strong> — shortened URLs, tracking redirects, and canonical URLs
+            mean the page you fetch isn&#39;t always the page you wanted
+          </li>
+          <li>
+            <strong>Encoding issues</strong> — pages serve content in UTF-8, ISO-8859-1, or other
+            encodings, and getting the charset wrong produces garbled text
+          </li>
+          <li>
+            <strong>Rate limiting and blocking</strong> — many sites block server-side requests that
+            don&#39;t look like browsers, returning CAPTCHAs or 403 errors
+          </li>
+          <li>
+            <strong>Timeout handling</strong> — slow sites, large pages, and hanging connections need
+            careful timeout management to avoid blocking your own service
+          </li>
+        </ul>
+
+        <h2>Fetching Metadata in One Request</h2>
+        <p>
+          The{" "}
+          <Link href="/tools/url-metadata-api">API Snap URL Metadata endpoint</Link> handles
+          all of this for you:
+        </p>
+        <pre>
+          <code>{`curl "https://api-snap.com/api/meta?url=https://github.com/vercel/next.js" \\
+  -H "Authorization: Bearer snp_your_api_key"`}</code>
+        </pre>
+        <p>Response:</p>
+        <pre>
+          <code>{`{
+  "title": "GitHub - vercel/next.js: The React Framework",
+  "description": "The React Framework. Contribute to vercel/next.js development...",
+  "image": "https://opengraph.githubassets.com/...",
+  "favicon": "https://github.githubassets.com/favicons/favicon.svg",
+  "siteName": "GitHub",
+  "type": "object",
+  "url": "https://github.com/vercel/next.js"
+}`}</code>
+        </pre>
+        <p>
+          Structured JSON with the title, description, Open Graph image, favicon, and site name.
+          No HTML parsing, no regex, no edge case handling on your end.
+        </p>
+
+        <h2>Use Cases</h2>
+        <h3>Link Previews in Chat and Messaging</h3>
+        <p>
+          When a user pastes a URL into your chat app, fetch the metadata and render a preview card
+          with the page title, description, and thumbnail. This is exactly what Slack, Discord, and
+          iMessage do — and the API gives you the same data they extract.
+        </p>
+
+        <h3>Bookmark Managers and Read-Later Apps</h3>
+        <p>
+          Auto-populate bookmark entries with the page title, description, and favicon. Users save a
+          URL and immediately see a rich, organized entry instead of a raw link.
+        </p>
+
+        <h3>CMS Link Embeds</h3>
+        <p>
+          When content editors paste URLs into a rich text editor, automatically convert them into
+          embedded cards with metadata. This is the behavior users expect from modern CMS platforms
+          like Notion and Confluence.
+        </p>
+
+        <h3>SEO Auditing Tools</h3>
+        <p>
+          Check whether pages have proper Open Graph tags, meta descriptions, and favicons. Batch
+          process a list of URLs and flag any that are missing critical metadata.
+        </p>
+
+        <h2>Integration Example: React Link Preview Component</h2>
+        <pre>
+          <code>{`async function fetchLinkPreview(url: string) {
+  const res = await fetch(
+    \`https://api-snap.com/api/meta?url=\${encodeURIComponent(url)}\`,
+    { headers: { Authorization: "Bearer snp_your_api_key" } }
+  );
+  return res.json();
+}
+
+// Usage in a React component
+const metadata = await fetchLinkPreview("https://stripe.com");
+// { title: "Stripe | Payment Processing Platform", image: "...", ... }`}</code>
+        </pre>
+
+        <h2>Caching Recommendations</h2>
+        <p>
+          Metadata doesn&#39;t change frequently. Cache responses for 24–72 hours to reduce API
+          calls and improve latency. If you&#39;re building a link preview feature, fetch metadata
+          once when the link is first shared and store the result alongside the message or bookmark.
+        </p>
+
+        <p>
+          Try it now —{" "}
+          <Link href="/signup">create a free API Snap account</Link> and test the{" "}
+          <Link href="/tools/url-metadata-api">URL metadata endpoint</Link> with any URL.
+        </p>
+      </>
+    ),
+  },
+
+  // =========================================================================
+  // Post 20 — Lorem Ipsum API
+  // =========================================================================
+  {
+    slug: "lorem-ipsum-api",
+    title: "Lorem Ipsum API: Generate Placeholder Text Programmatically",
+    description:
+      "Generate lorem ipsum paragraphs, sentences, or words via a REST API. Perfect for seeding databases, populating UI prototypes, and writing tests.",
+    publishedAt: "2026-03-24",
+    keywords: [
+      "lorem ipsum api",
+      "placeholder text api",
+      "lorem ipsum generator api",
+      "random text api",
+      "dummy text api free",
+    ],
+    readingTime: "5 min read",
+    content: (
+      <>
+        <p>
+          Every developer needs placeholder text at some point. You&#39;re building a blog layout and
+          need realistic-looking paragraphs. You&#39;re seeding a test database with user bios. You&#39;re
+          writing integration tests that need string inputs of varying lengths. You could hardcode
+          &#34;Lorem ipsum dolor sit amet&#34; everywhere, but that gets old fast — especially when
+          you need different lengths, counts, or formats.
+        </p>
+        <p>
+          A lorem ipsum API generates placeholder text on demand, in exactly the shape you need.
+        </p>
+
+        <h2>Why Use an API for Placeholder Text?</h2>
+        <p>
+          You might think a lorem ipsum library is overkill — and an API even more so. But there are
+          real scenarios where an API makes sense:
+        </p>
+        <ul>
+          <li>
+            <strong>Database seeding scripts</strong> — generate realistic-length text for hundreds or
+            thousands of records without embedding a giant text blob in your seed file
+          </li>
+          <li>
+            <strong>Cross-language consistency</strong> — use the same API from your Python backend,
+            your Node.js tests, and your shell scripts without installing a library in each ecosystem
+          </li>
+          <li>
+            <strong>Dynamic prototypes</strong> — populate Figma-to-code prototypes or Storybook
+            components with varying text lengths to test layout flexibility
+          </li>
+          <li>
+            <strong>CI/CD test fixtures</strong> — generate fresh text in test pipelines without
+            committing fixture files
+          </li>
+        </ul>
+
+        <h2>Generating Lorem Ipsum Text</h2>
+        <p>
+          The{" "}
+          <Link href="/tools/lorem-ipsum-api">API Snap Lorem Ipsum endpoint</Link> returns
+          placeholder text in your choice of format:
+        </p>
+        <pre>
+          <code>{`curl "https://api-snap.com/api/lorem?paragraphs=3" \\
+  -H "Authorization: Bearer snp_your_api_key"`}</code>
+        </pre>
+        <p>Response:</p>
+        <pre>
+          <code>{`{
+  "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit...\\n\\nSed do eiusmod tempor incididunt ut labore et dolore magna aliqua...\\n\\nUt enim ad minim veniam, quis nostrud exercitation ullamco..."
+}`}</code>
+        </pre>
+
+        <h3>Parameters</h3>
+        <ul>
+          <li>
+            <code>paragraphs</code> — number of paragraphs to generate
+          </li>
+          <li>
+            <code>sentences</code> — number of sentences (alternative to paragraphs)
+          </li>
+          <li>
+            <code>words</code> — number of words (alternative to paragraphs/sentences)
+          </li>
+        </ul>
+
+        <h2>Practical Examples</h2>
+        <h3>Seeding a Database</h3>
+        <pre>
+          <code>{`# Generate a bio for each test user
+for i in $(seq 1 50); do
+  BIO=$(curl -s "https://api-snap.com/api/lorem?sentences=3" \\
+    -H "Authorization: Bearer snp_your_api_key" | jq -r '.text')
+  echo "INSERT INTO users (id, bio) VALUES ($i, '$BIO');"
+done`}</code>
+        </pre>
+
+        <h3>Populating a UI Component</h3>
+        <pre>
+          <code>{`// Generate placeholder content for a card grid
+const response = await fetch(
+  "https://api-snap.com/api/lorem?paragraphs=1",
+  { headers: { Authorization: "Bearer snp_your_api_key" } }
+);
+const { text } = await response.json();
+
+// Use in your component
+<Card title="Sample Post" body={text} />`}</code>
+        </pre>
+
+        <h3>Test Fixtures</h3>
+        <pre>
+          <code>{`# Generate a 500-word block for testing text truncation
+curl -s "https://api-snap.com/api/lorem?words=500" \\
+  -H "Authorization: Bearer snp_your_api_key" | jq -r '.text' > fixture.txt`}</code>
+        </pre>
+
+        <h2>When Not to Use Lorem Ipsum</h2>
+        <p>
+          Placeholder text is useful for layout testing, but it can mask content problems. If you&#39;re
+          testing how your UI handles real-world content — names with special characters, long words
+          that break layouts, or right-to-left text — you need realistic data, not Latin filler. Use
+          lorem ipsum for development and visual testing, but validate with real content before
+          shipping.
+        </p>
+
+        <p>
+          Get started —{" "}
+          <Link href="/signup">create a free API Snap account</Link> and try the{" "}
+          <Link href="/tools/lorem-ipsum-api">lorem ipsum endpoint</Link>.
+        </p>
+      </>
+    ),
+  },
+
+  // =========================================================================
+  // Post 21 — UUID Generator API
+  // =========================================================================
+  {
+    slug: "uuid-generator-api",
+    title: "UUID Generator API: Generate UUIDs and Unique IDs via REST",
+    description:
+      "Generate v4 UUIDs, NanoIDs, and other unique identifiers with a simple API call. No libraries needed — works from any language or shell script.",
+    publishedAt: "2026-03-24",
+    keywords: [
+      "uuid generator api",
+      "generate uuid api",
+      "uuid api free",
+      "unique id generator api",
+      "uuid v4 api rest",
+    ],
+    readingTime: "5 min read",
+    content: (
+      <>
+        <p>
+          Generating unique identifiers is one of the most common operations in software development.
+          Database primary keys, session tokens, idempotency keys, correlation IDs for distributed
+          tracing — they all need unique values. Most languages have built-in or library support for
+          UUIDs, but there are scenarios where an API is the more practical choice.
+        </p>
+
+        <h2>When an API Makes Sense for UUID Generation</h2>
+        <p>
+          If you&#39;re writing a Node.js or Python app, you probably don&#39;t need an API —{" "}
+          <code>crypto.randomUUID()</code> or <code>uuid.uuid4()</code> work fine. But an API shines
+          in specific scenarios:
+        </p>
+        <ul>
+          <li>
+            <strong>Shell scripts and automation</strong> — generating UUIDs in Bash typically means
+            installing <code>uuidgen</code> or reading from <code>/proc/sys/kernel/random/uuid</code>
+            (Linux-only). An API works on any system with <code>curl</code>
+          </li>
+          <li>
+            <strong>Low-code / no-code platforms</strong> — tools like Zapier, Make, or Retool can
+            call HTTP endpoints but can&#39;t execute arbitrary code
+          </li>
+          <li>
+            <strong>Bulk generation</strong> — need 1,000 UUIDs for a migration script? One API call
+            is cleaner than a loop
+          </li>
+          <li>
+            <strong>Cross-platform consistency</strong> — ensure all your services (regardless of
+            language) generate IDs from the same source with the same format
+          </li>
+        </ul>
+
+        <h2>Generating UUIDs with One Request</h2>
+        <p>
+          The{" "}
+          <Link href="/tools/uuid-generator-api">API Snap UUID endpoint</Link> generates
+          unique identifiers instantly:
+        </p>
+        <pre>
+          <code>{`curl "https://api-snap.com/api/uuid?count=5" \\
+  -H "Authorization: Bearer snp_your_api_key"`}</code>
+        </pre>
+        <p>Response:</p>
+        <pre>
+          <code>{`{
+  "uuids": [
+    "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+    "7c9e6679-7425-40de-944b-e07fc1f90ae7",
+    "550e8400-e29b-41d4-a716-446655440000",
+    "6ba7b810-9dad-11d1-80b4-00c04fd430c8",
+    "1b9d6bcd-bbfd-4b2d-9b5d-ab8dfbbd4bed"
+  ]
+}`}</code>
+        </pre>
+
+        <h3>Parameters</h3>
+        <ul>
+          <li>
+            <code>count</code> — number of UUIDs to generate (default: 1)
+          </li>
+          <li>
+            <code>version</code> — UUID version: <code>v4</code> (random, default) or{" "}
+            <code>v7</code> (timestamp-ordered)
+          </li>
+        </ul>
+
+        <h2>UUID v4 vs v7: Which to Use</h2>
+        <p>
+          <strong>v4 (random)</strong> is the most common choice. Each UUID is 122 bits of
+          randomness, giving you a collision probability so low it&#39;s effectively zero. Use v4
+          for session tokens, idempotency keys, and any case where ordering doesn&#39;t matter.
+        </p>
+        <p>
+          <strong>v7 (timestamp-ordered)</strong> embeds a Unix timestamp in the first 48 bits,
+          making UUIDs naturally sortable by creation time. This is a significant advantage for
+          database primary keys — B-tree indexes perform much better with sequential inserts than
+          random ones. If you&#39;re using UUIDs as primary keys in PostgreSQL or MySQL, v7 is the
+          better choice.
+        </p>
+
+        <h2>Practical Examples</h2>
+        <h3>Generating Idempotency Keys in a Shell Script</h3>
+        <pre>
+          <code>{`# Generate an idempotency key for a payment API call
+IDEM_KEY=$(curl -s "https://api-snap.com/api/uuid" \\
+  -H "Authorization: Bearer snp_your_api_key" | jq -r '.uuids[0]')
+
+curl -X POST "https://payments.example.com/charge" \\
+  -H "Idempotency-Key: $IDEM_KEY" \\
+  -d '{"amount": 2500, "currency": "usd"}'`}</code>
+        </pre>
+
+        <h3>Bulk ID Generation for Data Migration</h3>
+        <pre>
+          <code>{`# Generate 100 UUIDs for a migration
+curl -s "https://api-snap.com/api/uuid?count=100&version=v7" \\
+  -H "Authorization: Bearer snp_your_api_key" | jq -r '.uuids[]' > ids.txt`}</code>
+        </pre>
+
+        <h2>Security Note</h2>
+        <p>
+          UUIDs generated by this API use cryptographically secure random number generators. They are
+          suitable for use as session tokens, API keys, and other security-sensitive identifiers. That
+          said, if you need tokens with specific entropy requirements (e.g., 256-bit), consider
+          generating them locally with your language&#39;s crypto library.
+        </p>
+
+        <p>
+          Try it now —{" "}
+          <Link href="/signup">create a free API Snap account</Link> and generate your first
+          UUIDs with the{" "}
+          <Link href="/tools/uuid-generator-api">UUID endpoint</Link>.
+        </p>
+      </>
+    ),
+  },
+
+  // =========================================================================
+  // Post 22 — Base64 Encode API
+  // =========================================================================
+  {
+    slug: "base64-encode-api",
+    title: "Base64 Encode API: Encode and Decode Data via REST",
+    description:
+      "Encode and decode Base64 strings with a simple API call. Handle binary data, file encoding, and data URI generation without language-specific quirks.",
+    publishedAt: "2026-03-24",
+    keywords: [
+      "base64 encode api",
+      "base64 api",
+      "base64 decode api",
+      "encode base64 rest api",
+      "base64 api free",
+    ],
+    readingTime: "5 min read",
+    content: (
+      <>
+        <p>
+          Base64 encoding converts binary data into ASCII text, making it safe to transmit through
+          text-based protocols like JSON, XML, email, and URL parameters. Every programming language
+          has Base64 support, so why would you use an API? Because the edge cases are where things get
+          interesting.
+        </p>
+
+        <h2>When a Base64 API Is Useful</h2>
+        <p>
+          Local Base64 encoding works for simple cases. An API becomes valuable when:
+        </p>
+        <ul>
+          <li>
+            <strong>Shell scripts and CLI workflows</strong> — <code>base64</code> behaves differently
+            on macOS vs Linux (<code>base64 -d</code> vs <code>base64 --decode</code>, line wrapping
+            differences). An API gives you consistent behavior everywhere
+          </li>
+          <li>
+            <strong>Low-code platforms</strong> — Zapier, Make, and similar tools can call HTTP
+            endpoints but don&#39;t have built-in Base64 functions
+          </li>
+          <li>
+            <strong>URL-safe encoding</strong> — standard Base64 uses <code>+</code> and{" "}
+            <code>/</code> which aren&#39;t URL-safe. Base64url encoding replaces them with{" "}
+            <code>-</code> and <code>_</code>. Remembering which variant to use and how to specify it
+            varies by language
+          </li>
+          <li>
+            <strong>File-to-data-URI conversion</strong> — encoding an image as a data URI for
+            embedding in HTML or CSS is common, but doing it from a script requires reading the file,
+            encoding it, and prepending the MIME type
+          </li>
+        </ul>
+
+        <h2>Encoding and Decoding with the API</h2>
+        <p>
+          The{" "}
+          <Link href="/tools/base64-api">API Snap Base64 endpoint</Link> handles both encoding
+          and decoding:
+        </p>
+        <h3>Encoding</h3>
+        <pre>
+          <code>{`curl -X POST "https://api-snap.com/api/base64" \\
+  -H "Authorization: Bearer snp_your_api_key" \\
+  -H "Content-Type: application/json" \\
+  -d '{"text": "Hello, World!", "action": "encode"}'`}</code>
+        </pre>
+        <p>Response:</p>
+        <pre>
+          <code>{`{
+  "result": "SGVsbG8sIFdvcmxkIQ=="
+}`}</code>
+        </pre>
+
+        <h3>Decoding</h3>
+        <pre>
+          <code>{`curl -X POST "https://api-snap.com/api/base64" \\
+  -H "Authorization: Bearer snp_your_api_key" \\
+  -H "Content-Type: application/json" \\
+  -d '{"text": "SGVsbG8sIFdvcmxkIQ==", "action": "decode"}'`}</code>
+        </pre>
+        <p>Response:</p>
+        <pre>
+          <code>{`{
+  "result": "Hello, World!"
+}`}</code>
+        </pre>
+
+        <h3>Parameters</h3>
+        <ul>
+          <li>
+            <code>text</code> — the string to encode or decode
+          </li>
+          <li>
+            <code>action</code> — <code>encode</code> or <code>decode</code>
+          </li>
+          <li>
+            <code>url_safe</code> — set to <code>true</code> for URL-safe Base64 encoding (uses{" "}
+            <code>-</code> and <code>_</code> instead of <code>+</code> and <code>/</code>)
+          </li>
+        </ul>
+
+        <h2>Practical Use Cases</h2>
+        <h3>Encoding API Credentials</h3>
+        <p>
+          HTTP Basic Authentication requires credentials in the format{" "}
+          <code>username:password</code> encoded as Base64. This is a one-liner with the API:
+        </p>
+        <pre>
+          <code>{`# Encode credentials for Basic Auth
+curl -s -X POST "https://api-snap.com/api/base64" \\
+  -H "Authorization: Bearer snp_your_api_key" \\
+  -H "Content-Type: application/json" \\
+  -d '{"text": "admin:secretpassword", "action": "encode"}' | jq -r '.result'
+# Output: YWRtaW46c2VjcmV0cGFzc3dvcmQ=`}</code>
+        </pre>
+
+        <h3>Decoding JWT Payloads</h3>
+        <p>
+          JWTs are three Base64url-encoded segments separated by dots. To inspect a token&#39;s
+          payload without a library:
+        </p>
+        <pre>
+          <code>{`# Decode the payload (second segment) of a JWT
+PAYLOAD="eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4iLCJpYXQiOjE1MTYyMzkwMjJ9"
+curl -s -X POST "https://api-snap.com/api/base64" \\
+  -H "Authorization: Bearer snp_your_api_key" \\
+  -H "Content-Type: application/json" \\
+  -d "{\"text\": \"$PAYLOAD\", \"action\": \"decode\", \"url_safe\": true}" | jq -r '.result'`}</code>
+        </pre>
+
+        <h3>Data URI Generation</h3>
+        <p>
+          Embedding small images directly in HTML or CSS avoids an extra HTTP request. Encode the
+          image, prepend the MIME type, and you have a data URI ready to use in an{" "}
+          <code>&lt;img&gt;</code> tag or CSS <code>background-image</code>.
+        </p>
+
+        <h2>Base64 vs Base64url</h2>
+        <p>
+          Standard Base64 uses <code>+</code>, <code>/</code>, and <code>=</code> padding. These
+          characters have special meaning in URLs and filenames. Base64url replaces <code>+</code>{" "}
+          with <code>-</code> and <code>/</code> with <code>_</code>, and typically omits padding.
+          Use Base64url when the encoded string will appear in URLs, filenames, or JSON Web Tokens.
+        </p>
+
+        <p>
+          Try it —{" "}
+          <Link href="/signup">create a free API Snap account</Link> and use the{" "}
+          <Link href="/tools/base64-api">Base64 endpoint</Link> from your next script.
+        </p>
+      </>
+    ),
+  },
+
+  // =========================================================================
+  // Post 23 — Hash String API
+  // =========================================================================
+  {
+    slug: "hash-string-api",
+    title: "Hash String API: Generate MD5, SHA-256, and Other Hashes via REST",
+    description:
+      "Hash strings with MD5, SHA-1, SHA-256, or SHA-512 using a simple API call. Perfect for checksums, data integrity verification, and cross-platform scripting.",
+    publishedAt: "2026-03-24",
+    keywords: [
+      "hash string api",
+      "sha256 hash api",
+      "md5 hash api",
+      "hash api free",
+      "hash generator api rest",
+    ],
+    readingTime: "5 min read",
+    content: (
+      <>
+        <p>
+          Hashing is everywhere in software development. You hash passwords (with proper algorithms
+          like bcrypt — never raw SHA-256). You hash files to verify integrity. You hash strings to
+          generate cache keys, ETags, content-addressable storage paths, and deduplication
+          fingerprints. Every language has hashing built in, but like Base64, the API approach solves
+          specific pain points.
+        </p>
+
+        <h2>When a Hashing API Is Useful</h2>
+        <ul>
+          <li>
+            <strong>Cross-platform scripts</strong> — <code>md5sum</code> vs <code>md5</code>,{" "}
+            <code>sha256sum</code> vs <code>shasum -a 256</code> — the command-line tools differ
+            between Linux and macOS. An API gives you one consistent interface
+          </li>
+          <li>
+            <strong>Quick verification</strong> — when you need to check a hash without setting up a
+            local environment, a quick <code>curl</code> call is faster than writing a script
+          </li>
+          <li>
+            <strong>Low-code automation</strong> — platforms like Zapier and Make can call HTTP
+            endpoints but don&#39;t have native hashing functions
+          </li>
+          <li>
+            <strong>Algorithm comparison</strong> — quickly generate the same input hashed with
+            multiple algorithms to compare output lengths and formats
+          </li>
+        </ul>
+
+        <h2>Hashing a String in One Request</h2>
+        <p>
+          The{" "}
+          <Link href="/tools/hash-api">API Snap Hash endpoint</Link> accepts a string and
+          returns its hash:
+        </p>
+        <pre>
+          <code>{`curl -X POST "https://api-snap.com/api/hash" \\
+  -H "Authorization: Bearer snp_your_api_key" \\
+  -H "Content-Type: application/json" \\
+  -d '{"text": "hello world", "algorithm": "sha256"}'`}</code>
+        </pre>
+        <p>Response:</p>
+        <pre>
+          <code>{`{
+  "hash": "b94d27b9934d3e08a52e52d7da7dabfac484efe37a5380ee9088f7ace2efcde9",
+  "algorithm": "sha256"
+}`}</code>
+        </pre>
+
+        <h3>Supported Algorithms</h3>
+        <ul>
+          <li>
+            <code>md5</code> — 128-bit, fast but not collision-resistant. Use for checksums and cache
+            keys, never for security
+          </li>
+          <li>
+            <code>sha1</code> — 160-bit, deprecated for security use but still common in legacy
+            systems and Git
+          </li>
+          <li>
+            <code>sha256</code> — 256-bit, the current standard for most hashing needs
+          </li>
+          <li>
+            <code>sha512</code> — 512-bit, useful when you need a longer hash or marginally better
+            collision resistance
+          </li>
+        </ul>
+
+        <h2>Practical Use Cases</h2>
+        <h3>Generating Cache Keys</h3>
+        <p>
+          Hash request parameters to create deterministic cache keys. The same input always produces
+          the same hash, making it ideal for cache lookups:
+        </p>
+        <pre>
+          <code>{`# Generate a cache key from a query string
+CACHE_KEY=$(curl -s -X POST "https://api-snap.com/api/hash" \\
+  -H "Authorization: Bearer snp_your_api_key" \\
+  -H "Content-Type: application/json" \\
+  -d '{"text": "user=123&page=5&sort=date", "algorithm": "sha256"}' | jq -r '.hash')
+
+echo "Cache key: $CACHE_KEY"
+# Cache key: a1b2c3d4e5f6...`}</code>
+        </pre>
+
+        <h3>Verifying Data Integrity</h3>
+        <p>
+          After downloading a file, hash it and compare against the published checksum:
+        </p>
+        <pre>
+          <code>{`# Hash file contents and compare
+CONTENT=$(cat downloaded-file.tar.gz | base64)
+HASH=$(curl -s -X POST "https://api-snap.com/api/hash" \\
+  -H "Authorization: Bearer snp_your_api_key" \\
+  -H "Content-Type: application/json" \\
+  -d "{\"text\": \"$CONTENT\", \"algorithm\": \"sha256\"}" | jq -r '.hash')
+
+echo "SHA-256: $HASH"
+# Compare with the expected hash from the download page`}</code>
+        </pre>
+
+        <h3>Content-Addressable Storage</h3>
+        <p>
+          Use SHA-256 hashes as filenames or object keys in storage systems. This gives you automatic
+          deduplication — if two files produce the same hash, they&#39;re identical, so you only
+          store one copy.
+        </p>
+
+        <h3>ETag Generation</h3>
+        <p>
+          Generate ETags for HTTP caching by hashing your response body. When a client sends an{" "}
+          <code>If-None-Match</code> header with the ETag, you can return <code>304 Not Modified</code>{" "}
+          instead of re-sending the full response.
+        </p>
+
+        <h2>Security Considerations</h2>
+        <p>
+          This API is for general-purpose hashing — checksums, fingerprints, cache keys, and data
+          integrity. <strong>Do not use it for password hashing.</strong> Passwords require
+          purpose-built algorithms like bcrypt, scrypt, or Argon2 that include salting and are
+          intentionally slow to resist brute-force attacks. SHA-256 is fast by design, which is
+          exactly what you don&#39;t want for passwords.
+        </p>
+
+        <p>
+          Get started —{" "}
+          <Link href="/signup">create a free API Snap account</Link> and try the{" "}
+          <Link href="/tools/hash-api">hash endpoint</Link>.
+        </p>
+      </>
+    ),
+  },
 ];
 
 // ---------------------------------------------------------------------------

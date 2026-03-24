@@ -171,7 +171,7 @@ function DashboardContent() {
                     : "text-yellow-400"
                   }`}>
                     {usagePercent >= 100
-                      ? "API limit reached — calls are being blocked"
+                      ? "You're at your monthly limit — upgrade to keep building"
                       : usagePercent >= 90
                       ? `Critical: only ${remaining.toLocaleString()} calls left this month`
                       : `Heads up: ${usagePercent.toFixed(0)}% of your monthly quota used`}
@@ -179,14 +179,14 @@ function DashboardContent() {
                 </div>
                 <p className="text-sm text-gray-400">
                   {usagePercent >= 100
-                    ? `Your free tier limit of ${usage.limit} calls is exhausted. Every request is returning a 429 error right now.`
+                    ? `Your ${usage.limit} free calls are used up. Every request returns a 429 until you upgrade.`
                     : usagePercent >= 90
                     ? `You have ${remaining.toLocaleString()} calls left before your API goes dark. Upgrade takes 30 seconds.`
                     : `You're close to your ${usage.limit.toLocaleString()}-call limit. Upgrade now to avoid downtime.`}
                 </p>
                 {usage.plan === "free" && (
                   <p className="text-xs text-gray-500 mt-2">
-                    Pro plan ($29/mo) gives you 50,000 calls — 500× your current limit.
+                    Hobby plan ($9/mo) gives you 5,000 calls — 50× your current limit.
                   </p>
                 )}
                 {usage.plan === "hobby" && (
@@ -197,7 +197,7 @@ function DashboardContent() {
               </div>
               <div className="flex flex-col items-end gap-2 shrink-0">
                 <Link
-                  href="/dashboard/billing"
+                  href={usagePercent >= 100 ? "/dashboard/billing?plan=hobby" : "/dashboard/billing"}
                   className={`rounded-lg px-5 py-2.5 text-sm font-semibold text-white transition whitespace-nowrap ${
                     usagePercent >= 100
                       ? "bg-red-600 hover:bg-red-500 shadow-lg shadow-red-500/20"
@@ -206,7 +206,7 @@ function DashboardContent() {
                       : "bg-indigo-600 hover:bg-indigo-500"
                   }`}
                 >
-                  {usagePercent >= 100 ? "Upgrade Now — Fix This" : "Upgrade to Pro"}
+                  {usagePercent >= 100 ? "Upgrade to Hobby — $9/mo" : "Upgrade to Pro"}
                 </Link>
                 <Link href="/pricing" className="text-xs text-gray-500 hover:text-gray-400">
                   Compare plans

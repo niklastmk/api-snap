@@ -1,6 +1,8 @@
 import Link from "next/link";
 
 const navLinks = [
+  { href: "/qr", label: "QR Generator" },
+  { href: "/snapqr", label: "SnapQR" },
   { href: "/playground", label: "Playground" },
   { href: "/docs", label: "Docs" },
   { href: "/pricing", label: "Pricing" },

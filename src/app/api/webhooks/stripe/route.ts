@@ -1,18 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { db } from "@/lib/db";
-import { users } from "@/lib/schema";
+import { users, apiKeys } from "@/lib/schema";
 import { eq } from "drizzle-orm";
+import { nanoid } from "nanoid";
 import Stripe from "stripe";
 
 // Map Stripe price IDs to plan names
-const PRICE_TO_PLAN: Record<string, "hobby" | "pro" | "business"> = {
+const PRICE_TO_PLAN: Record<string, "hobby" | "pro" | "business" | "qr_pro"> = {
   [process.env.STRIPE_PRICE_HOBBY || "price_1TE9vQFAtUvZANbzzoWEI87L"]: "hobby",
   [process.env.STRIPE_PRICE_PRO || "price_1TE9vcFAtUvZANbzEnpD1q4G"]: "pro",
   [process.env.STRIPE_PRICE_BUSINESS || "price_1TE9vqFAtUvZANbzRvveyRBq"]: "business",
+  [process.env.STRIPE_PRICE_QR_PRO || "price_1TETKiFAtUvZANbzpImtM48J"]: "qr_pro",
 };
 
-function getPlanFromSubscription(sub: Stripe.Subscription): "hobby" | "pro" | "business" | null {
+function getPlanFromSubscription(sub: Stripe.Subscription): "hobby" | "pro" | "business" | "qr_pro" | null {
   const priceId = sub.items.data[0]?.price?.id;
   if (!priceId) return null;
   return PRICE_TO_PLAN[priceId] || null;
@@ -22,8 +24,13 @@ export async function POST(req: NextRequest) {
   const body = await req.text();
   const sig = req.headers.get("stripe-signature");
 
-  if (!sig || !process.env.STRIPE_WEBHOOK_SECRET) {
-    return NextResponse.json({ error: "Missing signature" }, { status: 400 });
+  if (!process.env.STRIPE_WEBHOOK_SECRET) {
+    console.error("STRIPE_WEBHOOK_SECRET is not configured — cannot verify webhook");
+    return NextResponse.json({ error: "Webhook misconfigured" }, { status: 500 });
+  }
+
+  if (!sig) {
+    return NextResponse.json({ error: "Missing stripe-signature header" }, { status: 400 });
   }
 
   let event: Stripe.Event;
@@ -46,21 +53,52 @@ export async function POST(req: NextRequest) {
         const session = event.data.object as Stripe.Checkout.Session;
         const customerId = session.customer as string;
         const userId = session.metadata?.userId;
+        const metaEmail = session.metadata?.email || session.customer_email;
 
-        if (!userId) {
-          console.error("checkout.session.completed: no userId in metadata", session.id);
-          break;
+        if (userId) {
+          // Existing user — link customer ID (plan set by subscription events)
+          await db.update(users)
+            .set({ stripeCustomerId: customerId })
+            .where(eq(users.id, userId))
+            .run();
+          console.log(`Linked customer ${customerId} to user ${userId}`);
+        } else if (metaEmail) {
+          // Email-only checkout — link customer to user by email if they exist
+          const result = await db.update(users)
+            .set({ stripeCustomerId: customerId })
+            .where(eq(users.email, metaEmail))
+            .run();
+          if (result.rowsAffected > 0) {
+            console.log(`checkout.session.completed: linked customer ${customerId} to email ${metaEmail}`);
+          } else {
+            // No existing user — create one for this paying customer
+            const userId = nanoid();
+            const passwordHash = "$2a$12$placeholder"; // email-only checkout, no password login
+            await db.insert(users).values({
+              id: userId,
+              email: metaEmail,
+              passwordHash,
+              stripeCustomerId: customerId,
+              plan: "qr_pro",
+              createdAt: new Date(),
+            }).run();
+
+            // Generate an API key for the new user
+            const apiKeyId = nanoid();
+            const apiKeyValue = `snp_${nanoid(32)}`;
+            await db.insert(apiKeys).values({
+              id: apiKeyId,
+              userId,
+              key: apiKeyValue,
+              name: "Default",
+              createdAt: new Date(),
+            }).run();
+
+            console.log(`checkout.session.completed: created new user for ${metaEmail} with plan qr_pro`);
+          }
+        } else {
+          console.error("checkout.session.completed: no userId or email in metadata", session.id);
         }
-
-        // Link the Stripe customer to the user — plan is set by subscription events
-        // to avoid race conditions between checkout.session.completed and
-        // customer.subscription.created firing simultaneously
-        await db.update(users)
-          .set({ stripeCustomerId: customerId })
-          .where(eq(users.id, userId))
-          .run();
-
-        console.log(`Linked customer ${customerId} to user ${userId}`);
         break;
       }
 

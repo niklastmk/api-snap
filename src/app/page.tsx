@@ -176,12 +176,21 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
+
+      {/* Sticky top bar */}
+      <div className="sticky top-0 z-50 bg-indigo-600 text-white text-center text-sm py-2 px-4">
+        Free tier: 100 calls/month — no credit card required{" "}
+        <Link href="/signup" className="underline font-semibold hover:text-indigo-100 ml-1">
+          Sign up free &rarr;
+        </Link>
+      </div>
+
       <Nav />
 
       {/* Hero */}
       <section className="mx-auto max-w-4xl px-6 py-24 text-center">
         <div className="inline-block rounded-full bg-green-600/10 border border-green-500/20 px-4 py-1.5 text-sm text-green-400 mb-6">
-          No credit card required — start in 30 seconds
+          Start free, no credit card
         </div>
         <h1 className="text-5xl font-bold tracking-tight text-white sm:text-6xl">
           Stop Rebuilding
@@ -197,41 +206,77 @@ export default function Home() {
             href="/signup"
             className="rounded-lg bg-indigo-600 px-6 py-3.5 text-lg font-semibold text-white hover:bg-indigo-500 transition shadow-lg shadow-indigo-600/25"
           >
-            Get Your Free API Key
+            Start Free — No Credit Card
           </Link>
           <Link
-            href="/playground"
+            href="/snapqr"
             className="rounded-lg border border-gray-700 px-6 py-3.5 text-lg font-medium text-gray-300 hover:border-gray-500 hover:text-white transition"
           >
-            Try It Live — No Signup
+            Free QR Generator
           </Link>
         </div>
         <p className="mt-4 text-sm text-gray-500">
           100 API calls/month free forever. Upgrade from $9/mo.
         </p>
 
-        {/* Code example */}
-        <div className="mt-16 rounded-xl border border-gray-800 bg-gray-900 p-6 text-left">
-          <div className="flex items-center gap-2 text-sm text-gray-500 mb-4">
-            <span className="h-3 w-3 rounded-full bg-red-500"></span>
-            <span className="h-3 w-3 rounded-full bg-yellow-500"></span>
-            <span className="h-3 w-3 rounded-full bg-green-500"></span>
-            <span className="ml-2">Quick Start</span>
+        {/* Code example: request + response side by side */}
+        <div className="mt-16 grid gap-4 md:grid-cols-2">
+          <div className="rounded-xl border border-gray-800 bg-gray-900 p-5 text-left">
+            <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+              <span className="h-3 w-3 rounded-full bg-red-500"></span>
+              <span className="h-3 w-3 rounded-full bg-yellow-500"></span>
+              <span className="h-3 w-3 rounded-full bg-green-500"></span>
+              <span className="ml-2">Request</span>
+            </div>
+            <pre className="text-sm text-gray-300 overflow-x-auto">
+              <code>{`curl "https://api-snap.com/api/uuid\\
+  ?format=nanoid\\
+  &count=3\\
+  &prefix=usr_" \\
+  -H "Authorization: Bearer snp_your_key"`}</code>
+            </pre>
           </div>
-          <pre className="text-sm text-gray-300 overflow-x-auto">
-            <code>{`# Generate a QR code
-curl "https://api-snap.com/api/qr?data=Hello+World&size=400" \\
-  -H "Authorization: Bearer snp_your_api_key" \\
-  -o qr.png
+          <div className="rounded-xl border border-green-800/40 bg-gray-900 p-5 text-left">
+            <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+              <span className="h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse"></span>
+              <span className="ml-1 text-green-400">200 OK</span>
+              <span className="ml-auto text-xs text-gray-600">~45ms</span>
+            </div>
+            <pre className="text-sm text-green-300/90 overflow-x-auto">
+              <code>{`{
+  "ids": [
+    "usr_V1StGXR8_Z5jdHi6B",
+    "usr_xkCD2wEzJ9h4Qn3bN",
+    "usr_mTv7LRkYp1sNfWc8A"
+  ],
+  "format": "nanoid",
+  "count": 3,
+  "prefix": "usr_"
+}`}</code>
+            </pre>
+          </div>
+        </div>
+      </section>
 
-# Hash a string
-curl "https://api-snap.com/api/hash?text=my-secret&algorithm=sha256" \\
-  -H "Authorization: Bearer snp_your_api_key"
-
-# Generate unique IDs
-curl "https://api-snap.com/api/uuid?format=nanoid&count=10&prefix=usr_" \\
-  -H "Authorization: Bearer snp_your_api_key"`}</code>
-          </pre>
+      {/* Social proof strip */}
+      <section className="border-y border-gray-800 bg-gray-900/50">
+        <div className="mx-auto max-w-4xl px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+          <div>
+            <p className="text-2xl font-bold text-white">13+</p>
+            <p className="text-sm text-gray-400 mt-1">API endpoints</p>
+          </div>
+          <div>
+            <p className="text-2xl font-bold text-white">100</p>
+            <p className="text-sm text-gray-400 mt-1">Free calls/month</p>
+          </div>
+          <div>
+            <p className="text-2xl font-bold text-white">3+</p>
+            <p className="text-sm text-gray-400 mt-1">API directories listed</p>
+          </div>
+          <div>
+            <p className="text-2xl font-bold text-white">&lt;50ms</p>
+            <p className="text-sm text-gray-400 mt-1">Avg response time</p>
+          </div>
         </div>
       </section>
 
@@ -299,16 +344,35 @@ curl "https://api-snap.com/api/uuid?format=nanoid&count=10&prefix=usr_" \\
         </div>
       </section>
 
-      {/* Social proof */}
+      {/* Language compatibility */}
       <section className="mx-auto max-w-4xl px-6 py-16 text-center">
-        <h2 className="text-3xl font-bold mb-4">Built for Developers Who Ship</h2>
-        <p className="text-gray-400 mb-10">Works with every language and framework. If it can make HTTP requests, it works with API Snap.</p>
-        <div className="flex flex-wrap justify-center gap-6 text-gray-500 text-sm font-medium">
+        <h2 className="text-3xl font-bold mb-4">Works With Everything</h2>
+        <p className="text-gray-400 mb-10">If it can make HTTP requests, it works with API Snap. One REST API, any language.</p>
+        <div className="flex flex-wrap justify-center gap-4 text-gray-500 text-sm font-medium">
           {["Node.js", "Python", "Go", "Ruby", "PHP", "Rust", "Java", "Swift", "cURL", "Any HTTP Client"].map((lang) => (
             <span key={lang} className="rounded-lg border border-gray-800 bg-gray-900 px-4 py-2">
               {lang}
             </span>
           ))}
+        </div>
+      </section>
+
+      {/* Trust signals */}
+      <section className="mx-auto max-w-4xl px-6 py-16">
+        <h2 className="text-3xl font-bold text-center mb-10">Open & Transparent</h2>
+        <div className="grid gap-6 md:grid-cols-3">
+          <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6 text-center">
+            <p className="text-lg font-semibold text-white">Public API Directories</p>
+            <p className="mt-2 text-sm text-gray-400">Listed on public-apis, APIs.guru, and Apilist.fun — vetted by the community.</p>
+          </div>
+          <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6 text-center">
+            <p className="text-lg font-semibold text-white">OpenAPI Spec</p>
+            <p className="mt-2 text-sm text-gray-400">Full OpenAPI 3.0 spec at <code className="text-indigo-400">/openapi.json</code> — import into Postman, Insomnia, or your SDK generator.</p>
+          </div>
+          <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6 text-center">
+            <p className="text-lg font-semibold text-white">No Vendor Lock-in</p>
+            <p className="mt-2 text-sm text-gray-400">Standard REST. Bearer token auth. JSON responses. Switch away anytime — no proprietary SDKs required.</p>
+          </div>
         </div>
       </section>
 

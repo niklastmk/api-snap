@@ -44,14 +44,16 @@ export function createApiHandler(
       const now = new Date();
       const resetAt = new Date(now.getFullYear(), now.getMonth() + 1, 1).toISOString();
       const isPaidPlan = auth.user.plan !== "free";
-      const upgradeUrl = `${appUrl}/dashboard/billing`;
+      const upgradeUrl = isPaidPlan
+        ? `${appUrl}/dashboard/billing`
+        : `${appUrl}/pricing`;
 
       return NextResponse.json(
         {
           error: "rate_limit_exceeded",
           message: isPaidPlan
             ? `You've hit your ${auth.user.plan} plan limit of ${limit.toLocaleString()} requests this month. Upgrade to a higher tier for more capacity: ${upgradeUrl}`
-            : `You've hit your free tier limit of ${limit} requests/month. Upgrade to Pro for unlimited requests: ${upgradeUrl}`,
+            : `You've hit your free tier limit. Upgrade to Hobby ($9/mo) for 5,000 calls at ${appUrl}/pricing`,
           usage,
           limit,
           reset_at: resetAt,

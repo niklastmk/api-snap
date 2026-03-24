@@ -7,6 +7,7 @@ const PLAN_LIMITS: Record<string, number> = {
   hobby: 5_000,
   pro: 50_000,
   business: 500_000,
+  qr_pro: 5_000,
 };
 
 export function getMonthlyLimit(plan: string): number {

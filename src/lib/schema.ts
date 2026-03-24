@@ -5,7 +5,7 @@ export const users = sqliteTable("users", {
   email: text("email").notNull().unique(),
   passwordHash: text("password_hash").notNull(),
   stripeCustomerId: text("stripe_customer_id"),
-  plan: text("plan", { enum: ["free", "hobby", "pro", "business"] })
+  plan: text("plan", { enum: ["free", "hobby", "pro", "business", "qr_pro"] })
     .notNull()
     .default("free"),
   createdAt: integer("created_at", { mode: "timestamp" })
