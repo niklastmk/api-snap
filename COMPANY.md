@@ -99,15 +99,18 @@ Developer utility API platform. 13+ endpoints (QR codes, screenshots, PDFs, imag
   1. POST /api/snapqr/generate → PASS (returns shortCode, qrUrl, redirectUrl, statsUrl)
   2. GET /r/[code] → PASS (302 redirect to target URL, scan event logged)
   3. GET /s/[code] → PASS (stats page renders with scan data)
-  4. POST /api/snapqr/checkout → PASS (returns live Stripe checkout URL)
+  4. POST /api/snapqr/checkout → PASS (returns live cs_live_ Stripe checkout URL — CONFIRMED LIVE MODE)
   5. Stripe webhook checkout.session.completed → PASS (new user created with plan=qr_pro, API key generated, Stripe customer ID linked)
+- **Broken /s/demo links fixed (2026-03-24)** — landing page was referencing /s/demo (404) in 3 places; now pointing to /s/sPaleBlu1 (seeded code, verified 200 OK, 3+ scans)
+- **qr.api-snap.com domain moved (2026-03-24)** — was registered to dead snapqr Railway project; deleted via API and re-registered to live striking-enjoyment service. PENDING: Cloudflare CNAME for `qr` must be updated from `snapqr-production.up.railway.app` to `nztawuxw.up.railway.app` (human-gated, requires Cloudflare dashboard login)
 
 ## What's NOT Done
-- RapidAPI listing (requires human login at rapidapi.com/studio — HIGHEST PRIORITY)
+- RapidAPI listing (requires human login at rapidapi.com/studio)
 - Postman API Network listing (requires human login)
 - No customers yet
 - No social media presence
 - Analytics blind until NEXT_PUBLIC_GA_MEASUREMENT_ID set in Railway
+- qr.api-snap.com: Update Cloudflare CNAME `qr` → `nztawuxw.up.railway.app` + add TXT `_railway-verify.qr` → `railway-verify=6250e8fe54f44737db606d8b19e9183164bd477ee9dadc79ad4835d3ea18cc2b` (requires Cloudflare dashboard login)
 
 ## Kill Date
 April 15, 2026 — if no paying customers by then, abandon and pivot
