@@ -1,8 +1,2 @@
 [phases.setup]
-aptPkgs = ["fonts-dejavu-core", "fontconfig"]
-
-[variables]
-FONTCONFIG_PATH = "/etc/fonts"
-
-[start]
-cmd = "fc-cache -f && npm start"
+aptPkgs = []

@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
+import { readFileSync } from "fs";
+import { join } from "path";
 import QRCode from "qrcode";
 import sharp from "sharp";
 import { db } from "@/lib/db";
 import { links, users } from "@/lib/schema";
 import { eq } from "drizzle-orm";
+
+// Pre-rendered branding image (no runtime font dependency)
+const brandPng = readFileSync(join(process.cwd(), "public", "snapqr-brand.png"));
 
 export const dynamic = "force-dynamic";
 
@@ -57,22 +62,9 @@ export async function GET(
   }
 
   // Free user (or demo/unknown code): add branding label below the QR code
-  const brandingText = sharp({
-    text: {
-      text: '<span weight="bold">SnapQR</span>  <span size="small" foreground="#6b7280">free scan analytics</span>',
-      font: "sans-serif",
-      width: 400,
-      dpi: 150,
-      align: "centre",
-      rgba: true,
-    },
-  });
-
-  const textBuffer = await brandingText.png().toBuffer();
-
   const brandedBuffer = await sharp(pngBuffer)
     .extend({ bottom: 36, background: { r: 255, g: 255, b: 255, alpha: 1 } })
-    .composite([{ input: textBuffer, gravity: "south" }])
+    .composite([{ input: brandPng, gravity: "south" }])
     .png()
     .toBuffer();
 
