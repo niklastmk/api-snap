@@ -137,7 +137,7 @@ export default function SnapQRHome() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="Notify me when someone scans this (optional)"
+              placeholder="Email to receive your stats link (optional)"
               className="w-full border border-zinc-200 rounded-xl px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
               disabled={loading}
             />
