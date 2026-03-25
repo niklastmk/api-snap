@@ -5,6 +5,7 @@ export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
     const email = body?.email;
+    const code = typeof body?.code === "string" ? body.code : undefined;
 
     if (!email || typeof email !== "string" || !email.includes("@")) {
       return NextResponse.json({ error: "Valid email required" }, { status: 400 });
@@ -23,11 +24,12 @@ export async function POST(req: NextRequest) {
       payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${appUrl}/snapqr/upgrade/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${appUrl}/snapqr/upgrade`,
+      cancel_url: `${appUrl}/snapqr/upgrade${code ? `?code=${code}` : ""}`,
       customer_email: email,
       metadata: {
         plan: "qr_pro",
         email: email,
+        ...(code ? { qr_code: code } : {}),
       },
     });
 

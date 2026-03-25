@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { links, scanEvents } from "@/lib/schema";
 import { eq } from "drizzle-orm";
 import { UAParser } from "ua-parser-js";
+import { sendFirstScanEmail } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
 
@@ -27,8 +28,8 @@ async function lookupCountry(ip: string): Promise<string | null> {
       const data = await res.json();
       return data.countryCode ?? null;
     }
-  } catch {
-    // Geo lookup failure should never block redirect
+  } catch (err) {
+    console.error("[snapqr] geo lookup failed for", ip, err);
   }
   return null;
 }
@@ -78,8 +79,37 @@ export async function GET(
         os,
         referer,
       });
-    } catch {
-      // Silently swallow analytics errors — redirect must not fail
+
+      // Send first-scan notification email if creator opted in
+      if (link.creatorEmail && !link.firstScanEmailSent) {
+        // Optimistic lock: mark as sent first to prevent duplicate emails from concurrent scans
+        const updated = await db
+          .update(links)
+          .set({ firstScanEmailSent: true })
+          .where(eq(links.id, link.id))
+          .returning({ id: links.id });
+
+        if (updated.length > 0) {
+          try {
+            const sent = await sendFirstScanEmail({
+              to: link.creatorEmail,
+              shortCode: link.shortCode,
+            });
+            if (sent) {
+              console.log("[snapqr] first-scan email sent to", link.creatorEmail, "for", link.shortCode);
+            }
+          } catch (emailErr) {
+            // Roll back the flag so it can be retried on the next scan
+            await db
+              .update(links)
+              .set({ firstScanEmailSent: false })
+              .where(eq(links.id, link.id));
+            console.error("[snapqr] first-scan email failed for", link.shortCode, emailErr);
+          }
+        }
+      }
+    } catch (err) {
+      console.error("[snapqr] scan event insert failed for link", link.id, err);
     }
   })();
 

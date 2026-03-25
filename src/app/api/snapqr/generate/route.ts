@@ -18,14 +18,14 @@ function generateShortCode(): string {
 }
 
 export async function POST(request: NextRequest) {
-  let body: { url?: string };
+  let body: { url?: string; email?: string };
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { url } = body;
+  const { url, email } = body;
   if (!url || typeof url !== "string") {
     return NextResponse.json({ error: "URL is required" }, { status: 400 });
   }
@@ -81,11 +81,16 @@ export async function POST(request: NextRequest) {
   const shortCode = generateShortCode();
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "https://api-snap.com";
 
+  // Basic email validation — only store if it looks valid
+  const cleanEmail = email?.trim().toLowerCase();
+  const validEmail = cleanEmail && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail) ? cleanEmail : null;
+
   await db.insert(links).values({
     shortCode,
     targetUrl: url,
     creatorIp: ip,
     creatorUserId: userId,
+    creatorEmail: validEmail,
   });
 
   return NextResponse.json({

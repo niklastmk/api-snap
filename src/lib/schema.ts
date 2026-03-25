@@ -44,6 +44,8 @@ export const links = sqliteTable("links", {
   targetUrl: text("target_url").notNull(),
   creatorIp: text("creator_ip"),
   creatorUserId: text("creator_user_id").references(() => users.id),
+  creatorEmail: text("creator_email"),
+  firstScanEmailSent: integer("first_scan_email_sent", { mode: "boolean" }).default(false),
   createdAt: integer("created_at", { mode: "timestamp" })
     .notNull()
     .$defaultFn(() => new Date()),

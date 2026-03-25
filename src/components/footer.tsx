@@ -6,10 +6,9 @@ export default function Footer() {
       <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-start justify-between gap-8 text-sm text-gray-500">
         <span>&copy; {new Date().getFullYear()} API Snap. All rights reserved.</span>
         <div className="flex gap-6">
-          <Link href="/qr" className="hover:text-gray-300 transition">QR Generator</Link>
-          <Link href="/docs" className="hover:text-gray-300 transition">Docs</Link>
-          <Link href="/playground" className="hover:text-gray-300 transition">Playground</Link>
-          <Link href="/pricing" className="hover:text-gray-300 transition">Pricing</Link>
+          <Link href="/snapqr" className="hover:text-gray-300 transition">SnapQR</Link>
+          <Link href="/snapqr/upgrade" className="hover:text-gray-300 transition">Pricing</Link>
+          <Link href="/docs" className="hover:text-gray-300 transition">API Docs</Link>
           <Link href="/blog" className="hover:text-gray-300 transition">Blog</Link>
         </div>
         <div className="flex flex-wrap gap-x-6 gap-y-2">

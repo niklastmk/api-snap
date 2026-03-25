@@ -1,0 +1,57 @@
+[
+  {
+    "title": "How to Generate QR Codes via API in 3 Lines of Code",
+    "devto": {
+      "url": "https://dev.to/preview/qr-codes-via-api-3-lines.md",
+      "id": "dry-run"
+    },
+    "hashnode": {
+      "url": "https://hashnode.com/preview/qr-codes-via-api-3-lines.md",
+      "id": "dry-run"
+    }
+  },
+  {
+    "title": "Website Screenshots via API — No Puppeteer Setup Required",
+    "devto": {
+      "url": "https://dev.to/preview/website-screenshots-api-no-puppeteer.md",
+      "id": "dry-run"
+    },
+    "hashnode": {
+      "url": "https://hashnode.com/preview/website-screenshots-api-no-puppeteer.md",
+      "id": "dry-run"
+    }
+  },
+  {
+    "title": "How to Convert HTML to PDF via API — No wkhtmltopdf Required",
+    "devto": {
+      "url": "https://dev.to/preview/html-to-pdf-api-no-wkhtmltopdf.md",
+      "id": "dry-run"
+    },
+    "hashnode": {
+      "url": "https://hashnode.com/preview/html-to-pdf-api-no-wkhtmltopdf.md",
+      "id": "dry-run"
+    }
+  },
+  {
+    "title": "How to Resize and Convert Images via API — Without Sharp or ImageMagick",
+    "devto": {
+      "url": "https://dev.to/preview/resize-convert-images-api-no-sharp.md",
+      "id": "dry-run"
+    },
+    "hashnode": {
+      "url": "https://hashnode.com/preview/resize-convert-images-api-no-sharp.md",
+      "id": "dry-run"
+    }
+  },
+  {
+    "title": "Stop Managing 5 API Keys for Basic Utilities",
+    "devto": {
+      "url": "https://dev.to/preview/stop-managing-5-api-keys-for-basic-utilities.md",
+      "id": "dry-run"
+    },
+    "hashnode": {
+      "url": "https://hashnode.com/preview/stop-managing-5-api-keys-for-basic-utilities.md",
+      "id": "dry-run"
+    }
+  }
+]

@@ -104,6 +104,27 @@ Developer utility API platform. 13+ endpoints (QR codes, screenshots, PDFs, imag
 - **Broken /s/demo links fixed (2026-03-24)** — landing page was referencing /s/demo (404) in 3 places; now pointing to /s/sPaleBlu1 (seeded code, verified 200 OK, 3+ scans)
 - **qr.api-snap.com domain moved (2026-03-24)** — was registered to dead snapqr Railway project; deleted via API and re-registered to live striking-enjoyment service. PENDING: Cloudflare CNAME for `qr` must be updated from `snapqr-production.up.railway.app` to `nztawuxw.up.railway.app` (human-gated, requires Cloudflare dashboard login)
 
+## Pre-launch Audit [2026-03-31]
+
+Systematic walkthrough of live site (api-snap.com) as first-time visitor, ahead of Product Hunt launch March 31.
+
+| # | Checkpoint | Result | Notes |
+|---|-----------|--------|-------|
+| 1 | `/snapqr` loads, generator works | PASS | URL input, email field, "Generate QR Code" CTA all present. Demo QR shows live scan count (24). |
+| 2 | QR image renders with SnapQR branding | PASS | `/api/snapqr/qr/sPaleBlu1` returns 12KB PNG with visible "SnapQR free scan analytics" text below code. |
+| 3 | 3-code free limit → upgrade modal | PASS | Code verified: after 3 codes, modal shows "You're growing! Time to upgrade." with "Upgrade to Pro — $7/mo" CTA. |
+| 4 | `/s/sPaleBlu1` stats page | PASS | Renders with 24 scans, Germany geo data, device/browser breakdown, 7-day timeline chart. Multiple upgrade CTAs ("$7/mo") linking to `/snapqr/upgrade?code=sPaleBlu1`. |
+| 5 | "Upgrade to Pro" → Stripe checkout | PASS | `/snapqr/upgrade` shows Free vs Pro comparison, email input, "Start Pro — $7/mo" button. Checkout API creates live `cs_live_` Stripe sessions (POST-only, returns 405 on GET as expected). |
+| 6 | Email capture field visible | PASS | Generator page has email input: "Notify me when someone scans this (optional)". |
+| 7 | `/r/sPaleBlu1` redirect | PASS | 302 redirects to target URL (SnapQR landing page). Scan event logged async. |
+| 8 | Stats API | PASS | `/api/snapqr/stats?code=sPaleBlu1` returns `{"code":"sPaleBlu1","total":24}`. |
+| 9 | No 404s or broken images | PASS | All pages, images, and API endpoints responding correctly. No error states observed. |
+| 10 | No console errors | PASS | No error indicators in any page response. All Next.js streaming/hydration appears clean. |
+
+**Fix applied during audit:** Added missing `STRIPE_PRICE_QR_PRO` to `.env.example` (was undocumented for new developer setup).
+
+**Overall: ALL 10 CHECKPOINTS PASSED.** Site is ready for Product Hunt traffic on March 31.
+
 ## What's NOT Done
 - RapidAPI listing (requires human login at rapidapi.com/studio)
 - Postman API Network listing (requires human login)

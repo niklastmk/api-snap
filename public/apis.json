@@ -1,0 +1,57 @@
+{
+  "name": "API Snap",
+  "description": "13+ utility APIs in one REST service — QR codes, screenshots, image processing & more",
+  "url": "https://api-snap.com/apis.json",
+  "image": "https://api-snap.com/favicon.ico",
+  "specificationVersion": "0.18",
+  "tags": [
+    "Developer Tools",
+    "QR Codes",
+    "Screenshots",
+    "Image Processing",
+    "REST API",
+    "Utility APIs"
+  ],
+  "created": "2026-03-24",
+  "modified": "2026-03-24",
+  "apis": [
+    {
+      "name": "API Snap",
+      "description": "13+ utility APIs in one REST service — QR codes, screenshots, image processing & more",
+      "image": "https://api-snap.com/favicon.ico",
+      "humanURL": "https://api-snap.com",
+      "baseURL": "https://api-snap.com",
+      "tags": [
+        "Developer Tools",
+        "QR Codes",
+        "Screenshots",
+        "Image Processing",
+        "URL Shortener",
+        "Markdown",
+        "Lorem Ipsum",
+        "REST API"
+      ],
+      "properties": [
+        {
+          "type": "OpenAPI",
+          "url": "https://api-snap.com/openapi.json"
+        },
+        {
+          "type": "Documentation",
+          "url": "https://api-snap.com"
+        }
+      ],
+      "contact": [
+        {
+          "FN": "API Snap"
+        }
+      ]
+    }
+  ],
+  "maintainers": [
+    {
+      "FN": "API Snap",
+      "url": "https://api-snap.com"
+    }
+  ]
+}

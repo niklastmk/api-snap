@@ -129,7 +129,7 @@ export default async function StatsPage({ params }: Props) {
           <Link href="/snapqr" className="text-base font-bold text-black tracking-tight">SnapQR</Link>
           <div className="flex items-center gap-4 text-sm">
             <Link href="/snapqr" className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
-              Create QR code
+              Dashboard
             </Link>
           </div>
         </div>
@@ -140,13 +140,13 @@ export default async function StatsPage({ params }: Props) {
         <div className="bg-blue-600 text-white px-4 py-3">
           <div className="max-w-4xl mx-auto flex items-center justify-between gap-3">
             <p className="text-sm font-medium">
-              Track your own links — free
+              Own this QR code? Unlock full analytics
             </p>
             <Link
-              href="/snapqr"
+              href={`/snapqr/upgrade?code=${code}`}
               className="flex-shrink-0 text-sm font-semibold bg-white text-blue-600 px-4 py-1.5 rounded-lg hover:bg-blue-50 transition-colors"
             >
-              Create a QR code
+              Get Pro &rarr;
             </Link>
           </div>
         </div>
@@ -202,20 +202,20 @@ export default async function StatsPage({ params }: Props) {
 
         {/* Inline CTA — below summary cards, above the fold */}
         {!isPaid && (
-          <div className="mb-8 rounded-xl border border-emerald-200 bg-emerald-50 p-5 flex flex-col sm:flex-row items-center gap-4">
+          <div className="mb-8 rounded-xl border border-blue-200 bg-blue-50 p-5 flex flex-col sm:flex-row items-center gap-4">
             <div className="flex-1 text-center sm:text-left">
-              <p className="text-sm font-semibold text-emerald-900">
-                Want analytics for your own QR codes?
+              <p className="text-sm font-semibold text-blue-900">
+                Are you the owner of this QR code?
               </p>
-              <p className="text-sm text-emerald-700 mt-0.5">
-                Create one free — no signup needed.
+              <p className="text-sm text-blue-700 mt-0.5">
+                Upgrade to Pro for 30-day history, CSV export, and unbranded QR images.
               </p>
             </div>
             <Link
-              href="/snapqr"
-              className="flex-shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold bg-emerald-600 text-white px-5 py-2.5 rounded-lg hover:bg-emerald-700 transition-colors"
+              href={`/snapqr/upgrade?code=${code}`}
+              className="flex-shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold bg-blue-600 text-white px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Create a QR code &rarr;
+              Get full analytics &rarr;
             </Link>
           </div>
         )}
@@ -252,7 +252,7 @@ export default async function StatsPage({ params }: Props) {
                 </a>
               ) : (
                 <Link
-                  href="/snapqr/upgrade"
+                  href={`/snapqr/upgrade?code=${code}`}
                   className="group inline-flex items-center gap-2 text-sm border border-zinc-200 text-zinc-400 px-4 py-2.5 rounded-lg hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600 transition-all"
                   title="Export all scan data as a spreadsheet — available on Pro"
                 >
@@ -277,7 +277,7 @@ export default async function StatsPage({ params }: Props) {
               <span className="text-xs text-zinc-400">Last 30 days</span>
             ) : (
               <Link
-                href="/snapqr/upgrade"
+                href={`/snapqr/upgrade?code=${code}`}
                 className="text-xs text-zinc-400 hover:text-blue-600 transition-colors"
               >
                 Last 7 days <span className="text-zinc-300 mx-1">&middot;</span> <span className="text-blue-500">See 30 days</span>
@@ -382,7 +382,7 @@ export default async function StatsPage({ params }: Props) {
               {windowedScans.length} of {total} scans
               {!isPaid && total > windowedScans.length && (
                 <> <span className="text-zinc-300 mx-0.5">&middot;</span>{" "}
-                  <Link href="/snapqr/upgrade" className="text-blue-500 hover:text-blue-600 transition-colors">
+                  <Link href={`/snapqr/upgrade?code=${code}`} className="text-blue-500 hover:text-blue-600 transition-colors">
                     See all
                   </Link>
                 </>
@@ -448,26 +448,18 @@ export default async function StatsPage({ params }: Props) {
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
               <div className="flex-1 text-center sm:text-left">
                 <h3 className="text-base font-semibold text-zinc-800 mb-1">
-                  Want the full picture?
+                  Own this QR code? Get the full picture.
                 </h3>
                 <p className="text-sm text-zinc-500">
-                  Pro unlocks 30-day history, CSV export, and brandless QR images for <span className="font-medium text-zinc-700">$7/mo</span>.
+                  Pro unlocks 30-day history, CSV export, and unbranded QR images for <span className="font-medium text-zinc-700">$7/mo</span>.
                 </p>
               </div>
-              <div className="flex items-center gap-3 flex-shrink-0">
-                <Link
-                  href="/snapqr"
-                  className="text-sm text-zinc-500 hover:text-zinc-700 transition-colors whitespace-nowrap"
-                >
-                  Create QR code
-                </Link>
-                <Link
-                  href="/snapqr/upgrade"
-                  className="inline-flex items-center justify-center bg-blue-600 text-white font-medium px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors text-sm whitespace-nowrap"
-                >
-                  See Pro plans
-                </Link>
-              </div>
+              <Link
+                href={`/snapqr/upgrade?code=${code}`}
+                className="flex-shrink-0 inline-flex items-center justify-center bg-blue-600 text-white font-medium px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors text-sm whitespace-nowrap"
+              >
+                Upgrade this QR code &rarr;
+              </Link>
             </div>
           </div>
         )}
