@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Script from "next/script";
+import RootJsonLd from "./RootJsonLd";
 import "./globals.css";
 
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://api-snap.com";
@@ -38,22 +39,6 @@ export const metadata: Metadata = {
   alternates: { canonical: baseUrl },
 };
 
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: "API Snap",
-  applicationCategory: "DeveloperApplication",
-  operatingSystem: "Any",
-  description: "Developer utility APIs — QR codes, image resizing, hashing, UUID generation, and more.",
-  url: baseUrl,
-  offers: [
-    { "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD", description: "100 API calls/month" },
-    { "@type": "Offer", name: "Hobby", price: "9", priceCurrency: "USD", description: "5,000 API calls/month" },
-    { "@type": "Offer", name: "Pro", price: "29", priceCurrency: "USD", description: "50,000 API calls/month" },
-    { "@type": "Offer", name: "Business", price: "99", priceCurrency: "USD", description: "500,000 API calls/month" },
-  ],
-};
-
 const GA_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 export default function RootLayout({
@@ -64,10 +49,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
+        <RootJsonLd />
       </head>
       <body className="min-h-screen bg-gray-950 text-gray-100 antialiased">
         {GA_ID && (
