@@ -30,8 +30,12 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "URL is required" }, { status: 400 });
   }
 
-  // Auto-prepend https:// for bare domains
-  if (!/^https?:\/\//i.test(url)) {
+  // Auto-prepend https:// for bare domains; reject non-http(s) schemes
+  if (/^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(url)) {
+    if (!/^https?:\/\//i.test(url)) {
+      return NextResponse.json({ error: "Only http and https URLs are supported" }, { status: 400 });
+    }
+  } else {
     url = `https://${url}`;
   }
 
