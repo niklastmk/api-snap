@@ -1,12 +1,27 @@
 import type { Metadata } from "next";
 
-export const metadata: Metadata = {
-  title: "SnapQR — Free QR Code Generator with Scan Analytics",
-  description:
-    "Generate free QR codes instantly. Track every scan with real-time analytics — device, browser, location, and more.",
-};
-
 const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://api-snap.com";
+
+export const metadata: Metadata = {
+  title: "SnapQR — QR codes that track every scan",
+  description:
+    "Create a free QR code and see who scans it — real-time analytics with location, device, and browser data. Free tier, no signup. $7/mo Pro.",
+  openGraph: {
+    title: "SnapQR — QR codes that track every scan",
+    description:
+      "Create a free QR code and see who scans it — real-time analytics with location, device, and browser data. Free tier, no signup. $7/mo Pro.",
+    url: `${baseUrl}/snapqr`,
+    siteName: "SnapQR",
+    type: "website",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SnapQR — QR codes that track every scan",
+    description:
+      "Create a free QR code and see who scans it — real-time analytics with location, device, and browser data. Free tier, no signup. $7/mo Pro.",
+  },
+};
 
 const snapQrJsonLd = {
   "@context": "https://schema.org",

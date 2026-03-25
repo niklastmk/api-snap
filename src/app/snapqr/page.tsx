@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
+import { addQRHistoryEntry } from "@/lib/qr-history";
 
 interface GenerateResult {
   shortCode: string;
@@ -26,6 +28,13 @@ export default function SnapQRHome() {
   const [modalStatsCopied, setModalStatsCopied] = useState(false);
 
   useEffect(() => {
+    // Preload demo QR image so it's cached before the stats fetch resolves
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = "/api/snapqr/qr/sPaleBlu1";
+    document.head.appendChild(link);
+
     fetch("/api/snapqr/stats?code=sPaleBlu1")
       .then((r) => (r.ok ? r.json() : null))
       .then((d) => { if (d?.total != null) setDemoScans(d.total); })
@@ -100,6 +109,11 @@ export default function SnapQRHome() {
       }
       setShowUpgrade(false);
       setResult(data);
+      addQRHistoryEntry({
+        shortCode: data.shortCode,
+        targetUrl: fullUrl,
+        createdAt: new Date().toISOString(),
+      });
       if (!data.emailSent) {
         setShowSaveModal(true);
         setModalStatsCopied(false);
@@ -116,6 +130,7 @@ export default function SnapQRHome() {
       <nav className="border-b border-zinc-100 px-4 py-3 flex items-center justify-between max-w-5xl mx-auto w-full">
         <Link href="/snapqr" className="text-base font-bold text-black tracking-tight">SnapQR</Link>
         <div className="flex items-center gap-2 sm:gap-4 text-sm">
+          <Link href="/snapqr/history" className="text-zinc-500 hover:text-zinc-800 transition-colors">My QR Codes</Link>
           <Link href="/snapqr/upgrade" className="text-zinc-500 hover:text-zinc-800 transition-colors">Pricing</Link>
           {isPro ? (
             <>
@@ -305,13 +320,14 @@ export default function SnapQRHome() {
 
             {demoScans !== null && (
               <div className="mt-12 w-full max-w-lg border border-zinc-200 rounded-2xl p-5 sm:p-6 flex flex-col sm:flex-row items-center gap-4 sm:gap-5">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
+                <Image
                   src="/api/snapqr/qr/sPaleBlu1"
                   alt="Demo QR code"
-                  width={100}
-                  height={100}
-                  className="rounded-lg shadow-sm flex-shrink-0 sm:w-[120px] sm:h-[120px]"
+                  width={120}
+                  height={120}
+                  priority
+                  unoptimized
+                  className="rounded-lg shadow-sm flex-shrink-0 w-[100px] h-[100px] sm:w-[120px] sm:h-[120px]"
                 />
                 <div className="text-center sm:text-left">
                   <p className="text-xs font-medium text-zinc-400 uppercase tracking-wide mb-1">Live demo</p>
@@ -342,7 +358,7 @@ export default function SnapQRHome() {
             </div>
             <h2 className="text-lg font-bold text-black text-center">Save your stats link</h2>
             <p className="text-sm text-zinc-600 text-center">
-              You won&apos;t be able to find this QR code again without it.
+              Save this link to check your scan analytics anytime.
             </p>
             <p className="text-base font-mono font-bold text-blue-900 text-center break-all select-all bg-blue-50 rounded-lg px-4 py-3 w-full">
               {result.statsUrl}
