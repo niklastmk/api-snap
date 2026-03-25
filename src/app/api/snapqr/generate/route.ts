@@ -25,9 +25,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
   }
 
-  const { url, email } = body;
+  let { url, email } = body;
   if (!url || typeof url !== "string") {
     return NextResponse.json({ error: "URL is required" }, { status: 400 });
+  }
+
+  // Auto-prepend https:// for bare domains
+  if (!/^https?:\/\//i.test(url)) {
+    url = `https://${url}`;
   }
 
   try {
@@ -36,7 +41,7 @@ export async function POST(request: NextRequest) {
       throw new Error("Invalid protocol");
     }
   } catch {
-    return NextResponse.json({ error: "Invalid URL. Must start with http:// or https://" }, { status: 400 });
+    return NextResponse.json({ error: "Invalid URL" }, { status: 400 });
   }
 
   const ip =

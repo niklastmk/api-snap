@@ -54,6 +54,8 @@ export default function SnapQRHome() {
       return;
     }
 
+    const fullUrl = /^https?:\/\//i.test(url.trim()) ? url.trim() : `https://${url.trim()}`;
+
     setLoading(true);
     try {
       const storedApiKey = typeof window !== "undefined" ? localStorage.getItem("snapqr_api_key") : null;
@@ -63,7 +65,7 @@ export default function SnapQRHome() {
           "Content-Type": "application/json",
           ...(storedApiKey ? { "Authorization": `Bearer ${storedApiKey}` } : {}),
         },
-        body: JSON.stringify({ url: url.trim(), ...(email.trim() && { email: email.trim() }) }),
+        body: JSON.stringify({ url: fullUrl, ...(email.trim() && { email: email.trim() }) }),
       });
 
       const data: GenerateResult & { error?: string; upgrade?: boolean } = await res.json();
