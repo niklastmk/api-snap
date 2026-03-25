@@ -54,7 +54,13 @@ export default function SnapQRHome() {
       return;
     }
 
-    const fullUrl = /^https?:\/\//i.test(url.trim()) ? url.trim() : `https://${url.trim()}`;
+    const trimmed = url.trim();
+    const hasScheme = /^[a-zA-Z][a-zA-Z0-9+.-]*:\/\//.test(trimmed);
+    if (hasScheme && !/^https?:\/\//i.test(trimmed)) {
+      setError("Only http and https URLs are supported.");
+      return;
+    }
+    const fullUrl = hasScheme ? trimmed : `https://${trimmed}`;
 
     setLoading(true);
     try {
@@ -120,10 +126,10 @@ export default function SnapQRHome() {
         <div className="w-full max-w-lg">
           <form onSubmit={handleSubmit} className="flex flex-col gap-3">
             <input
-              type="url"
+              type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="Paste any URL — https://example.com"
+              placeholder="Paste any URL — example.com"
               className="w-full border border-zinc-300 rounded-xl px-4 py-3.5 text-base text-zinc-900 placeholder-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
               disabled={loading}
             />
