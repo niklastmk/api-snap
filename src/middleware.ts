@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const SNAPQR_HOSTNAMES = ["snapqr.app", "www.snapqr.app"];
+const SNAPQR_HOSTNAMES = ["snapqr.app", "www.snapqr.app", "qr.api-snap.com", "www.qr.api-snap.com"];
 
 export function middleware(req: NextRequest) {
   const hostname = req.headers.get("host")?.split(":")[0] ?? "";
