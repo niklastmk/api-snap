@@ -8,6 +8,7 @@ interface GenerateResult {
   qrUrl: string;
   redirectUrl: string;
   statsUrl: string;
+  emailSent?: boolean;
 }
 
 export default function SnapQRHome() {
@@ -20,6 +21,9 @@ export default function SnapQRHome() {
   const [demoScans, setDemoScans] = useState<number | null>(null);
   const [isPro, setIsPro] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [statsCopied, setStatsCopied] = useState(false);
+  const [showSaveModal, setShowSaveModal] = useState(false);
+  const [modalStatsCopied, setModalStatsCopied] = useState(false);
 
   useEffect(() => {
     fetch("/api/snapqr/stats?code=sPaleBlu1")
@@ -43,11 +47,20 @@ export default function SnapQRHome() {
     });
   }
 
+  function handleCopyStatsUrl() {
+    if (!result) return;
+    navigator.clipboard.writeText(result.statsUrl).then(() => {
+      setStatsCopied(true);
+      setTimeout(() => setStatsCopied(false), 2000);
+    });
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError("");
     setResult(null);
     setCopied(false);
+    setStatsCopied(false);
 
     if (!url.trim()) {
       setError("Please enter a URL.");
@@ -87,6 +100,10 @@ export default function SnapQRHome() {
       }
       setShowUpgrade(false);
       setResult(data);
+      if (!data.emailSent) {
+        setShowSaveModal(true);
+        setModalStatsCopied(false);
+      }
     } catch {
       setError("Network error. Please try again.");
     } finally {
@@ -199,12 +216,47 @@ export default function SnapQRHome() {
 
           {result && (
             <div className="mt-8 border border-zinc-200 rounded-2xl p-6 flex flex-col items-center gap-5">
+              <div className="w-full bg-blue-50 border border-blue-200 rounded-xl p-5 flex flex-col items-center gap-3">
+                <div className="flex items-center gap-2 text-blue-700 font-semibold text-sm">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                  </svg>
+                  Bookmark this to track scans
+                </div>
+                <p className="text-lg sm:text-xl font-mono font-bold text-blue-900 text-center break-all select-all">
+                  {result.statsUrl}
+                </p>
+                <button
+                  onClick={handleCopyStatsUrl}
+                  className="inline-flex items-center justify-center gap-2 bg-blue-600 text-white font-semibold px-6 py-2.5 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+                >
+                  {statsCopied ? (
+                    <>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Copied!
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                      Copy stats link
+                    </>
+                  )}
+                </button>
+                <p className="text-xs text-blue-600">
+                  This is the only way to find your QR code stats later
+                </p>
+              </div>
+
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={`/api/snapqr/qr/${result.shortCode}`}
                 alt="Your QR code"
-                width={200}
-                height={200}
+                width={180}
+                height={180}
                 className="rounded-lg shadow-sm"
               />
 
@@ -220,7 +272,7 @@ export default function SnapQRHome() {
                   onClick={handleCopyUrl}
                   className="inline-flex items-center justify-center border border-zinc-200 text-zinc-700 font-medium px-4 py-2.5 rounded-lg hover:bg-zinc-50 transition-colors text-sm"
                 >
-                  {copied ? "Copied!" : "Copy link"}
+                  {copied ? "Copied!" : "Copy QR link"}
                 </button>
                 <Link
                   href={`/s/${result.shortCode}`}
@@ -279,6 +331,56 @@ export default function SnapQRHome() {
           </>
         )}
       </main>
+
+      {showSaveModal && result && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 px-4">
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-6 flex flex-col items-center gap-4">
+            <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+              <svg className="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4.5c-.77-.833-2.694-.833-3.464 0L3.34 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              </svg>
+            </div>
+            <h2 className="text-lg font-bold text-black text-center">Save your stats link</h2>
+            <p className="text-sm text-zinc-600 text-center">
+              You won&apos;t be able to find this QR code again without it.
+            </p>
+            <p className="text-base font-mono font-bold text-blue-900 text-center break-all select-all bg-blue-50 rounded-lg px-4 py-3 w-full">
+              {result.statsUrl}
+            </p>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(result.statsUrl).then(() => {
+                  setModalStatsCopied(true);
+                  setTimeout(() => setModalStatsCopied(false), 2000);
+                });
+              }}
+              className="w-full inline-flex items-center justify-center gap-2 bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+            >
+              {modalStatsCopied ? (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Copied!
+                </>
+              ) : (
+                <>
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                  </svg>
+                  Copy stats link
+                </>
+              )}
+            </button>
+            <button
+              onClick={() => setShowSaveModal(false)}
+              className="text-sm text-zinc-500 hover:text-zinc-700 transition-colors"
+            >
+              I&apos;ve saved it
+            </button>
+          </div>
+        </div>
+      )}
 
       <footer className="border-t border-zinc-100 py-4 text-center text-xs text-zinc-400">
         SnapQR by{" "}

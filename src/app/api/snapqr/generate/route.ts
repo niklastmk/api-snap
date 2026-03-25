@@ -3,6 +3,7 @@ import { db } from "@/lib/db";
 import { links } from "@/lib/schema";
 import { eq } from "drizzle-orm";
 import { authenticateApiKey } from "@/lib/auth";
+import { sendGenerationEmail } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
 
@@ -102,10 +103,18 @@ export async function POST(request: NextRequest) {
     creatorEmail: validEmail,
   });
 
+  // Send generation email in the background (don't block the response)
+  if (validEmail) {
+    sendGenerationEmail({ to: validEmail, shortCode, targetUrl: url }).catch((err) => {
+      console.error("[snapqr] Failed to send generation email:", err);
+    });
+  }
+
   return NextResponse.json({
     shortCode,
     qrUrl: `${appUrl}/api/snapqr/qr/${shortCode}`,
     redirectUrl: `${appUrl}/r/${shortCode}`,
     statsUrl: `${appUrl}/s/${shortCode}`,
+    emailSent: !!validEmail,
   });
 }
