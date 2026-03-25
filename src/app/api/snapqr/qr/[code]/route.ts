@@ -57,21 +57,22 @@ export async function GET(
   }
 
   // Free user (or demo/unknown code): add branding label below the QR code
-  const brandingSvg = Buffer.from(
-    `<svg width="400" height="436">
-  <rect x="0" y="400" width="400" height="36" fill="white"/>
-  <text x="200" y="424"
-    font-family="DejaVu Sans, Liberation Sans, sans-serif"
-    font-size="14"
-    fill="#4b5563"
-    text-anchor="middle"
-  ><tspan font-weight="700">SnapQR</tspan> — free scan analytics</text>
-</svg>`
-  );
+  const brandingText = sharp({
+    text: {
+      text: '<span weight="bold">SnapQR</span>  <span size="small" foreground="#6b7280">free scan analytics</span>',
+      font: "sans-serif",
+      width: 400,
+      dpi: 150,
+      align: "centre",
+      rgba: true,
+    },
+  });
+
+  const textBuffer = await brandingText.png().toBuffer();
 
   const brandedBuffer = await sharp(pngBuffer)
     .extend({ bottom: 36, background: { r: 255, g: 255, b: 255, alpha: 1 } })
-    .composite([{ input: brandingSvg, top: 0, left: 0 }])
+    .composite([{ input: textBuffer, gravity: "south" }])
     .png()
     .toBuffer();
 
