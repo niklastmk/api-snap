@@ -122,21 +122,37 @@ export default async function StatsPage({ params }: Props) {
   const windowedTotal = windowedScans.length;
 
   return (
-    <div className="min-h-screen bg-zinc-50">
-      {/* Banner — hidden for paid users */}
+    <div className="min-h-screen bg-zinc-50 overflow-x-hidden">
+      {/* Nav */}
+      <nav className="border-b border-zinc-200 bg-white px-4 py-3">
+        <div className="max-w-4xl mx-auto flex items-center justify-between">
+          <Link href="/snapqr" className="text-base font-bold text-black tracking-tight">SnapQR</Link>
+          <div className="flex items-center gap-4 text-sm">
+            <Link href="/snapqr" className="text-blue-600 hover:text-blue-700 font-medium transition-colors">
+              Create QR code
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      {/* Top conversion banner — visible immediately on load */}
       {!isPaid && (
-        <Link href="/snapqr" className="block bg-blue-600 text-white text-center py-2 text-sm font-medium hover:bg-blue-700 transition-colors">
-          Track who scans your codes &mdash; free &rarr;
-        </Link>
+        <div className="bg-blue-600 text-white px-4 py-3">
+          <div className="max-w-4xl mx-auto flex items-center justify-between gap-3">
+            <p className="text-sm font-medium">
+              Track your own links — free
+            </p>
+            <Link
+              href="/snapqr"
+              className="flex-shrink-0 text-sm font-semibold bg-white text-blue-600 px-4 py-1.5 rounded-lg hover:bg-blue-50 transition-colors"
+            >
+              Create a QR code
+            </Link>
+          </div>
+        </div>
       )}
 
       <main className="max-w-4xl mx-auto px-4 py-10">
-        <div className="mb-8">
-          <Link href="/snapqr" className="text-blue-600 text-sm font-medium hover:underline">
-            &larr; Back to SnapQR
-          </Link>
-        </div>
-
         <h1 className="text-2xl font-bold text-black mb-1">Scan Analytics</h1>
         <p className="text-zinc-500 text-sm mb-8 break-all">
           QR code for:{" "}
@@ -151,77 +167,103 @@ export default async function StatsPage({ params }: Props) {
         </p>
 
         {/* Stats summary cards */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">
-          <div className="bg-white border border-zinc-200 rounded-xl p-5">
-            <div className="text-3xl font-bold text-black">{total}</div>
-            <div className="text-sm text-zinc-500 mt-1">Total scans</div>
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mb-8">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4 sm:p-5">
+            <div className="text-2xl sm:text-3xl font-bold text-black">{total}</div>
+            <div className="text-xs sm:text-sm text-zinc-500 mt-1">Total scans</div>
           </div>
-          <div className="bg-white border border-zinc-200 rounded-xl p-5">
-            <div className="text-sm font-semibold text-black truncate">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4 sm:p-5">
+            <div className="text-2xl sm:text-3xl font-bold text-black">
               {lastScan
-                ? new Date(lastScan).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })
+                ? (() => {
+                    const diff = Math.floor((Date.now() - new Date(lastScan).getTime()) / 1000);
+                    if (diff < 60) return `${diff}s`;
+                    if (diff < 3600) return `${Math.floor(diff / 60)}m`;
+                    if (diff < 86400) return `${Math.floor(diff / 3600)}h`;
+                    return `${Math.floor(diff / 86400)}d`;
+                  })()
                 : "\u2014"}
             </div>
-            <div className="text-sm text-zinc-500 mt-1">Last scan</div>
+            <div className="text-xs sm:text-sm text-zinc-500 mt-1">Since last scan</div>
           </div>
-          <div className="bg-white border border-zinc-200 rounded-xl p-5">
-            <div className="text-3xl font-bold text-black">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4 sm:p-5">
+            <div className="text-2xl sm:text-3xl font-bold text-black">
               {Object.keys(countryCounts).filter((c) => c !== "Unknown").length}
             </div>
-            <div className="text-sm text-zinc-500 mt-1">Countries</div>
+            <div className="text-xs sm:text-sm text-zinc-500 mt-1">Countries</div>
           </div>
-          <div className="bg-white border border-zinc-200 rounded-xl p-5">
-            <div className="text-3xl font-bold text-black">
+          <div className="bg-white border border-zinc-200 rounded-xl p-4 sm:p-5">
+            <div className="text-2xl sm:text-3xl font-bold text-black">
               {windowedScans.filter((s) => (s.device || "desktop") === "mobile").length}
             </div>
-            <div className="text-sm text-zinc-500 mt-1">Mobile scans</div>
+            <div className="text-xs sm:text-sm text-zinc-500 mt-1">Mobile scans</div>
           </div>
         </div>
 
+        {/* Inline CTA — below summary cards, above the fold */}
+        {!isPaid && (
+          <div className="mb-8 rounded-xl border border-emerald-200 bg-emerald-50 p-5 flex flex-col sm:flex-row items-center gap-4">
+            <div className="flex-1 text-center sm:text-left">
+              <p className="text-sm font-semibold text-emerald-900">
+                Want analytics for your own QR codes?
+              </p>
+              <p className="text-sm text-emerald-700 mt-0.5">
+                Create one free — no signup needed.
+              </p>
+            </div>
+            <Link
+              href="/snapqr"
+              className="flex-shrink-0 inline-flex items-center gap-1.5 text-sm font-semibold bg-emerald-600 text-white px-5 py-2.5 rounded-lg hover:bg-emerald-700 transition-colors"
+            >
+              Create a QR code &rarr;
+            </Link>
+          </div>
+        )}
+
         {/* QR code preview */}
-        <div className="flex items-start gap-6 mb-8 p-5 bg-white border border-zinc-200 rounded-xl">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 mb-8 p-5 bg-white border border-zinc-200 rounded-xl">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={`/api/snapqr/qr/${code}`}
             alt="QR code"
             width={100}
             height={100}
-            className="rounded"
+            className="rounded flex-shrink-0"
           />
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 text-center sm:text-left">
             <div className="text-sm font-medium text-zinc-700 mb-1">Redirect URL</div>
             <div className="text-sm text-zinc-500 break-all mb-3">
               {appUrl}/r/{code}
             </div>
-            <div className="flex gap-2 flex-wrap">
+            <div className="flex gap-2 flex-wrap justify-center sm:justify-start">
               <a
                 href={`/api/snapqr/qr/${code}`}
                 download={`snapqr-${code}.png`}
-                className="inline-flex items-center gap-2 text-sm bg-black text-white px-4 py-2 rounded-lg hover:bg-zinc-800 transition-colors"
+                className="inline-flex items-center gap-2 text-sm bg-black text-white px-4 py-2.5 rounded-lg hover:bg-zinc-800 transition-colors"
               >
                 Download PNG
               </a>
               {isPaid ? (
                 <a
                   href={`/api/snapqr/export/${code}`}
-                  className="inline-flex items-center gap-2 text-sm border border-zinc-300 text-zinc-700 px-4 py-2 rounded-lg hover:bg-white transition-colors"
+                  className="inline-flex items-center gap-2 text-sm border border-zinc-300 text-zinc-700 px-4 py-2.5 rounded-lg hover:bg-zinc-50 transition-colors"
                 >
                   Export CSV
                 </a>
               ) : (
-                <span
-                  className="inline-flex items-center gap-2 text-sm border border-zinc-200 text-zinc-400 px-4 py-2 rounded-lg cursor-not-allowed"
-                  title="CSV export requires QR Pro"
+                <Link
+                  href="/snapqr/upgrade"
+                  className="group inline-flex items-center gap-2 text-sm border border-zinc-200 text-zinc-400 px-4 py-2.5 rounded-lg hover:border-blue-200 hover:bg-blue-50 hover:text-blue-600 transition-all"
+                  title="Export all scan data as a spreadsheet — available on Pro"
                 >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                  </svg>
                   Export CSV
-                  <span className="text-[10px] bg-blue-100 text-blue-700 px-1.5 py-0.5 rounded font-medium">
+                  <span className="text-[10px] bg-zinc-100 text-zinc-500 group-hover:bg-blue-100 group-hover:text-blue-700 px-1.5 py-0.5 rounded font-medium transition-colors">
                     PRO
                   </span>
-                </span>
+                </Link>
               )}
             </div>
           </div>
@@ -231,12 +273,16 @@ export default async function StatsPage({ params }: Props) {
         <div className="bg-white border border-zinc-200 rounded-xl p-5 mb-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-black">Scan Timeline</h2>
-            <span className="text-xs text-zinc-400">
-              Last {windowDays} days
-              {!isPaid && (
-                <> &middot; <Link href="/snapqr/upgrade" className="text-blue-600 hover:underline">Unlock 30 days</Link></>
-              )}
-            </span>
+            {isPaid ? (
+              <span className="text-xs text-zinc-400">Last 30 days</span>
+            ) : (
+              <Link
+                href="/snapqr/upgrade"
+                className="text-xs text-zinc-400 hover:text-blue-600 transition-colors"
+              >
+                Last 7 days <span className="text-zinc-300 mx-1">&middot;</span> <span className="text-blue-500">See 30 days</span>
+              </Link>
+            )}
           </div>
           {windowedTotal === 0 ? (
             <div className="text-center py-8 text-zinc-400 text-sm">
@@ -248,7 +294,7 @@ export default async function StatsPage({ params }: Props) {
         </div>
 
         {/* Analytics grid: Countries + Devices + Browsers */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
           {/* Top Countries */}
           <div className="bg-white border border-zinc-200 rounded-xl p-5">
             <h3 className="text-sm font-semibold text-black mb-3">Top Countries</h3>
@@ -332,11 +378,16 @@ export default async function StatsPage({ params }: Props) {
         <div className="bg-white border border-zinc-200 rounded-xl overflow-hidden mb-8">
           <div className="flex items-center justify-between px-5 py-4 border-b border-zinc-100">
             <h2 className="text-lg font-semibold text-black">Recent Scans</h2>
-            {!isPaid && total > windowedScans.length && (
-              <Link href="/snapqr/upgrade" className="text-xs text-blue-600 hover:underline">
-                Unlock full history ({total} total)
-              </Link>
-            )}
+            <span className="text-xs text-zinc-400">
+              {windowedScans.length} of {total} scans
+              {!isPaid && total > windowedScans.length && (
+                <> <span className="text-zinc-300 mx-0.5">&middot;</span>{" "}
+                  <Link href="/snapqr/upgrade" className="text-blue-500 hover:text-blue-600 transition-colors">
+                    See all
+                  </Link>
+                </>
+              )}
+            </span>
           </div>
           {windowedScans.length === 0 ? (
             <div className="text-center py-12">
@@ -347,11 +398,11 @@ export default async function StatsPage({ params }: Props) {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="bg-zinc-50 border-b border-zinc-200">
-                    <th className="text-left px-4 py-3 font-medium text-zinc-600">Date</th>
-                    <th className="text-left px-4 py-3 font-medium text-zinc-600">Device</th>
-                    <th className="text-left px-4 py-3 font-medium text-zinc-600">Browser</th>
-                    <th className="text-left px-4 py-3 font-medium text-zinc-600">OS</th>
-                    <th className="text-left px-4 py-3 font-medium text-zinc-600">Country</th>
+                    <th className="text-left px-3 sm:px-4 py-3 font-medium text-zinc-600">Date</th>
+                    <th className="text-left px-3 sm:px-4 py-3 font-medium text-zinc-600">Device</th>
+                    <th className="text-left px-3 sm:px-4 py-3 font-medium text-zinc-600 hidden sm:table-cell">Browser</th>
+                    <th className="text-left px-3 sm:px-4 py-3 font-medium text-zinc-600 hidden md:table-cell">OS</th>
+                    <th className="text-left px-3 sm:px-4 py-3 font-medium text-zinc-600">Country</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -360,7 +411,7 @@ export default async function StatsPage({ params }: Props) {
                       key={scan.id}
                       className={idx % 2 === 0 ? "bg-white" : "bg-zinc-50"}
                     >
-                      <td className="px-4 py-3 text-zinc-700 whitespace-nowrap">
+                      <td className="px-3 sm:px-4 py-3 text-zinc-700 whitespace-nowrap">
                         {new Date(scan.scannedAt).toLocaleString("en-US", {
                           month: "short",
                           day: "numeric",
@@ -368,12 +419,12 @@ export default async function StatsPage({ params }: Props) {
                           minute: "2-digit",
                         })}
                       </td>
-                      <td className="px-4 py-3 text-zinc-700 capitalize">
+                      <td className="px-3 sm:px-4 py-3 text-zinc-700 capitalize">
                         {scan.device ?? "desktop"}
                       </td>
-                      <td className="px-4 py-3 text-zinc-700">{scan.browser ?? "\u2014"}</td>
-                      <td className="px-4 py-3 text-zinc-700">{scan.os ?? "\u2014"}</td>
-                      <td className="px-4 py-3 text-zinc-700">{scan.country ?? "\u2014"}</td>
+                      <td className="px-3 sm:px-4 py-3 text-zinc-700 hidden sm:table-cell">{scan.browser ?? "\u2014"}</td>
+                      <td className="px-3 sm:px-4 py-3 text-zinc-700 hidden md:table-cell">{scan.os ?? "\u2014"}</td>
+                      <td className="px-3 sm:px-4 py-3 text-zinc-700">{scan.country ?? "\u2014"}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -382,70 +433,44 @@ export default async function StatsPage({ params }: Props) {
           )}
         </div>
 
-        {/* Free tier: gated content teaser */}
-        {!isPaid && total > windowedScans.length && (
-          <div className="mb-8 rounded-xl border border-dashed border-zinc-300 p-6 text-center bg-white">
-            <p className="text-zinc-500 text-sm mb-2">
-              Showing last 7 days ({windowedScans.length} of {total} scans).
-            </p>
-            <p className="text-zinc-400 text-xs mb-4">
-              Upgrade to QR Pro ($7/mo) to unlock full scan history and CSV export.
-            </p>
+        {/* Bottom CTA */}
+        {isPaid ? (
+          <div className="rounded-xl border border-zinc-200 p-6 bg-white text-center">
             <Link
-              href="/snapqr/upgrade"
-              className="inline-flex items-center justify-center bg-blue-600 text-white font-semibold px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors text-sm"
+              href="/snapqr"
+              className="inline-flex items-center justify-center bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors text-sm"
             >
-              Upgrade to QR Pro &mdash; $7/mo
+              Create another QR code &rarr;
             </Link>
           </div>
-        )}
-
-        {/* Upgrade CTA */}
-        <div className="rounded-xl border-2 border-blue-600 p-6 bg-blue-50">
-          <div className="flex items-start justify-between gap-4 flex-wrap">
-            <div>
-              {isPaid ? (
-                <h3 className="text-lg font-bold text-black mb-1">
-                  Create your own smart QR &mdash; free at api-snap.com
+        ) : (
+          <div className="rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50/50 to-white p-6">
+            <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+              <div className="flex-1 text-center sm:text-left">
+                <h3 className="text-base font-semibold text-zinc-800 mb-1">
+                  Want the full picture?
                 </h3>
-              ) : (
-                <h3 className="text-lg font-bold text-black mb-1">
-                  Unlock full analytics &amp; CSV export
-                </h3>
-              )}
-              <p className="text-sm text-zinc-600 mb-3">
-                {isPaid
-                  ? "Generate trackable QR codes with real-time analytics."
-                  : "QR Pro ($7/mo) — 30-day scan history, CSV export, no branding on stats pages."}
-              </p>
-            </div>
-            <div className="flex flex-col gap-2 min-w-[160px]">
-              {!isPaid ? (
-                <>
-                  <Link
-                    href="/snapqr/upgrade"
-                    className="inline-flex items-center justify-center bg-blue-600 text-white font-semibold px-5 py-3 rounded-lg hover:bg-blue-700 transition-colors text-sm whitespace-nowrap"
-                  >
-                    Upgrade to QR Pro &mdash; $7/mo
-                  </Link>
-                  <Link
-                    href="/snapqr"
-                    className="inline-flex items-center justify-center border border-blue-600 text-blue-600 font-medium px-5 py-2.5 rounded-lg hover:bg-blue-100 transition-colors text-sm whitespace-nowrap"
-                  >
-                    Create Free QR Code
-                  </Link>
-                </>
-              ) : (
+                <p className="text-sm text-zinc-500">
+                  Pro unlocks 30-day history, CSV export, and brandless QR images for <span className="font-medium text-zinc-700">$7/mo</span>.
+                </p>
+              </div>
+              <div className="flex items-center gap-3 flex-shrink-0">
                 <Link
                   href="/snapqr"
-                  className="inline-flex items-center justify-center bg-blue-600 text-white font-semibold px-5 py-3 rounded-lg hover:bg-blue-700 transition-colors text-sm whitespace-nowrap"
+                  className="text-sm text-zinc-500 hover:text-zinc-700 transition-colors whitespace-nowrap"
                 >
-                  Create QR Code
+                  Create QR code
                 </Link>
-              )}
+                <Link
+                  href="/snapqr/upgrade"
+                  className="inline-flex items-center justify-center bg-blue-600 text-white font-medium px-5 py-2.5 rounded-lg hover:bg-blue-700 transition-colors text-sm whitespace-nowrap"
+                >
+                  See Pro plans
+                </Link>
+              </div>
             </div>
           </div>
-        </div>
+        )}
       </main>
     </div>
   );
