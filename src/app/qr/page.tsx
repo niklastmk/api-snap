@@ -113,14 +113,14 @@ export default function QRGeneratorPage() {
               Free limit reached
             </p>
             <p className="text-sm text-gray-400 mb-4">
-              Free usage allows 3 QR codes per month. Sign up for a free API key
-              to get 100 calls/month across all endpoints.
+              You&apos;ve used all 3 free QR codes this month. Upgrade to Pro for
+              unlimited codes, 30-day analytics, and CSV export.
             </p>
             <Link
-              href="/signup"
+              href="/snapqr/upgrade"
               className="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-indigo-500 transition"
             >
-              Sign Up Free &mdash; No Credit Card
+              Upgrade to Pro &mdash; $7/mo
             </Link>
           </div>
         )}
@@ -188,7 +188,7 @@ export default function QRGeneratorPage() {
               },
               {
                 title: "No Signup Needed",
-                desc: "Start generating right away. 5 free QR codes per day, no account required.",
+                desc: "Start generating right away. 3 free QR codes per month, no account required.",
               },
             ].map((f) => (
               <div

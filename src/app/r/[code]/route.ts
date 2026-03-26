@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
-import { links, scanEvents } from "@/lib/schema";
+import { links, scanEvents, users } from "@/lib/schema";
 import { eq, count } from "drizzle-orm";
 import { UAParser } from "ua-parser-js";
 import { sendFirstScanEmail } from "@/lib/email";
@@ -60,6 +60,17 @@ export async function GET(
   }
 
   const link = rows[0];
+
+  // Check if the QR code creator is a paid user — skip interstitial for paid plans
+  let isPaidCreator = false;
+  if (link.creatorUserId) {
+    const creator = await db
+      .select({ plan: users.plan })
+      .from(users)
+      .where(eq(users.id, link.creatorUserId))
+      .limit(1);
+    isPaidCreator = creator.length > 0 && creator[0].plan !== "free";
+  }
 
   // Fire scan event async — don't block redirect
   const userAgentString = request.headers.get("user-agent") ?? "";
@@ -122,6 +133,21 @@ export async function GET(
     }
   })();
 
+  // Paid creators get instant redirect — no interstitial
+  if (isPaidCreator) {
+    // Validate URL scheme before redirecting
+    let parsed: URL;
+    try {
+      parsed = new URL(link.targetUrl);
+    } catch {
+      return new NextResponse("Invalid target URL", { status: 400 });
+    }
+    if (!["http:", "https:"].includes(parsed.protocol)) {
+      return new NextResponse("Invalid URL scheme", { status: 400 });
+    }
+    return NextResponse.redirect(link.targetUrl, 302);
+  }
+
   // Query scan count for display on interstitial
   const [{ total }] = await db
     .select({ total: count() })
@@ -146,13 +172,15 @@ export async function GET(
   const safeUrl = escapeHtml(targetUrl);
   const safeDomain = escapeHtml(targetDomain);
 
+  const safeCode = escapeHtml(code);
+
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="refresh" content="3;url=${safeUrl}">
-  <title>Redirecting — SnapQR</title>
+  <title>Redirecting — API Snap</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -167,40 +195,64 @@ export async function GET(
       padding: 24px;
       text-align: center;
     }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
     .card {
       background: white;
       border-radius: 16px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1), 0 4px 20px rgba(0,0,0,0.06);
-      padding: 32px 24px;
-      max-width: 400px;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      padding: 32px 28px;
+      max-width: 380px;
       width: 100%;
+      animation: fadeUp 0.35s ease-out;
+    }
+    .brand {
+      margin-bottom: 24px;
+    }
+    .powered-by {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #94a3b8;
+      margin-bottom: 4px;
     }
     .logo {
       font-size: 20px;
       font-weight: 700;
       color: #6d28d9;
-      margin-bottom: 4px;
     }
     .logo span { color: #1e293b; }
-    .subtitle {
-      font-size: 13px;
-      color: #64748b;
+    .stats {
+      background: #f8fafc;
+      border-radius: 10px;
+      padding: 16px;
       margin-bottom: 24px;
     }
     .scan-count {
       font-size: 36px;
-      font-weight: 700;
+      font-weight: 800;
       color: #6d28d9;
+      line-height: 1;
     }
     .scan-label {
-      font-size: 13px;
+      font-size: 12px;
       color: #64748b;
-      margin-bottom: 24px;
+      margin-bottom: 6px;
     }
+    .stats-link a {
+      font-size: 12px;
+      color: #6d28d9;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .stats-link a:hover { text-decoration: underline; }
     .destination {
       font-size: 13px;
       color: #94a3b8;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
       word-break: break-all;
     }
     .continue-btn {
@@ -209,26 +261,50 @@ export async function GET(
       color: white;
       text-decoration: none;
       font-weight: 600;
-      font-size: 16px;
-      padding: 12px 28px;
+      font-size: 15px;
+      padding: 12px 32px;
       border-radius: 10px;
-      margin-bottom: 8px;
-      transition: background 0.15s;
+      box-shadow: 0 2px 8px rgba(109,40,217,0.25);
+      transition: background 0.15s, box-shadow 0.15s;
+      cursor: pointer;
     }
-    .continue-btn:hover { background: #5b21b6; }
+    .continue-btn:hover {
+      background: #5b21b6;
+      box-shadow: 0 2px 12px rgba(109,40,217,0.35);
+    }
+    .progress-track {
+      width: 120px;
+      height: 3px;
+      background: #e2e8f0;
+      border-radius: 2px;
+      margin: 12px auto 0;
+      overflow: hidden;
+    }
+    .progress-bar {
+      height: 100%;
+      background: #6d28d9;
+      border-radius: 2px;
+      width: 100%;
+      animation: shrink 3s linear forwards;
+    }
+    @keyframes shrink {
+      from { width: 100%; }
+      to { width: 0%; }
+    }
     .countdown {
-      font-size: 13px;
+      font-size: 12px;
       color: #94a3b8;
-      margin-bottom: 24px;
+      margin-top: 6px;
+      margin-bottom: 20px;
     }
     .divider {
       border: none;
-      border-top: 1px solid #e2e8f0;
-      margin: 20px 0;
+      border-top: 1px solid #f1f5f9;
+      margin: 0 0 16px;
     }
     .cta {
-      font-size: 13px;
-      color: #64748b;
+      font-size: 12px;
+      color: #94a3b8;
     }
     .cta a {
       color: #6d28d9;
@@ -240,18 +316,24 @@ export async function GET(
 </head>
 <body>
   <div class="card">
-    <div class="logo">Snap<span>QR</span></div>
-    <div class="subtitle">This QR code is tracked by SnapQR</div>
+    <div class="brand">
+      <div class="powered-by">Powered by</div>
+      <div class="logo">API <span>Snap</span></div>
+    </div>
 
-    <div class="scan-count">${scanCount.toLocaleString()}</div>
-    <div class="scan-label">total scans</div>
+    <div class="stats">
+      <div class="scan-count">${scanCount.toLocaleString()}</div>
+      <div class="scan-label">total scans</div>
+      <div class="stats-link"><a href="https://api-snap.com/s/${safeCode}">View analytics</a></div>
+    </div>
 
-    <div class="destination">→ ${safeDomain}</div>
-    <a class="continue-btn" href="${safeUrl}">Continue to ${safeDomain} →</a>
-    <div class="countdown" id="countdown">Redirecting in <strong>3</strong>…</div>
+    <div class="destination">${safeDomain}</div>
+    <a class="continue-btn" href="${safeUrl}">Continue</a>
+    <div class="progress-track"><div class="progress-bar"></div></div>
+    <div class="countdown" id="countdown">Redirecting in 3s</div>
 
     <hr class="divider">
-    <div class="cta">Create your own free trackable QR code →<br><a href="https://api-snap.com/snapqr">api-snap.com/snapqr</a></div>
+    <div class="cta">Free QR codes with analytics &middot; <a href="https://api-snap.com/snapqr">Create yours</a></div>
   </div>
 
   <script>
@@ -263,7 +345,7 @@ export async function GET(
         clearInterval(iv);
         window.location.href = ${JSON.stringify(targetUrl)};
       } else {
-        el.innerHTML = 'Redirecting in <strong>' + t + '</strong>…';
+        el.textContent = 'Redirecting in ' + t + 's';
       }
     }, 1000);
   </script>

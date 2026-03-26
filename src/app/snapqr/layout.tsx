@@ -43,7 +43,7 @@ const snapQrJsonLd = {
     "Free QR code generator with real-time scan analytics — device, browser, location, and more.",
   url: `${baseUrl}/snapqr`,
   offers: [
-    { "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD", description: "Unlimited QR codes, basic analytics" },
+    { "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD", description: "3 QR codes per month, basic analytics" },
     { "@type": "Offer", name: "Pro", price: "7", priceCurrency: "USD", description: "Advanced analytics, custom branding" },
   ],
 };
