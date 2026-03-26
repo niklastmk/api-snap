@@ -200,7 +200,23 @@ export default async function StatsPage({ params }: Props) {
           </div>
         </div>
 
-        {/* Inline CTA — below summary cards, above the fold */}
+        {/* Viral CTA — visible to all visitors */}
+        <div className="mb-8 rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50 p-6 text-center">
+          <p className="text-lg font-bold text-emerald-900 mb-1">
+            Create your own free trackable QR code
+          </p>
+          <p className="text-sm text-emerald-700 mb-4">
+            Generate a QR code and see who scans it — location, device, and more. Free, no signup required.
+          </p>
+          <Link
+            href="/snapqr"
+            className="inline-flex items-center gap-2 text-base font-semibold bg-emerald-600 text-white px-7 py-3 rounded-lg hover:bg-emerald-700 transition-colors shadow-sm"
+          >
+            Create your QR code &rarr;
+          </Link>
+        </div>
+
+        {/* Inline CTA — upgrade prompt for code owner */}
         {!isPaid && (
           <div className="mb-8 rounded-xl border border-blue-200 bg-blue-50 p-5 flex flex-col sm:flex-row items-center gap-4">
             <div className="flex-1 text-center sm:text-left">
@@ -433,18 +449,9 @@ export default async function StatsPage({ params }: Props) {
           )}
         </div>
 
-        {/* Bottom CTA */}
-        {isPaid ? (
-          <div className="rounded-xl border border-zinc-200 p-6 bg-white text-center">
-            <Link
-              href="/snapqr"
-              className="inline-flex items-center justify-center bg-blue-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors text-sm"
-            >
-              Create another QR code &rarr;
-            </Link>
-          </div>
-        ) : (
-          <div className="rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50/50 to-white p-6">
+        {/* Bottom upgrade CTA for free users */}
+        {!isPaid && (
+          <div className="rounded-xl border border-blue-100 bg-gradient-to-r from-blue-50/50 to-white p-6 mb-6">
             <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
               <div className="flex-1 text-center sm:text-left">
                 <h3 className="text-base font-semibold text-zinc-800 mb-1">
@@ -463,6 +470,19 @@ export default async function StatsPage({ params }: Props) {
             </div>
           </div>
         )}
+
+        {/* Bottom viral CTA — visible to everyone */}
+        <div className="rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50 p-6 text-center">
+          <p className="text-base font-semibold text-emerald-900 mb-3">
+            Want your own trackable QR code? It&apos;s free.
+          </p>
+          <Link
+            href="/snapqr"
+            className="inline-flex items-center justify-center bg-emerald-600 text-white font-semibold px-6 py-3 rounded-lg hover:bg-emerald-700 transition-colors text-sm"
+          >
+            Create your QR code &rarr;
+          </Link>
+        </div>
       </main>
     </div>
   );

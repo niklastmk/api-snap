@@ -6,6 +6,14 @@ export const metadata: Metadata = {
   title: "SnapQR Pro — Upgrade for advanced scan analytics",
   description:
     "Unlock custom domains, detailed scan analytics, and unlimited QR codes with SnapQR Pro for $7/mo.",
+  keywords: [
+    "SnapQR Pro",
+    "QR code analytics upgrade",
+    "custom QR domains",
+    "advanced scan analytics",
+    "QR code pro plan",
+  ],
+  alternates: { canonical: `${baseUrl}/snapqr/upgrade` },
   openGraph: {
     title: "SnapQR Pro — Upgrade for advanced scan analytics",
     description:

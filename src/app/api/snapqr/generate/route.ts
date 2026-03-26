@@ -1,13 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { links } from "@/lib/schema";
-import { eq } from "drizzle-orm";
+import { eq, and, gte } from "drizzle-orm";
 import { authenticateApiKey } from "@/lib/auth";
 import { sendGenerationEmail } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
 
-const FREE_LIFETIME_LIMIT = 3; // QR codes lifetime per IP
+const FREE_MONTHLY_LIMIT = 3; // QR codes per calendar month per IP
 
 function generateShortCode(): string {
   const chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
@@ -68,18 +68,21 @@ export async function POST(request: NextRequest) {
     }
   }
 
-  // Enforce free-tier limit: 3 QR codes lifetime per IP
+  // Enforce free-tier limit: 3 QR codes per calendar month per IP
   if (!isPaid) {
+    const now = new Date();
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
+
     const ipLinks = await db
       .select()
       .from(links)
-      .where(eq(links.creatorIp, ip));
+      .where(and(eq(links.creatorIp, ip), gte(links.createdAt, monthStart)));
 
-    if (ipLinks.length >= FREE_LIFETIME_LIMIT) {
+    if (ipLinks.length >= FREE_MONTHLY_LIMIT) {
       const appUrl = process.env.NEXT_PUBLIC_APP_URL || "https://api-snap.com";
       return NextResponse.json(
         {
-          error: "Free tier limit reached (3 QR codes lifetime). Upgrade for unlimited QR codes.",
+          error: "Free tier limit reached (3 QR codes per month). Upgrade for unlimited QR codes.",
           upgrade: true,
           upgrade_url: `${appUrl}/snapqr/upgrade`,
         },

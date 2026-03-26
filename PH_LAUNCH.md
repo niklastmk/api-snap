@@ -35,7 +35,7 @@ So I built the thing I wanted. You paste a URL, you get a QR code, and behind it
 
 The part I find interesting is the self-distributing mechanic. Every QR code someone creates with SnapQR has a branded stats page at qr.api-snap.com/s/[code]. When people scan the QR and land on the destination, the stats page already exists — and it links back to SnapQR. So the product grows with use. Every QR code printed on a menu, flyer, or slide deck is quietly pointing back.
 
-The free tier gives you 3 QR codes with 7-day analytics. QR Pro is $7/month — unlimited codes, 30-day scan history, CSV export, unbranded stats pages.
+The free tier gives you 3 QR codes per month with 7-day analytics. QR Pro is $7/month — unlimited codes, 30-day scan history, CSV export, unbranded stats pages.
 
 You can try it right now at https://api-snap.com/snapqr — no signup, just paste a URL.
 

@@ -54,7 +54,7 @@ Developer utility API platform. 13+ endpoints (QR codes, screenshots, PDFs, imag
 - Landing pages per endpoint (all 13 tools)
 - Deployed and running on Railway (last deploy: 2026-03-24)
 - SnapQR Smart Links — full analytics dashboard with tier gating:
-  - `/api/snapqr/generate` — creates trackable QR with short link (3 lifetime free per IP, unlimited paid)
+  - `/api/snapqr/generate` — creates trackable QR with short link (3 free per month per IP, unlimited paid)
   - `/r/[code]` — 302 redirect with async scan logging (IP, UA, device, browser, OS, country, referer)
   - `/s/[code]` — rich analytics page: scan timeline chart, top countries, device/browser breakdown, recent scans table
   - `/api/snapqr/export/[code]` — CSV export of scan data (paid only)
@@ -73,11 +73,11 @@ Developer utility API platform. 13+ endpoints (QR codes, screenshots, PDFs, imag
   2. Click "Submit" (top-right) → "New Product"
   3. Enter URL: `https://api-snap.com/snapqr`
   4. Name: `SnapQR`
-  5. Tagline: `Free QR codes with real-time scan analytics` (60 char max)
-  6. Description: `Create a QR code, share it anywhere, and watch scans roll in — real-time analytics show who scanned, where, and on what device. Free tier gives you 3 QR codes with 7-day analytics. QR Pro ($7/mo) unlocks unlimited codes, 30-day history, CSV export, and unbranded stats pages. No signup required to start — just paste a URL and get a trackable QR code in seconds.`
-  7. Upload 3+ screenshots (SnapQR generator page, stats dashboard, scan timeline)
+  5. Tagline: `See who scanned your QR code, where, and when` (60 char max)
+  6. Description: `See who scanned your QR code, where, and when — for free. Most QR generators are a black box. SnapQR gives you a real-time analytics dashboard: scan count, country breakdown, device type, and time of day. Free tier: 3 QR codes/month with 7-day scan history. QR Pro ($7/mo): unlimited codes, 30-day history, CSV export, no branding. No signup required — paste a URL and get a trackable QR code in seconds.`
+  7. Upload 3+ screenshots — LEAD WITH the stats page (/s/sPaleBlu1), then the generator, then the upgrade modal. The stats page IS the product.
   8. Topics: `Developer Tools`, `Analytics`, `QR Codes`
-  9. Post a first comment as maker: `Hey PH! I built SnapQR because every free QR generator is a dead end — you never know if anyone scanned it. SnapQR gives you a real-time analytics dashboard for every QR code, completely free. Would love your feedback!`
+  9. Post a first comment as maker: `Hey PH! Built SnapQR because every QR generator is a black box — you print the code and never know if anyone scanned it. SnapQR fixes that: every code gets a real-time analytics page showing scans, countries, and devices. Free to start, $7/mo for power users. Would love your feedback!`
   10. Schedule launch for 12:01 AM PST on a weekday (Tue-Thu recommended)
   - **Shareholder action**: Log in to producthunt.com with the niklastmk account, complete steps 2-10 above (~3 min)
 - **BetaList**: NOT LIVE — requires human submission. Steps:
@@ -93,7 +93,7 @@ Developer utility API platform. 13+ endpoints (QR codes, screenshots, PDFs, imag
 - **Awesome-list PR**: https://github.com/make-github-pseudonymous-again/awesome-qr-code/pull/13 — added SnapQR to Services section
 - GA4 analytics code installed (awaiting NEXT_PUBLIC_GA_MEASUREMENT_ID env var)
 - Stripe webhook creates new user + API key on first purchase (fixed 2026-03-24 — was silently failing for email-only checkout)
-- Free tier capped at 3 lifetime QR codes per IP (was 5/day) — drives faster conversion (shipped 2026-03-24)
+- Free tier: 3 QR codes per calendar month per IP (changed from 3 lifetime → 3/month 2026-03-26) — recurring trigger instead of permanent block
 - Stats page banner links to /snapqr with conversion-friendly copy instead of /snapqr/upgrade paywall (shipped 2026-03-24)
 - **End-to-end smoke test PASSED (2026-03-24)** — full purchase flow verified:
   1. POST /api/snapqr/generate → PASS (returns shortCode, qrUrl, redirectUrl, statsUrl)

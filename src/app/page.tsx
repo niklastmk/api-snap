@@ -11,7 +11,7 @@ const faqJsonLd = {
       name: "Is SnapQR really free?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. You can create up to 3 QR codes for free with 7-day scan analytics. No signup or credit card required.",
+        text: "Yes. You get 3 free QR codes per month with 7-day scan analytics. No signup or credit card required.",
       },
     },
     {
@@ -50,7 +50,7 @@ const faqJsonLd = {
 };
 
 const faqs = [
-  { q: "Is SnapQR really free?", a: "Yes. You can create up to 3 QR codes for free with 7-day scan analytics. No signup or credit card required." },
+  { q: "Is SnapQR really free?", a: "Yes. You get 3 free QR codes per month with 7-day scan analytics. No signup or credit card required." },
   { q: "What does Pro include?", a: "For $7/mo you get unlimited QR codes, 30-day scan history, full analytics (location, device, browser), CSV export, and unbranded QR images." },
   { q: "How does scan tracking work?", a: "Each QR code gets a unique short link. When someone scans it, we record the time, country, device, browser, and OS — then redirect them to your destination URL instantly." },
   { q: "Can I see analytics without signing up?", a: "Yes. Every QR code gets a public stats page you can bookmark. Free users see 7 days of data; Pro users see 30 days." },
@@ -104,7 +104,7 @@ export default function Home() {
           </Link>
         </div>
         <p className="mt-4 text-sm text-gray-500">
-          3 free QR codes with analytics. Pro from $7/mo for unlimited.
+          3 free QR codes per month with analytics. Pro from $7/mo for unlimited.
         </p>
       </section>
 

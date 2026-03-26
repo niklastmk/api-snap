@@ -6,6 +6,16 @@ export const metadata: Metadata = {
   title: "SnapQR — QR codes that track every scan",
   description:
     "Create a free QR code and see who scans it — real-time analytics with location, device, and browser data. Free tier, no signup. $7/mo Pro.",
+  keywords: [
+    "QR code generator",
+    "QR code analytics",
+    "QR code tracker",
+    "scan analytics",
+    "free QR code",
+    "dynamic QR code",
+    "QR code statistics",
+  ],
+  alternates: { canonical: `${baseUrl}/snapqr` },
   openGraph: {
     title: "SnapQR — QR codes that track every scan",
     description:

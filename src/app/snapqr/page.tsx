@@ -189,7 +189,7 @@ export default function SnapQRHome() {
                       You&apos;re growing! Time to upgrade.
                     </p>
                     <p className="text-sm text-zinc-600 mb-3">
-                      You&apos;ve used all 3 free QR codes. Unlock unlimited codes, 30-day analytics, and CSV export with Pro.
+                      You&apos;ve used all 3 free QR codes this month. Unlock unlimited codes, 30-day analytics, and CSV export with Pro.
                     </p>
                     <div className="flex flex-wrap items-center gap-3">
                       <Link
@@ -231,6 +231,14 @@ export default function SnapQRHome() {
 
           {result && (
             <div className="mt-8 border border-zinc-200 rounded-2xl p-6 flex flex-col items-center gap-5">
+              {result.emailSent && email.trim() && (
+                <div className="w-full bg-green-50 border border-green-200 rounded-xl px-4 py-3 flex items-center gap-2 text-sm text-green-800">
+                  <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Stats link sent to {email.trim()}
+                </div>
+              )}
               <div className="w-full bg-blue-50 border border-blue-200 rounded-xl p-5 flex flex-col items-center gap-3">
                 <div className="flex items-center gap-2 text-blue-700 font-semibold text-sm">
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
