@@ -113,7 +113,7 @@ export default function QRGeneratorPage() {
               Free limit reached
             </p>
             <p className="text-sm text-gray-400 mb-4">
-              Free usage allows 3 QR codes (lifetime). Sign up for a free API key
+              Free usage allows 3 QR codes per month. Sign up for a free API key
               to get 100 calls/month across all endpoints.
             </p>
             <Link
