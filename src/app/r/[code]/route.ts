@@ -180,7 +180,7 @@ export async function GET(
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="refresh" content="3;url=${safeUrl}">
-  <title>Redirecting — API Snap</title>
+  <title>Redirecting — SnapQR</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -210,7 +210,7 @@ export async function GET(
       animation: fadeUp 0.35s ease-out;
     }
     .brand {
-      margin-bottom: 24px;
+      margin-bottom: 8px;
     }
     .powered-by {
       font-size: 11px;
@@ -220,11 +220,20 @@ export async function GET(
       margin-bottom: 4px;
     }
     .logo {
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 700;
       color: #6d28d9;
     }
     .logo span { color: #1e293b; }
+    .tagline {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .tagline strong {
+      color: #1e293b;
+    }
     .stats {
       background: #f8fafc;
       border-radius: 10px;
@@ -317,14 +326,16 @@ export async function GET(
 <body>
   <div class="card">
     <div class="brand">
-      <div class="powered-by">Powered by</div>
-      <div class="logo">API <span>Snap</span></div>
+      <div class="powered-by">Created with</div>
+      <div class="logo"><a href="https://api-snap.com" style="color:inherit;text-decoration:none">Snap<span>QR</span></a></div>
     </div>
+
+    <p class="tagline">Track your scans, see analytics, upgrade for <strong>$9/mo</strong></p>
 
     <div class="stats">
       <div class="scan-count">${scanCount.toLocaleString()}</div>
       <div class="scan-label">total scans</div>
-      <div class="stats-link"><a href="https://api-snap.com/s/${safeCode}">View analytics</a></div>
+      <div class="stats-link"><a href="https://api-snap.com/s/${safeCode}">View analytics &rarr;</a></div>
     </div>
 
     <div class="destination">${safeDomain}</div>
@@ -333,7 +344,7 @@ export async function GET(
     <div class="countdown" id="countdown">Redirecting in 3s</div>
 
     <hr class="divider">
-    <div class="cta">Free QR codes with analytics &middot; <a href="https://api-snap.com/snapqr">Create yours</a></div>
+    <div class="cta"><a href="https://api-snap.com/snapqr/upgrade">Upgrade for $9/mo</a> &middot; <a href="https://api-snap.com">api-snap.com</a></div>
   </div>
 
   <script>

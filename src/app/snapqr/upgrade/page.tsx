@@ -81,7 +81,7 @@ function UpgradePageInner() {
             <div className="bg-white border border-zinc-200 rounded-xl p-5">
               <div className="text-xs font-medium text-zinc-400 uppercase tracking-wide mb-4">Free</div>
               <ul className="space-y-3 text-sm text-zinc-600">
-                <li className="flex items-center gap-2"><Check /> 3 QR codes</li>
+                <li className="flex items-center gap-2"><Check /> 3 QR codes/month</li>
                 <li className="flex items-center gap-2"><Check /> 7-day history</li>
                 <li className="flex items-center gap-2"><Check /> Basic analytics</li>
                 <li className="flex items-center gap-2"><Cross /> <span className="text-zinc-400">CSV export</span></li>

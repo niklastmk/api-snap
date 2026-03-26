@@ -163,7 +163,7 @@ export default function Home() {
             <p className="text-sm text-gray-400 mt-1 mb-4">forever</p>
             <ul className="space-y-2 text-sm text-gray-400">
               <li className="flex items-center gap-2">
-                <span className="text-green-400">&#10003;</span> 3 QR codes
+                <span className="text-green-400">&#10003;</span> 3 QR codes/month
               </li>
               <li className="flex items-center gap-2">
                 <span className="text-green-400">&#10003;</span> 7-day scan history
