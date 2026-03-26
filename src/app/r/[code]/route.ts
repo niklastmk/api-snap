@@ -7,6 +7,15 @@ import { sendFirstScanEmail } from "@/lib/email";
 
 export const dynamic = "force-dynamic";
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
 function getCountryFromHeaders(request: NextRequest): string | null {
   return (
     request.headers.get("cf-ipcountry") ??
@@ -121,14 +130,28 @@ export async function GET(
 
   const scanCount = Number(total);
   const targetUrl = link.targetUrl;
-  const targetDomain = new URL(targetUrl).hostname;
+
+  // Validate URL scheme to prevent javascript: URIs
+  let parsedUrl: URL;
+  try {
+    parsedUrl = new URL(targetUrl);
+  } catch {
+    return new NextResponse("Invalid target URL", { status: 400 });
+  }
+  if (!["http:", "https:"].includes(parsedUrl.protocol)) {
+    return new NextResponse("Invalid URL scheme", { status: 400 });
+  }
+
+  const targetDomain = parsedUrl.hostname;
+  const safeUrl = escapeHtml(targetUrl);
+  const safeDomain = escapeHtml(targetDomain);
 
   const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta http-equiv="refresh" content="3;url=${targetUrl}">
+  <meta http-equiv="refresh" content="3;url=${safeUrl}">
   <title>Redirecting — SnapQR</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -223,8 +246,8 @@ export async function GET(
     <div class="scan-count">${scanCount.toLocaleString()}</div>
     <div class="scan-label">total scans</div>
 
-    <div class="destination">→ ${targetDomain}</div>
-    <a class="continue-btn" href="${targetUrl}">Continue to ${targetDomain} →</a>
+    <div class="destination">→ ${safeDomain}</div>
+    <a class="continue-btn" href="${safeUrl}">Continue to ${safeDomain} →</a>
     <div class="countdown" id="countdown">Redirecting in <strong>3</strong>…</div>
 
     <hr class="divider">
