@@ -203,16 +203,16 @@ export default async function StatsPage({ params }: Props) {
         {/* Viral CTA — visible to all visitors */}
         <div className="mb-8 rounded-xl border border-emerald-200 bg-gradient-to-r from-emerald-50 to-teal-50 p-6 text-center">
           <p className="text-lg font-bold text-emerald-900 mb-1">
-            Create your own free trackable QR code
+            Want a dashboard like this for your links?
           </p>
           <p className="text-sm text-emerald-700 mb-4">
-            Generate a QR code and see who scans it — location, device, and more. Free, no signup required.
+            See who scans your QR code — location, device, and time. Free, no signup required.
           </p>
           <Link
             href="/snapqr"
             className="inline-flex items-center gap-2 text-base font-semibold bg-emerald-600 text-white px-7 py-3 rounded-lg hover:bg-emerald-700 transition-colors shadow-sm"
           >
-            Create your QR code &rarr;
+            Get your own analytics &rarr;
           </Link>
         </div>
 
