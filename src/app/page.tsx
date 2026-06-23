@@ -8,53 +8,165 @@ const faqJsonLd = {
   mainEntity: [
     {
       "@type": "Question",
-      name: "Is SnapQR really free?",
+      name: "Do I need a credit card to start?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. You get 3 free QR codes per month with 7-day scan analytics. No signup or credit card required.",
+        text: "No. The free tier gives you 100 API calls per month with no credit card required. Just sign up and get your API key instantly.",
       },
     },
     {
       "@type": "Question",
-      name: "What does SnapQR Pro include?",
+      name: "What are the rate limits?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "For $7/month you get unlimited QR codes, 30-day scan history, full analytics (location, device, browser), CSV export, and unbranded QR images.",
+        text: "Free: 100/mo, Hobby ($9): 5,000/mo, Pro ($29): 50,000/mo, Business ($99): 500,000/mo. All plans include access to every endpoint.",
       },
     },
     {
       "@type": "Question",
-      name: "How does scan tracking work?",
+      name: "Can I use this in production?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Each QR code gets a unique short link. When someone scans it, we record the time, country, device, browser, and OS — then redirect them to your destination URL instantly.",
+        text: "Absolutely. Our Pro and Business plans are designed for production workloads with higher rate limits and priority support.",
       },
     },
     {
       "@type": "Question",
-      name: "Can I see analytics without signing up?",
+      name: "How does authentication work?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Yes. Every QR code gets a public stats page you can bookmark. Free users see 7 days of data; Pro users see 30 days.",
+        text: "Sign up, create an API key, and include it as a Bearer token in the Authorization header. That's it — one key for all endpoints.",
       },
     },
     {
       "@type": "Question",
-      name: "Can I cancel anytime?",
+      name: "What happens if I exceed my limit?",
       acceptedAnswer: {
         "@type": "Answer",
-        text: "Absolutely. Pro is billed monthly via Stripe. Cancel anytime with one click — no questions asked.",
+        text: "You'll get a 429 response with your current usage. Upgrade anytime — changes take effect immediately with no downtime.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Do you support CORS?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. All API endpoints return proper CORS headers, so you can call them from browser-side JavaScript in any web app.",
       },
     },
   ],
 };
 
+const endpoints = [
+  {
+    name: "QR Code Generation",
+    method: "GET",
+    path: "/api/qr",
+    desc: "Generate QR codes in PNG or SVG with custom colors and sizes",
+    example: '/api/qr?data=https://example.com&size=300&format=png',
+  },
+  {
+    name: "Hash Generation",
+    method: "GET",
+    path: "/api/hash",
+    desc: "SHA-256, SHA-512, MD5, and more. Hex or base64 output",
+    example: '/api/hash?text=hello&algorithm=sha256',
+  },
+  {
+    name: "UUID / ID Generation",
+    method: "GET",
+    path: "/api/uuid",
+    desc: "UUIDs, nanoids, hex tokens, timestamps, and more",
+    example: "/api/uuid?format=nanoid&count=5&prefix=usr_",
+  },
+  {
+    name: "Image Resize & Convert",
+    method: "POST",
+    path: "/api/resize",
+    desc: "Resize, crop, convert images to PNG, WebP, JPEG, or AVIF",
+    example: 'POST /api/resize { "url": "...", "width": 400, "format": "webp" }',
+  },
+  {
+    name: "Base64 Encode/Decode",
+    method: "POST",
+    path: "/api/base64",
+    desc: "Encode or decode Base64 and Base64URL strings",
+    example: 'POST /api/base64 { "input": "Hello", "action": "encode" }',
+  },
+  {
+    name: "URL Metadata / OG Tags",
+    method: "GET",
+    path: "/api/meta",
+    desc: "Extract Open Graph, title, description, favicon from any URL",
+    example: '/api/meta?url=https://github.com',
+  },
+  {
+    name: "JWT Decode",
+    method: "POST",
+    path: "/api/jwt-decode",
+    desc: "Decode JWT tokens — inspect header, payload, and expiry",
+    example: 'POST /api/jwt-decode { "token": "eyJhbGci..." }',
+  },
+  {
+    name: "Color Conversion",
+    method: "GET",
+    path: "/api/color",
+    desc: "Convert between hex, RGB, HSL with brightness detection",
+    example: "/api/color?color=6366f1",
+  },
+  {
+    name: "Placeholder Images",
+    method: "GET",
+    path: "/api/placeholder",
+    desc: "SVG placeholder images with custom dimensions and colors",
+    example: "/api/placeholder?w=400&h=300&bg=4f46e5&text=Hero",
+  },
+  {
+    name: "Lorem Ipsum",
+    method: "GET",
+    path: "/api/lorem",
+    desc: "Generate placeholder text — paragraphs, sentences, text or HTML",
+    example: "/api/lorem?paragraphs=3&sentences=5",
+  },
+  {
+    name: "Markdown to HTML",
+    method: "POST",
+    path: "/api/markdown",
+    desc: "Convert Markdown to styled HTML — perfect for rendering content",
+    example: 'POST /api/markdown { "markdown": "# Hello" }',
+  },
+  {
+    name: "HTML to PDF",
+    method: "POST",
+    path: "/api/pdf",
+    desc: "Convert HTML content to downloadable PDF documents",
+    example: 'POST /api/pdf { "html": "<h1>Invoice</h1>", "title": "Invoice" }',
+  },
+  {
+    name: "Screenshot Capture",
+    method: "GET",
+    path: "/api/screenshot",
+    desc: "Capture full-page screenshots of any URL",
+    example: "/api/screenshot?url=https://example.com&width=1280",
+  },
+];
+
+const useCases = [
+  { title: "Generate QR codes", desc: "For receipts, tickets, and mobile deep links", icon: "grid" },
+  { title: "Resize user uploads", desc: "Create thumbnails and optimized images on the fly", icon: "image" },
+  { title: "Extract link previews", desc: "Build rich social cards for your app or CMS", icon: "link" },
+  { title: "Generate unique IDs", desc: "Prefixed nanoids and UUIDs for database records", icon: "key" },
+  { title: "Hash sensitive data", desc: "SHA-256 checksums for integrity verification", icon: "lock" },
+  { title: "Render Markdown", desc: "Convert user content to HTML for display", icon: "doc" },
+];
+
 const faqs = [
-  { q: "Is SnapQR really free?", a: "Yes. You get 3 free QR codes per month with 7-day scan analytics. No signup or credit card required." },
-  { q: "What does Pro include?", a: "For $7/mo you get unlimited QR codes, 30-day scan history, full analytics (location, device, browser), CSV export, and unbranded QR images." },
-  { q: "How does scan tracking work?", a: "Each QR code gets a unique short link. When someone scans it, we record the time, country, device, browser, and OS — then redirect them to your destination URL instantly." },
-  { q: "Can I see analytics without signing up?", a: "Yes. Every QR code gets a public stats page you can bookmark. Free users see 7 days of data; Pro users see 30 days." },
-  { q: "Can I cancel anytime?", a: "Absolutely. Pro is billed monthly via Stripe. Cancel anytime with one click — no questions asked." },
+  { q: "Do I need a credit card to start?", a: "No. The free tier gives you 100 API calls per month with no credit card required. Just sign up and get your API key instantly." },
+  { q: "What are the rate limits?", a: "Free: 100/mo, Hobby ($9): 5,000/mo, Pro ($29): 50,000/mo, Business ($99): 500,000/mo. All plans include access to every endpoint." },
+  { q: "Can I use this in production?", a: "Absolutely. Our Pro and Business plans are designed for production workloads with higher rate limits and priority support." },
+  { q: "How does authentication work?", a: "Sign up, create an API key, and include it as a Bearer token in the Authorization header. That's it — one key for all endpoints." },
+  { q: "What happens if I exceed my limit?", a: "You'll get a 429 response with your current usage. Upgrade anytime — changes take effect immediately with no downtime." },
+  { q: "Do you support CORS?", a: "Yes. All API endpoints return proper CORS headers, so you can call them from browser-side JavaScript in any web app." },
 ];
 
 export default function Home() {
@@ -66,10 +178,10 @@ export default function Home() {
       />
 
       {/* Sticky top bar */}
-      <div className="sticky top-0 z-50 bg-blue-600 text-white text-center text-sm py-2 px-4">
-        Create tracked QR codes free — no signup required{" "}
-        <Link href="/snapqr" className="underline font-semibold hover:text-blue-100 ml-1">
-          Try SnapQR &rarr;
+      <div className="sticky top-0 z-50 bg-indigo-600 text-white text-center text-sm py-2 px-4">
+        Free tier: 100 calls/month — no credit card required{" "}
+        <Link href="/signup" className="underline font-semibold hover:text-indigo-100 ml-1">
+          Sign up free &rarr;
         </Link>
       </div>
 
@@ -78,69 +190,107 @@ export default function Home() {
       {/* Hero */}
       <section className="mx-auto max-w-4xl px-6 py-24 text-center">
         <div className="inline-block rounded-full bg-green-600/10 border border-green-500/20 px-4 py-1.5 text-sm text-green-400 mb-6">
-          Free — no signup, no credit card
+          Start free, no credit card
         </div>
         <h1 className="text-5xl font-bold tracking-tight text-white sm:text-6xl">
-          Know Who Scans
+          Stop Rebuilding
           <br />
-          <span className="text-blue-400">Your QR Codes</span>
+          <span className="text-indigo-400">Commodity APIs</span>
         </h1>
         <p className="mt-6 text-lg text-gray-400 max-w-2xl mx-auto">
-          Generate a QR code in seconds. Track every scan — location, device, and time — on a live dashboard.
-          Upgrade to Pro for $7/mo to unlock unlimited codes, 30-day analytics, and CSV export.
+          QR codes, image resizing, hashing, screenshots, PDFs — you&apos;ve built these before.
+          Get them all with one API key and one line of code, so you can ship what actually matters.
         </p>
         <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
           <Link
-            href="/snapqr"
-            className="rounded-lg bg-blue-600 px-6 py-3.5 text-lg font-semibold text-white hover:bg-blue-500 transition shadow-lg shadow-blue-600/25"
+            href="/signup"
+            className="rounded-lg bg-indigo-600 px-6 py-3.5 text-lg font-semibold text-white hover:bg-indigo-500 transition shadow-lg shadow-indigo-600/25"
           >
-            Create Free QR Code
+            Start Free — No Credit Card
           </Link>
           <Link
-            href="/snapqr/upgrade"
+            href="/snapqr"
             className="rounded-lg border border-gray-700 px-6 py-3.5 text-lg font-medium text-gray-300 hover:border-gray-500 hover:text-white transition"
           >
-            Go Pro — $7/mo
+            Free QR Generator
           </Link>
         </div>
         <p className="mt-4 text-sm text-gray-500">
-          3 free QR codes per month with analytics. Pro from $7/mo for unlimited.
+          100 API calls/month free forever. Upgrade from $9/mo.
         </p>
+
+        {/* Code example: request + response side by side */}
+        <div className="mt-16 grid gap-4 md:grid-cols-2">
+          <div className="rounded-xl border border-gray-800 bg-gray-900 p-5 text-left">
+            <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+              <span className="h-3 w-3 rounded-full bg-red-500"></span>
+              <span className="h-3 w-3 rounded-full bg-yellow-500"></span>
+              <span className="h-3 w-3 rounded-full bg-green-500"></span>
+              <span className="ml-2">Request</span>
+            </div>
+            <pre className="text-sm text-gray-300 overflow-x-auto">
+              <code>{`curl "https://api-snap.com/api/uuid\\
+  ?format=nanoid\\
+  &count=3\\
+  &prefix=usr_" \\
+  -H "Authorization: Bearer snp_your_key"`}</code>
+            </pre>
+          </div>
+          <div className="rounded-xl border border-green-800/40 bg-gray-900 p-5 text-left">
+            <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
+              <span className="h-2.5 w-2.5 rounded-full bg-green-500 animate-pulse"></span>
+              <span className="ml-1 text-green-400">200 OK</span>
+              <span className="ml-auto text-xs text-gray-600">~45ms</span>
+            </div>
+            <pre className="text-sm text-green-300/90 overflow-x-auto">
+              <code>{`{
+  "ids": [
+    "usr_V1StGXR8_Z5jdHi6B",
+    "usr_xkCD2wEzJ9h4Qn3bN",
+    "usr_mTv7LRkYp1sNfWc8A"
+  ],
+  "format": "nanoid",
+  "count": 3,
+  "prefix": "usr_"
+}`}</code>
+            </pre>
+          </div>
+        </div>
       </section>
 
       {/* Social proof strip */}
       <section className="border-y border-gray-800 bg-gray-900/50">
         <div className="mx-auto max-w-4xl px-6 py-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
           <div>
-            <p className="text-2xl font-bold text-white">3</p>
-            <p className="text-sm text-gray-400 mt-1">Free QR codes</p>
+            <p className="text-2xl font-bold text-white">13+</p>
+            <p className="text-sm text-gray-400 mt-1">API endpoints</p>
           </div>
           <div>
-            <p className="text-2xl font-bold text-white">$7/mo</p>
-            <p className="text-sm text-gray-400 mt-1">Unlimited Pro</p>
+            <p className="text-2xl font-bold text-white">100</p>
+            <p className="text-sm text-gray-400 mt-1">Free calls/month</p>
           </div>
           <div>
-            <p className="text-2xl font-bold text-white">30 days</p>
-            <p className="text-sm text-gray-400 mt-1">Pro scan history</p>
+            <p className="text-2xl font-bold text-white">3+</p>
+            <p className="text-sm text-gray-400 mt-1">API directories listed</p>
           </div>
           <div>
-            <p className="text-2xl font-bold text-white">Real-time</p>
-            <p className="text-sm text-gray-400 mt-1">Live scan dashboard</p>
+            <p className="text-2xl font-bold text-white">&lt;50ms</p>
+            <p className="text-sm text-gray-400 mt-1">Avg response time</p>
           </div>
         </div>
       </section>
 
       {/* How It Works */}
       <section className="mx-auto max-w-4xl px-6 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">How SnapQR Works</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">Three Steps to Ship</h2>
         <div className="grid gap-8 md:grid-cols-3">
           {[
-            { step: "1", title: "Paste Your URL", desc: "Enter any link. We generate a tracked QR code instantly — no signup needed." },
-            { step: "2", title: "Share It Anywhere", desc: "Download the PNG or copy the short link. Print it, email it, post it." },
-            { step: "3", title: "Watch the Scans", desc: "See who scans it in real time — country, device, browser, and time. All on a live dashboard." },
+            { step: "1", title: "Get Your Key", desc: "Sign up in 30 seconds. Free tier, no credit card. Your API key is ready instantly." },
+            { step: "2", title: "Call Any Endpoint", desc: "One HTTP request. Bearer token auth. Works from any language, framework, or curl." },
+            { step: "3", title: "Ship Your Product", desc: "Focus on your core features. Let API Snap handle the utility functions." },
           ].map((s) => (
             <div key={s.step} className="text-center">
-              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-blue-600/20 text-xl font-bold text-blue-400">
+              <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-indigo-600/20 text-xl font-bold text-indigo-400">
                 {s.step}
               </div>
               <h3 className="text-lg font-semibold text-white">{s.title}</h3>
@@ -150,93 +300,120 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Feature comparison: Free vs Pro */}
-      <section className="mx-auto max-w-4xl px-6 py-16 text-center">
-        <h2 className="text-3xl font-bold mb-4">Simple Pricing</h2>
-        <p className="text-gray-400 mb-8">
-          Start free. Upgrade when you need more.
-        </p>
-        <div className="grid gap-6 md:grid-cols-2 max-w-2xl mx-auto">
-          <div className="rounded-xl border border-gray-800 bg-gray-900 p-6 text-left">
-            <h3 className="text-lg font-semibold text-white">Free</h3>
-            <p className="text-3xl font-bold mt-2 text-white">$0</p>
-            <p className="text-sm text-gray-400 mt-1 mb-4">forever</p>
-            <ul className="space-y-2 text-sm text-gray-400">
-              <li className="flex items-center gap-2">
-                <span className="text-green-400">&#10003;</span> 3 QR codes/month
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-400">&#10003;</span> 7-day scan history
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-400">&#10003;</span> Basic analytics
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-gray-600">&#10007;</span> <span className="text-gray-600">CSV export</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-gray-600">&#10007;</span> <span className="text-gray-600">Unbranded images</span>
-              </li>
-            </ul>
-            <Link
-              href="/snapqr"
-              className="mt-6 block text-center rounded-lg border border-gray-700 px-4 py-2.5 text-sm font-medium text-gray-300 hover:border-gray-500 hover:text-white transition"
+      {/* Endpoints */}
+      <section id="endpoints" className="mx-auto max-w-6xl px-6 py-16">
+        <h2 className="text-3xl font-bold text-center mb-4">13+ API Endpoints</h2>
+        <p className="text-center text-gray-400 mb-12">Every endpoint works with a single API key. No extra setup.</p>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {endpoints.map((ep) => (
+            <div
+              key={ep.path}
+              className="rounded-xl border border-gray-800 bg-gray-900 p-6 hover:border-gray-700 transition"
             >
-              Start Free
-            </Link>
-          </div>
-          <div className="rounded-xl border-2 border-blue-500 bg-blue-600/10 p-6 text-left relative">
-            <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-blue-600 text-white text-xs font-bold uppercase tracking-wider px-3 py-0.5 rounded-full">
-              Best value
-            </span>
-            <h3 className="text-lg font-semibold text-white">Pro</h3>
-            <p className="text-3xl font-bold mt-2 text-white">$7<span className="text-lg font-normal text-gray-400">/mo</span></p>
-            <p className="text-sm text-gray-400 mt-1 mb-4">cancel anytime</p>
-            <ul className="space-y-2 text-sm text-gray-300">
-              <li className="flex items-center gap-2">
-                <span className="text-green-400">&#10003;</span> <strong>Unlimited</strong> QR codes
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-400">&#10003;</span> <strong>30-day</strong> scan history
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-400">&#10003;</span> Full analytics
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-400">&#10003;</span> CSV export
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="text-green-400">&#10003;</span> Unbranded QR images
-              </li>
-            </ul>
-            <Link
-              href="/snapqr/upgrade"
-              className="mt-6 block text-center rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-blue-500 transition"
-            >
-              Upgrade to Pro — $7/mo
-            </Link>
-          </div>
+              <div className="flex items-center gap-3 mb-3">
+                <span className="rounded bg-indigo-600/20 px-2 py-1 text-xs font-mono text-indigo-400">
+                  {ep.method}
+                </span>
+                <code className="text-sm text-gray-300">{ep.path}</code>
+              </div>
+              <h3 className="text-lg font-semibold text-white">{ep.name}</h3>
+              <p className="mt-1 text-sm text-gray-400">{ep.desc}</p>
+              <pre className="mt-3 rounded bg-gray-800 p-3 text-xs text-gray-400 overflow-x-auto">
+                {ep.example}
+              </pre>
+            </div>
+          ))}
+        </div>
+        <div className="text-center mt-8">
+          <Link href="/playground" className="text-indigo-400 hover:text-indigo-300 transition font-medium">
+            Try them all in the Playground →
+          </Link>
         </div>
       </section>
 
       {/* Use Cases */}
       <section className="mx-auto max-w-5xl px-6 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">What People Use SnapQR For</h2>
+        <h2 className="text-3xl font-bold text-center mb-12">Built for Real Use Cases</h2>
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {[
-            { title: "Event tickets & flyers", desc: "Know how many people scan your poster, and where they are" },
-            { title: "Product packaging", desc: "Track which SKUs get the most engagement" },
-            { title: "Business cards", desc: "See when prospects check out your profile" },
-            { title: "Restaurant menus", desc: "Track table-side scans for digital menu adoption" },
-            { title: "Marketing campaigns", desc: "Measure offline-to-online conversion with real data" },
-            { title: "Internal links", desc: "Share tracked short links with your team" },
-          ].map((uc) => (
+          {useCases.map((uc) => (
             <div key={uc.title} className="rounded-xl border border-gray-800 bg-gray-900/50 p-6">
               <h3 className="text-lg font-semibold text-white">{uc.title}</h3>
               <p className="mt-2 text-sm text-gray-400">{uc.desc}</p>
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Language compatibility */}
+      <section className="mx-auto max-w-4xl px-6 py-16 text-center">
+        <h2 className="text-3xl font-bold mb-4">Works With Everything</h2>
+        <p className="text-gray-400 mb-10">If it can make HTTP requests, it works with API Snap. One REST API, any language.</p>
+        <div className="flex flex-wrap justify-center gap-4 text-gray-500 text-sm font-medium">
+          {["Node.js", "Python", "Go", "Ruby", "PHP", "Rust", "Java", "Swift", "cURL", "Any HTTP Client"].map((lang) => (
+            <span key={lang} className="rounded-lg border border-gray-800 bg-gray-900 px-4 py-2">
+              {lang}
+            </span>
+          ))}
+        </div>
+      </section>
+
+      {/* Trust signals */}
+      <section className="mx-auto max-w-4xl px-6 py-16">
+        <h2 className="text-3xl font-bold text-center mb-10">Open & Transparent</h2>
+        <div className="grid gap-6 md:grid-cols-3">
+          <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6 text-center">
+            <p className="text-lg font-semibold text-white">Public API Directories</p>
+            <p className="mt-2 text-sm text-gray-400">Listed on public-apis, APIs.guru, and Apilist.fun — vetted by the community.</p>
+          </div>
+          <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6 text-center">
+            <p className="text-lg font-semibold text-white">OpenAPI Spec</p>
+            <p className="mt-2 text-sm text-gray-400">Full OpenAPI 3.0 spec at <code className="text-indigo-400">/openapi.json</code> — import into Postman, Insomnia, or your SDK generator.</p>
+          </div>
+          <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6 text-center">
+            <p className="text-lg font-semibold text-white">No Vendor Lock-in</p>
+            <p className="mt-2 text-sm text-gray-400">Standard REST. Bearer token auth. JSON responses. Switch away anytime — no proprietary SDKs required.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing preview */}
+      <section className="mx-auto max-w-4xl px-6 py-16 text-center">
+        <h2 className="text-3xl font-bold mb-4">Simple, Predictable Pricing</h2>
+        <p className="text-gray-400 mb-8">
+          Start free. Scale as you grow. No surprises.
+        </p>
+        <div className="grid gap-6 md:grid-cols-4">
+          {[
+            { name: "Free", price: "$0", calls: "100/mo" },
+            { name: "Hobby", price: "$9/mo", calls: "5,000/mo" },
+            { name: "Pro", price: "$29/mo", calls: "50,000/mo", popular: true },
+            { name: "Business", price: "$99/mo", calls: "500,000/mo" },
+          ].map((p) => (
+            <div
+              key={p.name}
+              className={`rounded-xl border p-6 ${
+                p.popular
+                  ? "border-indigo-500 bg-indigo-600/10"
+                  : "border-gray-800 bg-gray-900"
+              }`}
+            >
+              {p.popular && (
+                <span className="text-xs font-semibold text-indigo-400 mb-2 block">
+                  MOST POPULAR
+                </span>
+              )}
+              <h3 className="text-lg font-semibold">{p.name}</h3>
+              <p className="text-2xl font-bold mt-2">{p.price}</p>
+              <p className="text-sm text-gray-400 mt-1">{p.calls}</p>
+            </div>
+          ))}
+        </div>
+        <Link
+          href="/pricing"
+          className="mt-8 inline-block text-indigo-400 hover:text-indigo-300"
+        >
+          View full pricing details →
+        </Link>
       </section>
 
       {/* FAQ */}
@@ -254,51 +431,23 @@ export default function Home() {
 
       {/* Final CTA */}
       <section className="mx-auto max-w-3xl px-6 py-20 text-center">
-        <h2 className="text-3xl font-bold mb-4">Create Your First Tracked QR Code</h2>
+        <h2 className="text-3xl font-bold mb-4">Your Next Feature is One API Call Away</h2>
         <p className="text-gray-400 mb-8">
-          Paste a URL, get a QR code with analytics — in under 10 seconds.
-          No signup. No credit card. Just scan data.
+          Sign up, grab your key, and make your first API call — all in under a minute.
+          No credit card. No setup. No meetings.
         </p>
         <Link
-          href="/snapqr"
-          className="rounded-lg bg-blue-600 px-8 py-4 text-lg font-semibold text-white hover:bg-blue-500 transition shadow-lg shadow-blue-600/25"
+          href="/signup"
+          className="rounded-lg bg-indigo-600 px-8 py-4 text-lg font-semibold text-white hover:bg-indigo-500 transition shadow-lg shadow-indigo-600/25"
         >
-          Try SnapQR Free
+          Create Free Account
         </Link>
         <p className="mt-4 text-sm text-gray-500">
-          Need unlimited codes?{" "}
-          <Link href="/snapqr/upgrade" className="text-blue-400 hover:text-blue-300">
-            Go Pro for $7/mo
+          Already have an account?{" "}
+          <Link href="/login" className="text-indigo-400 hover:text-indigo-300">
+            Log in
           </Link>
         </p>
-      </section>
-
-      {/* API Platform — below the fold, clearly separated */}
-      <section className="border-t border-gray-800 bg-gray-950">
-        <div className="mx-auto max-w-4xl px-6 py-16 text-center">
-          <p className="text-xs font-semibold uppercase tracking-widest text-gray-500 mb-3">
-            Also from API Snap
-          </p>
-          <h2 className="text-2xl font-bold text-gray-300 mb-3">Developer API Platform</h2>
-          <p className="text-gray-500 max-w-xl mx-auto mb-6">
-            Need programmatic access to QR codes, image resizing, hashing, screenshots, and 13+ utility endpoints?
-            Our developer API is a separate product with its own pricing.
-          </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <Link
-              href="/docs"
-              className="rounded-lg border border-gray-700 px-5 py-2.5 text-sm font-medium text-gray-400 hover:border-gray-500 hover:text-gray-300 transition"
-            >
-              API Documentation
-            </Link>
-            <Link
-              href="/pricing"
-              className="rounded-lg border border-gray-700 px-5 py-2.5 text-sm font-medium text-gray-400 hover:border-gray-500 hover:text-gray-300 transition"
-            >
-              API Pricing (from $9/mo)
-            </Link>
-          </div>
-        </div>
       </section>
 
       <Footer />
