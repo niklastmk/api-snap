@@ -19,6 +19,36 @@ export default function SnapQRAccountPage() {
     }
   }, []);
 
+  const [portalLoading, setPortalLoading] = useState(false);
+
+  // Opens the Stripe Customer Portal (cancel, change card, invoices) for the Pro key on this device.
+  async function handleManageSubscription() {
+    const key = localStorage.getItem("snapqr_api_key");
+    if (!key) {
+      setError("Restore Pro on this device first, then manage your subscription.");
+      return;
+    }
+    setPortalLoading(true);
+    setError("");
+    try {
+      const res = await fetch("/api/snapqr/portal", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ apiKey: key }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        setError(data.error || "Could not open the subscription portal. Please try again.");
+        setPortalLoading(false);
+      }
+    } catch {
+      setError("Network error. Please try again.");
+      setPortalLoading(false);
+    }
+  }
+
   function handleClearAccess() {
     localStorage.removeItem("snapqr_api_key");
     setIsPro(false);
@@ -77,7 +107,15 @@ export default function SnapQRAccountPage() {
               <Link href="/snapqr" className="inline-flex items-center justify-center bg-blue-600 text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-blue-700 transition-colors text-sm">
                 Create QR codes &rarr;
               </Link>
-              <div className="mt-4">
+              <div className="mt-4 flex flex-col items-center gap-3">
+                <button
+                  onClick={handleManageSubscription}
+                  disabled={portalLoading}
+                  className="text-sm font-medium text-zinc-700 hover:text-black underline underline-offset-2 transition-colors disabled:opacity-60"
+                >
+                  {portalLoading ? "Opening Stripe\u2026" : "Manage or cancel subscription"}
+                </button>
+                {error && <p className="text-red-500 text-sm">{error}</p>}
                 <button
                   onClick={handleClearAccess}
                   className="text-xs text-zinc-400 hover:text-red-600 underline underline-offset-2 transition-colors"
@@ -121,12 +159,21 @@ export default function SnapQRAccountPage() {
               {isPro && (
                 <div className="bg-green-50 border border-green-200 rounded-lg px-4 py-3 mb-4 text-sm text-green-700 flex items-center justify-between gap-3">
                   <span>Pro is already active on this device.</span>
-                  <button
-                    onClick={handleClearAccess}
-                    className="text-xs text-zinc-500 hover:text-red-600 underline underline-offset-2 whitespace-nowrap transition-colors"
-                  >
-                    Sign out
-                  </button>
+                  <span className="flex items-center gap-3 whitespace-nowrap">
+                    <button
+                      onClick={handleManageSubscription}
+                      disabled={portalLoading}
+                      className="text-xs font-medium text-green-800 hover:text-black underline underline-offset-2 transition-colors disabled:opacity-60"
+                    >
+                      {portalLoading ? "Opening\u2026" : "Manage or cancel"}
+                    </button>
+                    <button
+                      onClick={handleClearAccess}
+                      className="text-xs text-zinc-500 hover:text-red-600 underline underline-offset-2 transition-colors"
+                    >
+                      Sign out
+                    </button>
+                  </span>
                 </div>
               )}
               {error && <p className="text-red-500 text-sm mb-3">{error}</p>}
