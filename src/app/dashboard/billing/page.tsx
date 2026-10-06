@@ -32,6 +32,31 @@ function BillingContent() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Opens the Stripe Customer Portal so an existing subscriber can cancel, change card, or see invoices.
+  async function handleManageSubscription() {
+    setLoading("portal");
+    setError(null);
+    try {
+      const res = await fetch("/api/billing/portal", { method: "POST" });
+
+      if (res.status === 401) {
+        router.push("/login?next=/dashboard/billing");
+        return;
+      }
+
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        setError(data.error || "Could not open the subscription portal. Please try again.");
+        setLoading(null);
+      }
+    } catch {
+      setError("Network error. Please try again.");
+      setLoading(null);
+    }
+  }
+
   async function handleCheckout(plan: string) {
     setLoading(plan);
     setError(null);
@@ -157,6 +182,21 @@ function BillingContent() {
           </div>
         )}
 
+        {/* Existing subscribers: manage or cancel */}
+        <div className="rounded-xl border border-gray-800 bg-gray-900 p-5 mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium text-white">Already subscribed?</p>
+            <p className="text-xs text-gray-500 mt-0.5">Cancel, change your card, or download invoices in the Stripe customer portal.</p>
+          </div>
+          <button
+            onClick={handleManageSubscription}
+            disabled={loading !== null}
+            className="shrink-0 rounded-lg border border-gray-700 bg-gray-800 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            {loading === "portal" ? "Opening Stripe\u2026" : "Manage subscription"}
+          </button>
+        </div>
+
         {/* Plan cards */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-3">
           {plans.map((plan) => (
@@ -220,7 +260,7 @@ function BillingContent() {
         </div>
 
         <p className="text-center text-xs text-gray-500 mt-8">
-          Payments are processed securely by Stripe. Cancel anytime from your dashboard.
+          Payments are processed securely by Stripe. Cancel anytime with the Manage subscription button above.
         </p>
       </div>
     </div>
